@@ -138,7 +138,7 @@ const Navbar = () => {
         <div className="w-full max-w-7xl mx-auto px-4">
           <div
             className={`flex items-center gap-24 justify-between transition-all duration-300 ${
-              isScrolled ? "py-2" : "py-4"
+              isScrolled ? "py-1" : "py-4"
             }`}
           >
             {/* Logo - Left side */}
@@ -147,8 +147,8 @@ const Navbar = () => {
                 <Image
                   src="/bgg.png"
                   alt="Vakilfy Logo"
-                  width={120}
-                  height={120}
+                  width={180}
+                  height={180}
                 />
               </Link>
             </div>
@@ -431,7 +431,7 @@ const Navbar = () => {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-2">
               <Image
-                src="/logo.svg"
+                src="/tick.png"
                 alt="Vakilfy Logo"
                 width={32}
                 height={32}

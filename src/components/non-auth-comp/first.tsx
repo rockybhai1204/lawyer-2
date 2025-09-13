@@ -89,7 +89,7 @@ const First = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="space-y-4"
             >
-              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight whitespace-pre-line">
+              <h1 className="text-4xl sm:text-6xl xl:text-7xl font-bold leading-tight whitespace-pre-line font-serif">
                 {features[activeFeature].heading}
               </h1>
             </motion.div>
@@ -99,7 +99,7 @@ const First = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-lg lg:text-xl text-gray-300 max-w-lg leading-relaxed"
+              className="text-lg lg:text-xl text-gray-300 max-w-lg leading-relaxed font-serif"
             >
               {features[activeFeature].description}
             </motion.p>
@@ -151,7 +151,7 @@ const First = () => {
                     )}
                   </div>
                   <span
-                    className={`text-lg font-medium transition-all duration-300 ${
+                    className={`text-lg font-medium transition-all duration-300 font-serif ${
                       activeFeature === index ? "text-white" : "text-gray-400"
                     }`}
                   >
@@ -165,7 +165,6 @@ const First = () => {
           {/* Right Side */}
           <div className="flex justify-center lg:justify-end items-center lg:col-span-4">
             <motion.a
-              href="tel:+918979096507"
               aria-label="Call us at +91 8979096507"
               className="relative inline-block group focus:outline-none w-1/2 max-w-xl min-w-[280px]"
               initial="rest"
@@ -185,10 +184,10 @@ const First = () => {
               />
 
               <div className="relative z-10 bg-violet-600 rounded-full pl-20 pr-8 py-5 shadow-xl">
-                <p className="text-white font-bold text-3xl leading-none">
+                <p className="text-white font-bold text-3xl leading-none font-serif">
                   Call Us:
                 </p>
-                <p className="text-white/90 text-lg leading-tight">
+                <p className="text-white/90 text-lg leading-tight font-serif">
                   +91 8979096507
                 </p>
               </div>

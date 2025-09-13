@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { COMPANY_CONFIG } from "./company-config";
+import { InteractiveHoverButton } from "../ui/interactive-hover-button";
 
 const Ninth = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -54,18 +55,23 @@ const Ninth = () => {
   return (
     <section
       ref={containerRef}
-      className="relative w-full"
+      className="relative w-full bg-black"
       style={{ height: "400vh" }}
     >
-      <div className="sticky top-0 w-full h-screen overflow-hidden">
+      <div className="sticky top-0 w-full h-screen overflow-hidden bg-black">
         {/* Background image */}
-        <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 w-full h-full -top-1 -left-1 -right-1 -bottom-1">
           <Image
             src="/fimg.webp"
             alt="Background"
             fill
-            className="object-cover"
+            className="object-cover object-center"
             priority
+            style={{
+              transform: "scale(1.1)",
+              objectFit: "cover",
+              objectPosition: "center center"
+            }}
           />
         </div>
 
@@ -136,9 +142,8 @@ const Ninth = () => {
                     className="relative border border-white/20"
                     style={{
                       opacity: cellProgress,
-                      transform: `scale(${
-                        0.8 + 0.2 * cellProgress
-                      }) translateY(${20 * (1 - cellProgress)}px)`,
+                      transform: `scale(${0.8 + 0.2 * cellProgress
+                        }) translateY(${20 * (1 - cellProgress)}px)`,
                     }}
                   >
                     {/* Blur effect only appears when gridOpacity > 0 */}
@@ -149,10 +154,10 @@ const Ninth = () => {
                       {/* Justice image for 1-3 cell */}
                       {rowIndex === 0 && colIndex === 2 ? (
                         <div
-                          className="absolute inset-0 mr-10 overflow-hidden"
+                          className="absolute inset-0 mr-10 overflow-hidden mt-9"
                           style={{
                             opacity: justiceProgress,
-                            transform: `scale(${0.5 + 0.5 * justiceProgress})`,
+                            transform: `scale(${0.69 + 0.69 * justiceProgress})`,
                           }}
                         >
                           <Image
@@ -163,101 +168,119 @@ const Ninth = () => {
                           />
                         </div>
                       ) : /* Contact info for 2-2 cell */
-                      rowIndex === 1 && colIndex === 1 ? (
-                        <div
-                          className="text-white p-4 text-left w-full"
-                          style={{
-                            opacity: contactProgress,
-                            transform: `translateX(${-30 * (1 - contactProgress)}px)`,
-                          }}
-                        >
-                          <h3
-                            className="text-xl font-bold font-['Lora'] mb-4 text-white"
-                            style={{
-                              opacity: getAnimationProgress(0.6, 0.7),
-                              transform: `translateY(${10 * (1 - getAnimationProgress(0.6, 0.7))}px)`,
-                            }}
-                          >
-                            CONTACT INFO
-                          </h3>
-                          <h4
-                            className="text-2xl font-bold font-['Lora'] mb-4 text-white"
-                            style={{
-                              opacity: getAnimationProgress(0.65, 0.75),
-                              transform: `translateY(${10 * (1 - getAnimationProgress(0.65, 0.75))}px)`,
-                            }}
-                          >
-                            REACH US
-                          </h4>
+                        rowIndex === 1 && colIndex === 1 ? (
                           <div
-                            className="h-px bg-white mb-4"
+                            className="text-white p-4 text-left w-full"
                             style={{
-                              width: `${64 * getAnimationProgress(0.7, 0.8)}px`,
-                            }}
-                          ></div>
-                          <div
-                            className="space-y-2 text-base"
-                            style={{
-                              opacity: getAnimationProgress(0.75, 0.85),
-                              transform: `translateY(${10 * (1 - getAnimationProgress(0.75, 0.85))}px)`,
+                              opacity: contactProgress,
+                              transform: `translateX(${-30 * (1 - contactProgress)}px)`,
                             }}
                           >
-                            <p>
-                              <span className="text-gray-300">Tel:</span> +91
-                              8979096507
-                            </p>
-                            <p>
-                              <span className="text-gray-300">Email:</span>{" "}
-                              info@vakilfy.com
-                            </p>
+                            <h3
+                              className="text-xl font-bold font-['Lora'] mb-4 text-white"
+                              style={{
+                                opacity: getAnimationProgress(0.6, 0.7),
+                                transform: `translateY(${10 * (1 - getAnimationProgress(0.6, 0.7))}px)`,
+                              }}
+                            >
+                              CONTACT INFO
+                            </h3>
+                            <h4
+                              className="text-2xl font-bold font-['Lora'] mb-4 text-white"
+                              style={{
+                                opacity: getAnimationProgress(0.65, 0.75),
+                                transform: `translateY(${10 * (1 - getAnimationProgress(0.65, 0.75))}px)`,
+                              }}
+                            >
+                              REACH US
+                            </h4>
+                            <div
+                              className="h-px bg-white mb-4"
+                              style={{
+                                width: `${64 * getAnimationProgress(0.7, 0.8)}px`,
+                              }}
+                            ></div>
+                            <div
+                              className="space-y-2 text-base"
+                              style={{
+                                opacity: getAnimationProgress(0.75, 0.85),
+                                transform: `translateY(${10 * (1 - getAnimationProgress(0.75, 0.85))}px)`,
+                              }}
+                            >
+                              <p>
+                                <span className="text-gray-300">Tel:</span> +91
+                                8979096507
+                              </p>
+                              <p>
+                                <span className="text-gray-300">Email:</span>{" "}
+                                info@vakilfy.com
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ) : /* Address info for 2-4 cell */
-                      rowIndex === 1 && colIndex === 3 ? (
-                        <div
-                          className="text-white p-4 text-left w-full"
-                          style={{
-                            opacity: addressProgress,
-                            transform: `translateX(${30 * (1 - addressProgress)}px)`,
-                          }}
-                        >
-                          <h3
-                            className="text-xl font-bold font-['Lora'] mb-4 text-white"
-                            style={{
-                              opacity: getAnimationProgress(0.6, 0.7),
-                              transform: `translateY(${10 * (1 - getAnimationProgress(0.6, 0.7))}px)`,
-                            }}
-                          >
-                            CONTACT INFO
-                          </h3>
-                          <h4
-                            className="text-2xl font-bold font-['Lora'] mb-4 text-white"
-                            style={{
-                              opacity: getAnimationProgress(0.65, 0.75),
-                              transform: `translateY(${10 * (1 - getAnimationProgress(0.65, 0.75))}px)`,
-                            }}
-                          >
-                            ADDRESS
-                          </h4>
-                          <div
-                            className="h-px bg-white mb-4"
-                            style={{
-                              width: `${64 * getAnimationProgress(0.7, 0.8)}px`,
-                            }}
-                          ></div>
-                          <div
-                            className="space-y-2 text-base"
-                            style={{
-                              opacity: getAnimationProgress(0.75, 0.85),
-                              transform: `translateY(${10 * (1 - getAnimationProgress(0.75, 0.85))}px)`,
-                            }}
-                          >
-                            {COMPANY_CONFIG.contact.address.map((line, idx) => (
-                              <p key={`addr-top-${idx}`}>{line}</p>
-                            ))}
-                          </div>
-                        </div>
-                      ) : null}
+                        ) : /* Contact Us button for 2-3 cell */
+                          rowIndex === 1 && colIndex === 2 ? (
+                            <div
+                              className="text-white p-4 text-center w-full flex items-center justify-center"
+                              style={{
+                                opacity: contactProgress,
+                                transform: `translateY(${-20 * (1 - contactProgress)}px)`,
+                              }}
+                            >
+                              <InteractiveHoverButton
+                                onClick={() => { }}
+                                className="!bg-cyan-400 !text-black hover:!bg-black hover:!text-cyan-400 [&>div>div]:!bg-black [&>div:last-child]:!text-cyan-400"
+                              >
+                                <span className="flex items-center gap-2">
+                                  Contact Us
+                                </span>
+                              </InteractiveHoverButton>
+                            </div>
+                          ) : /* Address info for 2-4 cell */
+                            rowIndex === 1 && colIndex === 3 ? (
+                              <div
+                                className="text-white p-4 text-left w-full"
+                                style={{
+                                  opacity: addressProgress,
+                                  transform: `translateX(${30 * (1 - addressProgress)}px)`,
+                                }}
+                              >
+                                <h3
+                                  className="text-xl font-bold font-['Lora'] mb-4 text-white"
+                                  style={{
+                                    opacity: getAnimationProgress(0.6, 0.7),
+                                    transform: `translateY(${10 * (1 - getAnimationProgress(0.6, 0.7))}px)`,
+                                  }}
+                                >
+                                  CONTACT INFO
+                                </h3>
+                                <h4
+                                  className="text-2xl font-bold font-['Lora'] mb-4 text-white"
+                                  style={{
+                                    opacity: getAnimationProgress(0.65, 0.75),
+                                    transform: `translateY(${10 * (1 - getAnimationProgress(0.65, 0.75))}px)`,
+                                  }}
+                                >
+                                  ADDRESS
+                                </h4>
+                                <div
+                                  className="h-px bg-white mb-4"
+                                  style={{
+                                    width: `${64 * getAnimationProgress(0.7, 0.8)}px`,
+                                  }}
+                                ></div>
+                                <div
+                                  className="space-y-2 text-base"
+                                  style={{
+                                    opacity: getAnimationProgress(0.75, 0.85),
+                                    transform: `translateY(${10 * (1 - getAnimationProgress(0.75, 0.85))}px)`,
+                                  }}
+                                >
+                                  {COMPANY_CONFIG.contact.address.map((line, idx) => (
+                                    <p key={`addr-top-${idx}`}>{line}</p>
+                                  ))}
+                                </div>
+                              </div>
+                            ) : null}
                     </div>
                   </div>
                 );
@@ -285,7 +308,7 @@ const Ninth = () => {
             {/* Mobile Grid - Single Column */}
             <div
               className="md:hidden w-full h-full grid grid-cols-1"
-              style={{ gridTemplateRows: "0.2fr 1fr 1fr 1fr 0.2fr" }}
+              style={{ gridTemplateRows: "0.2fr 1fr 1fr 1fr 0.4fr" }}
             >
               {/* Top spacing */}
               <div
@@ -301,9 +324,8 @@ const Ninth = () => {
                 className="relative border border-white/20 backdrop-blur-md"
                 style={{
                   opacity: mainGridProgress,
-                  transform: `scale(${
-                    0.8 + 0.2 * mainGridProgress
-                  }) translateY(${20 * (1 - mainGridProgress)}px)`,
+                  transform: `scale(${0.8 + 0.2 * mainGridProgress
+                    }) translateY(${20 * (1 - mainGridProgress)}px)`,
                 }}
               >
                 <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -311,7 +333,7 @@ const Ninth = () => {
                     className="absolute inset-0 p-4 mr-10 overflow-hidden"
                     style={{
                       opacity: justiceProgress,
-                      transform: `scale(${0.5 + 0.5 * justiceProgress})`,
+                      transform: `scale(${0.8 + 0.8 * justiceProgress})`,
                     }}
                   >
                     <Image
@@ -329,9 +351,8 @@ const Ninth = () => {
                 className="relative border border-white/20 backdrop-blur-md"
                 style={{
                   opacity: mainGridProgress,
-                  transform: `scale(${
-                    0.8 + 0.2 * mainGridProgress
-                  }) translateY(${20 * (1 - mainGridProgress)}px)`,
+                  transform: `scale(${0.8 + 0.2 * mainGridProgress
+                    }) translateY(${20 * (1 - mainGridProgress)}px)`,
                 }}
               >
                 <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -346,9 +367,8 @@ const Ninth = () => {
                       className="text-lg font-bold font-['Lora'] mb-3 text-white"
                       style={{
                         opacity: getAnimationProgress(0.6, 0.7),
-                        transform: `translateY(${
-                          10 * (1 - getAnimationProgress(0.6, 0.7))
-                        }px)`,
+                        transform: `translateY(${10 * (1 - getAnimationProgress(0.6, 0.7))
+                          }px)`,
                       }}
                     >
                       CONTACT INFO
@@ -357,9 +377,8 @@ const Ninth = () => {
                       className="text-xl font-bold font-['Lora'] mb-3 text-white"
                       style={{
                         opacity: getAnimationProgress(0.65, 0.75),
-                        transform: `translateY(${
-                          10 * (1 - getAnimationProgress(0.65, 0.75))
-                        }px)`,
+                        transform: `translateY(${10 * (1 - getAnimationProgress(0.65, 0.75))
+                          }px)`,
                       }}
                     >
                       REACH US
@@ -374,9 +393,8 @@ const Ninth = () => {
                       className="space-y-1 text-sm"
                       style={{
                         opacity: getAnimationProgress(0.75, 0.85),
-                        transform: `translateY(${
-                          10 * (1 - getAnimationProgress(0.75, 0.85))
-                        }px)`,
+                        transform: `translateY(${10 * (1 - getAnimationProgress(0.75, 0.85))
+                          }px)`,
                       }}
                     >
                       <p>
@@ -397,9 +415,8 @@ const Ninth = () => {
                 className="relative border border-white/20 backdrop-blur-md"
                 style={{
                   opacity: mainGridProgress,
-                  transform: `scale(${
-                    0.8 + 0.2 * mainGridProgress
-                  }) translateY(${20 * (1 - mainGridProgress)}px)`,
+                  transform: `scale(${0.8 + 0.2 * mainGridProgress
+                    }) translateY(${20 * (1 - mainGridProgress)}px)`,
                 }}
               >
                 <div className="absolute inset-0 flex items-center justify-center z-10">
@@ -414,9 +431,8 @@ const Ninth = () => {
                       className="text-lg font-bold font-['Lora'] mb-3 text-white"
                       style={{
                         opacity: getAnimationProgress(0.6, 0.7),
-                        transform: `translateY(${
-                          10 * (1 - getAnimationProgress(0.6, 0.7))
-                        }px)`,
+                        transform: `translateY(${10 * (1 - getAnimationProgress(0.6, 0.7))
+                          }px)`,
                       }}
                     >
                       CONTACT INFO
@@ -425,9 +441,8 @@ const Ninth = () => {
                       className="text-xl font-bold font-['Lora'] mb-3 text-white"
                       style={{
                         opacity: getAnimationProgress(0.65, 0.75),
-                        transform: `translateY(${
-                          10 * (1 - getAnimationProgress(0.65, 0.75))
-                        }px)`,
+                        transform: `translateY(${10 * (1 - getAnimationProgress(0.65, 0.75))
+                          }px)`,
                       }}
                     >
                       ADDRESS
@@ -442,9 +457,8 @@ const Ninth = () => {
                       className="space-y-1 text-sm"
                       style={{
                         opacity: getAnimationProgress(0.75, 0.85),
-                        transform: `translateY(${
-                          10 * (1 - getAnimationProgress(0.75, 0.85))
-                        }px)`,
+                        transform: `translateY(${10 * (1 - getAnimationProgress(0.75, 0.85))
+                          }px)`,
                       }}
                     >
                       {COMPANY_CONFIG.contact.address.map((line, idx) => (
@@ -455,14 +469,39 @@ const Ninth = () => {
                 </div>
               </div>
 
+              {/* Contact Us Button Row */}
+              <div
+                className="relative border border-white/20 backdrop-blur-md"
+                style={{
+                  opacity: mainGridProgress,
+                  transform: `scale(${0.8 + 0.2 * mainGridProgress
+                    }) translateY(${20 * (1 - mainGridProgress)}px)`,
+                }}
+              >
+                <div className="absolute inset-0 flex items-center justify-center z-10">
+                  <div
+                    className="text-white p-4 text-center w-full flex items-center justify-center"
+                    style={{
+                      opacity: contactProgress,
+                      transform: `translateY(${-20 * (1 - contactProgress)}px)`,
+                    }}
+                  >
+                    <InteractiveHoverButton
+                      className="!bg-cyan-400 !text-black hover:!bg-black hover:!text-cyan-400 [&>div>div]:!bg-black [&>div:last-child]:!text-cyan-400"
+                    >
+                      <span className="flex items-center gap-2">Contact Us</span>
+                    </InteractiveHoverButton>
+                  </div>
+                </div>
+              </div>
+
               {/* Bottom spacing */}
               <div
                 className="relative"
                 style={{
                   opacity: bottomSpacingProgress,
-                  transform: `translateY(${
-                    20 * (1 - bottomSpacingProgress)
-                  }px)`,
+                  transform: `translateY(${20 * (1 - bottomSpacingProgress)
+                    }px)`,
                 }}
               ></div>
             </div>

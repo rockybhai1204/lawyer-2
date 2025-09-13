@@ -33,7 +33,7 @@ const Tenth: React.FC<TenthProps> = ({
   newsletterTitle = "Sign Up For Our Newsletter",
   newsletterDescription = "Stay updated with our latest legal insights and services.",
   showNewsletter = true,
-  copyrightText = "© 2025 design by Vakilfy",
+  copyrightText = "©️ 2025 design by Vakilfy",
 }) => {
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
@@ -50,13 +50,12 @@ const Tenth: React.FC<TenthProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center mb-6">
               <Image
-                src="/icon.webp"
-                width={40}
-                height={40}
+                src="/tick.png"
+                width={60}
+                height={60}
                 alt={`${companyName} Logo`}
-                className="invert"
               />
               <span className="text-2xl font-bold font-['Lora']">
                 {companyName}
