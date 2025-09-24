@@ -97,6 +97,9 @@ model ServicePrice {
   discountAmount    Int?
   isCompulsory    Boolean @default(false)
   
+  // Payment relations
+  paymentOrderItems PaymentOrderItem[]
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -155,6 +158,7 @@ model Case {
   files       CaseFiles[]
   meetings    CaseMeeting[]
   whatsappNotifications WhatsAppNotification[]
+  paymentOrders PaymentOrder[]
 
   isAutoNotificationOn Boolean @default(true)
 
@@ -296,4 +300,112 @@ enum WhatsAppTemplateStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+// ================================
+// Payment & Transactions
+// ================================
+
+model PaymentOrder {
+  id                    String                @id @default(cuid())
+  merchantOrderId       String                @unique
+  phonepeOrderId        String?               @unique
+  amount                Int                   // Amount in paisa
+  currency              String                @default("INR")
+  
+  // Payment Details
+  status                PaymentStatus         @default(PENDING)
+  paymentMethod         PaymentMethod?
+  phonepeTransactionId  String?
+  
+  // PhonePe Response Data
+  phonepeResponse       Json?
+  redirectUrl           String?
+  checkoutUrl           String?
+  expireAt              DateTime?
+  
+  // Customer Information
+  customerName          String
+  customerEmail         String
+  customerPhone         String
+  
+  // Selected Services & Pricing
+  selectedPrices        PaymentOrderItem[]
+  
+  // Relations
+  caseId                String?
+  case                  Case?                 @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  
+  // Payment Audit Trail
+  paymentLogs           PaymentAuditLog[]
+  
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+}
+
+model PaymentOrderItem {
+  id                    String                @id @default(cuid())
+  orderId               String
+  order                 PaymentOrder          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  // Direct relation to ServicePrice
+  servicePriceId        String
+  servicePrice          ServicePrice          @relation(fields: [servicePriceId], references: [id], onDelete: Cascade)
+  
+  // Snapshot of pricing at time of order (for audit purposes)
+  priceAtOrderTime      Int                   // Price in paisa at the time of order
+  discountAtOrderTime   Int?                  // Discount amount in paisa at the time of order
+  finalPrice            Int                   // Final calculated price in paisa
+  
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+}
+
+model PaymentAuditLog {
+  id                    String                @id @default(cuid())
+  orderId               String
+  order                 PaymentOrder          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  event                 PaymentEvent
+  status                PaymentStatus?
+  description           String
+  metadata              Json?                 // Store additional data like PhonePe responses, errors, etc.
+  
+  createdAt             DateTime              @default(now())
+}
+
+enum PaymentStatus {
+  PENDING
+  INITIATED
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+enum PaymentMethod {
+  UPI_INTENT
+  UPI_COLLECT
+  UPI_QR
+  CARD
+  TOKEN
+  NET_BANKING
+  WALLET
+}
+
+enum PaymentEvent {
+  ORDER_CREATED
+  PAYMENT_INITIATED
+  PAYMENT_PROCESSING
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  PAYMENT_CANCELLED
+  REFUND_INITIATED
+  REFUND_COMPLETED
+  REFUND_FAILED
+  WEBHOOK_RECEIVED
+  STATUS_CHECK
+  ERROR_OCCURRED
 }

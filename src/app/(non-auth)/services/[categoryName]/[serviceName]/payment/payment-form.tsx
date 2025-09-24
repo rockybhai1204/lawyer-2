@@ -12,6 +12,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import SurveyFormRenderer from "@/components/survey-form-renderer";
 import FileUpload from "@/components/ui/file-upload";
+import {
+  ServiceSelectionData,
+  PaymentInitiationRequest,
+} from "@/types/api/payment";
 
 interface PaymentFormProps {
   service: ApiService;
@@ -65,6 +69,11 @@ export default function PaymentForm({
   const [uploadStatus, setUploadStatus] = useState<{
     [key: string]: "pending" | "uploading" | "completed" | "error";
   }>({});
+
+  // Payment related states
+  const [caseId, setCaseId] = useState<string | null>(null);
+  const [showPaymentButton, setShowPaymentButton] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   // Fetch service prices
   useEffect(() => {
@@ -255,13 +264,14 @@ export default function PaymentForm({
 
     try {
       // Step 1: Create case
-      const caseId = await createCase();
-      if (!caseId) {
+      const createdCaseId = await createCase();
+      if (!createdCaseId) {
         setIsSubmitting(false);
         setIsUploading(false);
         return;
       }
 
+      setCaseId(createdCaseId);
       toast.success("Case created! Now uploading files...");
 
       // Step 2: Upload files one by one
@@ -293,10 +303,12 @@ export default function PaymentForm({
       );
 
       if (filesToUpload.length === 0) {
-        toast.success("Case submitted successfully! We'll contact you soon.");
-        setTimeout(() => {
-          window.location.href = "/success";
-        }, 1200);
+        toast.success(
+          "Case and files processed successfully! You can now proceed to payment."
+        );
+        setShowPaymentButton(true);
+        setIsSubmitting(false);
+        setIsUploading(false);
         return;
       }
 
@@ -312,7 +324,7 @@ export default function PaymentForm({
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              caseId,
+              caseId: createdCaseId,
               fileName: file.name,
               fileType: file.type || "application/octet-stream",
               fileSize: file.size,
@@ -373,10 +385,10 @@ export default function PaymentForm({
       const failedUploads = uploadResults.filter((result) => !result.success);
 
       if (failedUploads.length === 0) {
-        toast.success("Case submitted successfully! We'll contact you soon.");
-        setTimeout(() => {
-          window.location.href = "/success";
-        }, 1200);
+        toast.success(
+          "Case and files processed successfully! You can now proceed to payment."
+        );
+        setShowPaymentButton(true);
       } else {
         toast.error(
           `${failedUploads.length} files failed to upload. Please try again.`
@@ -389,6 +401,78 @@ export default function PaymentForm({
     } finally {
       setIsSubmitting(false);
       setIsUploading(false);
+    }
+  };
+
+  // New payment function
+  const handlePayment = async () => {
+    if (!caseId || selectedPrices.length === 0) {
+      toast.error("Unable to proceed with payment. Please try again.");
+      return;
+    }
+
+    setIsProcessingPayment(true);
+
+    try {
+      // Prepare payment request
+      const paymentRequest: PaymentInitiationRequest = {
+        serviceId: service.id,
+        selectedPriceIds: selectedPrices.map((price) => price.id),
+        customerInfo: {
+          name: customerDetails.customerName,
+          email: customerDetails.customerEmail,
+          phone: customerDetails.customerPhone,
+        },
+        formResponseData: formData,
+        redirectUrl: `${window.location.origin}/success`,
+      };
+
+      console.log("Initiating payment with data:", paymentRequest);
+
+      const response = await fetch("/api/payment/initiate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(paymentRequest),
+      });
+
+      const result = await response.json();
+
+      if (result.success && result.data) {
+        // Store payment info for callback handling
+        sessionStorage.setItem(
+          "paymentOrder",
+          JSON.stringify({
+            orderId: result.data.orderId,
+            merchantOrderId: result.data.merchantOrderId,
+            amount: result.data.amount,
+            caseId: caseId,
+            customerInfo: {
+              name: customerDetails.customerName,
+              email: customerDetails.customerEmail,
+              phone: customerDetails.customerPhone,
+            },
+            serviceInfo: {
+              serviceId: service.id,
+              serviceName: service.name,
+              categoryName: service.categoryName,
+            },
+          })
+        );
+
+        // Redirect to PhonePe payment gateway
+        window.location.href = result.data.checkoutUrl;
+      } else {
+        throw new Error(result.message || "Failed to initiate payment");
+      }
+    } catch (error: any) {
+      console.error("Payment initiation error:", error);
+      toast.error(
+        error.message || "Failed to initiate payment. Please try again."
+      );
+    } finally {
+      setIsProcessingPayment(false);
     }
   };
 
@@ -724,29 +808,97 @@ export default function PaymentForm({
                 </div>
               </div>
 
-              <Button
-                onClick={handleSubmit}
-                disabled={isSubmitting || (form ? !formData : false)}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
-              >
-                {isSubmitting ? (
-                  <div className="flex items-center space-x-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    <span>Processing...</span>
-                  </div>
-                ) : form && !formData ? (
-                  "Complete Form First"
-                ) : form && formData ? (
-                  "Complete Submission ✓"
-                ) : (
-                  "Complete Submission"
-                )}
-              </Button>
+              {/* Step 1: Complete Submission Button */}
+              {!showPaymentButton && (
+                <>
+                  <Button
+                    onClick={handleSubmit}
+                    disabled={isSubmitting || (form ? !formData : false)}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3"
+                  >
+                    {isSubmitting ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Processing...</span>
+                      </div>
+                    ) : form && !formData ? (
+                      "Complete Form First"
+                    ) : form && formData ? (
+                      "Complete Submission ✓"
+                    ) : (
+                      "Complete Submission"
+                    )}
+                  </Button>
 
-              <p className="text-xs text-gray-500 text-center">
-                By clicking "Complete Submission", you agree to our terms and
-                conditions
-              </p>
+                  <p className="text-xs text-gray-500 text-center">
+                    By clicking "Complete Submission", you agree to our terms
+                    and conditions
+                  </p>
+                </>
+              )}
+
+              {/* Step 2: Payment Button (shown after case creation) */}
+              {showPaymentButton && (
+                <>
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                    <div className="flex items-center space-x-2">
+                      <svg
+                        className="w-5 h-5 text-green-600"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <p className="text-green-800 font-medium">
+                        Case Created Successfully!
+                      </p>
+                    </div>
+                    <p className="text-green-700 text-sm mt-1">
+                      Your case has been created with ID:{" "}
+                      <span className="font-mono">{caseId}</span>
+                    </p>
+                  </div>
+
+                  <Button
+                    onClick={handlePayment}
+                    disabled={isProcessingPayment}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3"
+                  >
+                    {isProcessingPayment ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Processing Payment...</span>
+                      </div>
+                    ) : (
+                      <>
+                        <svg
+                          className="w-5 h-5 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                          />
+                        </svg>
+                        Pay Now - {formatPrice(calculateTotal())}
+                      </>
+                    )}
+                  </Button>
+
+                  <p className="text-xs text-gray-500 text-center">
+                    Secure payment powered by PhonePe. You will be redirected to
+                    complete the payment.
+                  </p>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>

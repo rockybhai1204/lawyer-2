@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { ServiceContent } from "@/types/api/services";
 import S1 from "@/components/non-auth-comp/(services)/s1";
 import Partner from "@/components/non-auth-comp/(services)/partner";
-import CompanyFormation from "@/components/non-auth-comp/(services)/company-formation";
+import CompanyFormationWithPayment from "@/components/non-auth-comp/(services)/company-formation-with-payment";
 import Faq from "@/components/non-auth-comp/faq";
 import S2 from "@/components/non-auth-comp/(services)/s2";
 import S3 from "@/components/non-auth-comp/(services)/s3";
@@ -209,7 +209,9 @@ export default async function ServiceDetailPage({ params }: Params) {
               {/* Right Side - Company Formation Component (Sticky on desktop) */}
               <div className="lg:col-span-1">
                 <div className="lg:sticky lg:top-28">
-                  <CompanyFormation serviceData={transformedServiceData} />
+                  <CompanyFormationWithPayment
+                    serviceData={transformedServiceData}
+                  />
                 </div>
               </div>
             </div>
