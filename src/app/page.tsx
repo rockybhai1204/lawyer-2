@@ -17,12 +17,12 @@ export default function Home() {
       <CursorEffect />
       <Navbar />
       <First />
-      {/* <Second /> */}
-      {/* <Third /> */}
-      {/* <Fourth /> */}
-      {/* <Fifth /> */}
-      {/* <Sixth /> */}
-      {/* <Seventh /> */}
+      <Second />
+      <Third />
+      <Fourth />
+      <Fifth />
+      <Sixth />
+      <Seventh />
       <Eighth />
       <Ninth />
       <Tenth />

@@ -3,8 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { landing } from "@/lib/text/landing";
 
 const Sixth = () => {
+    const data = landing;
     const [scrollY, setScrollY] = useState(0);
     const sectionRef = useRef<HTMLElement>(null);
     const [sectionTop, setSectionTop] = useState(0);
@@ -137,25 +139,26 @@ const Sixth = () => {
                     <div className="text-white">
                         <div className="flex items-center gap-3 text-cyan-400 font-semibold mb-6">
                             <Image src="/icon.webp" width={32} height={32} alt="team icon" />
-                            <span className="text-2xl font-['Lora']">Team</span>
+                            <span className="text-2xl font-['Lora']">{data.sixth.team.tag}</span>
                         </div>
 
                         <h2 className="text-3xl lg:text-5xl font-bold text-white font-['Lora'] leading-tight mb-6">
-                            A Competent,<br />
-                            And Committed Team
+                            {(data.sixth.team.heading as string)
+                                .split("\n")
+                                .map((line: string, idx: number) => (
+                                    idx === 0 ? (<span key={idx}>{line}</span>) : (<span key={idx}><br />{line}</span>)
+                                ))}
                         </h2>
 
                         <p className="text-gray-200 text-base leading-relaxed mb-10 max-w-lg">
-                            The experience that we have acquired over the last decades is combined with
-                            the talent of our youngest lawyers, which allows us to offer you efficient and
-                            competitive quality services.
+                            {data.sixth.team.desc}
                         </p>
 
                         {/* Progress Bars */}
                         <div className="space-y-6 mb-10">
                             <div>
                                 <div className="flex justify-between items-center mb-2">
-                                    <span className="text-white font-medium font-['Lora'] text-sm">Client's Communication</span>
+                                    <span className="text-white font-medium font-['Lora'] text-sm">{data.sixth.team.progress.communication}</span>
                                     <span className="text-cyan-600 font-bold text-sm">{animatedValues.communication}%</span>
                                 </div>
                                 <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
@@ -168,7 +171,7 @@ const Sixth = () => {
 
                             <div>
                                 <div className="flex justify-between items-center mb-2">
-                                    <span className="text-white font-medium font-['Lora'] text-sm">Success Rate</span>
+                                    <span className="text-white font-medium font-['Lora'] text-sm">{data.sixth.team.progress.success}</span>
                                     <span className="text-cyan-600 font-bold text-sm">{animatedValues.success}%</span>
                                 </div>
                                 <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
@@ -185,7 +188,7 @@ const Sixth = () => {
                             className="!bg-black !border-white !text-white hover:!bg-white hover:!text-black hover:!border-white [&>div>div]:!bg-white [&>div:last-child]:!text-black"
                         >
                             <span className="flex items-center gap-2">
-                                Meet Our Team
+                                {data.sixth.team.cta}
                             </span>
                         </InteractiveHoverButton>
                     </div>

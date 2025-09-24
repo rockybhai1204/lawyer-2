@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import { landing } from "@/lib/text/landing";
 
 const Fourth = () => {
+  const data = landing;
   const logos = [
     { id: 1, src: "/logo1.svg", alt: "Client Logo 1" },
     { id: 2, src: "/logo2.svg", alt: "Client Logo 2" },
@@ -19,9 +21,11 @@ const Fourth = () => {
         {/* Text section */}
         <div className="w-full lg:w-2/5 lg:pr-8 mb-6 lg:mb-0">
           <h2 className="text-3xl lg:text-4xl font-bold text-white font-['Lora'] leading-snug text-center lg:text-left">
-            Some Of Our
-            <br />
-            Exceptional Clients
+            {(data.fourth.heading as string)
+              .split("\n")
+              .map((line: string, idx: number) => (
+                idx === 0 ? (<span key={idx}>{line}</span>) : (<span key={idx}><br />{line}</span>)
+              ))}
           </h2>
         </div>
 

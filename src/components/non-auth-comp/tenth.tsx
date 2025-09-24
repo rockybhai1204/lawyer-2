@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { landing } from "@/lib/text/landing";
 
-interface TenthProps {
+interface TenthProps {  
   companyName?: string;
   companyDescription?: string;
   contactInfo?: {
@@ -35,6 +36,7 @@ const Tenth: React.FC<TenthProps> = ({
   showNewsletter = true,
   copyrightText = "©️ 2025 design by Vakilfy",
 }) => {
+  const data = landing;
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
 
@@ -47,7 +49,7 @@ const Tenth: React.FC<TenthProps> = ({
   return (
     <footer className="bg-black text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Logo and Description */}
           <div className="lg:col-span-1">
             <div className="flex items-center mb-6">
@@ -58,18 +60,23 @@ const Tenth: React.FC<TenthProps> = ({
                 alt={`${companyName} Logo`}
               />
               <span className="text-2xl font-bold font-['Lora']">
-                {companyName}
+                {data.tenth.companyName}
               </span>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              {companyDescription}
-            </p>
+            <div className="space-y-2">
+              <h2 className="text-lg sm:text-xl lg:text-xl font-bold leading-tight font-['Lora']">
+                {data.tenth.headline}
+              </h2>
+              <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-md font-['Lora']">
+                {data.tenth.companyDescription}
+              </p>
+            </div>
           </div>
 
           {/* Contact Section */}
           <div className="lg:col-span-1">
             <h3 className="text-lg font-bold font-['Lora'] mb-6 text-white">
-              Contact:
+              {data.tenth.contactLabel}
             </h3>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
@@ -83,7 +90,7 @@ const Tenth: React.FC<TenthProps> = ({
                   </svg>
                 </div>
                 <div className="text-gray-400 text-sm">
-                  {contactInfo.address.map((line, index) => (
+                  {data.tenth.contact.address.map((line, index) => (
                     <p key={index}>{line}</p>
                   ))}
                 </div>
@@ -100,7 +107,7 @@ const Tenth: React.FC<TenthProps> = ({
                   </svg>
                 </div>
                 <span className="text-gray-400 text-sm">
-                  {contactInfo.phone}
+                  {data.tenth.contact.phone}
                 </span>
               </div>
 
@@ -115,28 +122,13 @@ const Tenth: React.FC<TenthProps> = ({
                   </svg>
                 </div>
                 <span className="text-gray-400 text-sm">
-                  {contactInfo.email}
+                  {data.tenth.contact.email}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Company Section */}
-          <div className="lg:col-span-1">
-            {/* <h3 className="text-lg font-bold font-['Lora'] mb-6 text-white">
-              Company:
-            </h3>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 text-sm hover:text-cyan-400 transition-colors duration-300"
-                >
-                  Contact
-                </a>
-              </li>
-            </ul> */}
-          </div>
+          
 
           {/* Newsletter Section */}
           {showNewsletter && (
@@ -152,7 +144,7 @@ const Tenth: React.FC<TenthProps> = ({
                   </svg>
                 </div>
                 <h3 className="text-lg font-bold font-['Lora'] text-white">
-                  {newsletterTitle}
+                  {data.tenth.newsletterTitle}
                 </h3>
               </div>
 
@@ -162,7 +154,7 @@ const Tenth: React.FC<TenthProps> = ({
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter Your Email"
+                    placeholder={data.tenth.newsletterPlaceholder}
                     className="w-full bg-gray-900 border border-gray-700 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 transition-colors duration-300"
                     required
                   />
@@ -216,7 +208,7 @@ const Tenth: React.FC<TenthProps> = ({
 
         {/* Bottom Section */}
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">{copyrightText}</p>
+          <p className="text-gray-400 text-sm mb-4 md:mb-0">{data.tenth.copyright}</p>
           {/* <div className="flex gap-6">
             <a
               href="/privacy"

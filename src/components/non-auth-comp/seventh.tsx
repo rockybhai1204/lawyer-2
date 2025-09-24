@@ -3,41 +3,20 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { landing } from "@/lib/text/landing";
 
 const Seventh = () => {
+    const data = landing;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
 
-    const caseStudies = [
-        {
-            id: 1,
-            image: "/img1.webp",
-            title: "Corporate Merger",
-            subtitle: "Business Law Case Study",
-            description: "Successfully handled a complex corporate merger involving multiple stakeholders and regulatory compliance requirements."
-        },
-        {
-            id: 2,
-            image: "/img2.webp",
-            title: "Insider Trading",
-            subtitle: "Securities Law Case Study",
-            description: "Defended client in high-profile insider trading case with focus on regulatory compliance and ethical standards."
-        },
-        {
-            id: 3,
-            image: "/img1.webp",
-            title: "Criminal Defense",
-            subtitle: "Criminal Law Case Study",
-            description: "Achieved favorable outcome in complex criminal defense case through strategic legal arguments and evidence presentation."
-        },
-        {
-            id: 4,
-            image: "/img2.webp",
-            title: "Family Dispute",
-            subtitle: "Family Law Case Study",
-            description: "Resolved sensitive family dispute through mediation and negotiation, protecting client's interests and family relationships."
-        }
-    ];
+    const caseStudies = ((data?.seventh?.cards as Array<{ title: string; description: string }>) ?? [
+        { title: "What is online legal consultation?", description: "Online legal consultation, also known as online lawyer consultation, is the process of connecting users to lawyers in a virtual manner. It could be by way of phone calls, video calls, or chat. It is a one-step solution for quick, easy and hassle free legal advice using our Vakilfy website (TBC if app is also being developed)." },
+        { title: "How does Vakilfy’s online consultation work?", description: "We, at Vakilfy, have a 5 step simple process:\nStep 1. Choose Your Service\nStep 2. Book Online Consultation\nStep 3. Discuss Your Needs\nStep 4. Get Drafted / Reviewed\nStep 5. Delivery & Support" },
+        { title: "How are fees determined for online legal consultation at Vakilfy?", description: "The initial consultation charge is ₹ 500 (TBC with client) for a 10 minute /20 (TBC with client) consultation slot. At Vakilfy, all charges are transparent and disclosed upfront." },
+        { title: "How does availing Vakilfy services benefit you?", description: "At Vakilfy, we have 50+ legal experts (TBC) from different cities of India. You can seek advice online, in your preferred language, and receive timely, accurate legal documents." },
+        { title: "Is seeking legal assistance on Vakilfy a safe and secure method?", description: "Yes. Vakilfy follows strict confidentiality and attorney-client privilege standards. Your data and documents remain private and secure." },
+    ]).map((c, idx) => ({ id: idx + 1, image: idx % 2 === 0 ? "/img1.webp" : "/img2.webp", ...c }));
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -46,7 +25,7 @@ const Seventh = () => {
                 setCurrentIndex((prevIndex) => (prevIndex + 1) % caseStudies.length);
                 setIsAnimating(false);
             }, 600); // animation time
-        }, 5000);
+        }, 7000);
 
         return () => clearInterval(interval);
     }, [caseStudies.length]);
@@ -68,24 +47,21 @@ const Seventh = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="mb-12 px-4">
-                    <div className="flex items-start justify-between">
+                    <div className="flex items-center justify-between">
                         <div>
                             <div className="flex items-center gap-3 text-cyan-400 font-semibold mb-6">
                                 <Image src="/icon.webp" width={32} height={32} alt="case studies icon" className="invert" />
-                                <span className="text-2xl font-['Lora']">Case Studies</span>
+                                <span className="text-3xl font-['Lora']">{data.seventh.faqs}</span>
                             </div>
-                            <h2 className="text-3xl lg:text-5xl font-bold text-white font-['Lora'] leading-tight">
-                                Our Recent Case
-                            </h2>
                         </div>
 
-                        <div className="mt-4">
+                        <div>
                             <InteractiveHoverButton
                                 onClick={() => { }}
                                 className="!bg-gray-800 !border-gray-700 !text-white hover:!bg-cyan-400 hover:!text-black hover:!border-cyan-400 [&>div>div]:!bg-cyan-400 [&>div:last-child]:!text-black"
                             >
                                 <span className="flex items-center gap-2">
-                                    More Studies
+                                    {data.seventh.cta}
                                 </span>
                             </InteractiveHoverButton>
                         </div>
@@ -112,12 +88,10 @@ const Seventh = () => {
                             {/* Content Card - Same as desktop center card */}
                             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-4/5 max-w-md z-30">
                                 <div className="bg-black/95 backdrop-blur-sm p-6 text-center shadow-2xl border border-gray-700 rounded-lg">
-                                    <h3 className="text-2xl lg:text-3xl font-bold font-['Lora'] mb-3 text-white">
+                                    <h3 className="text-xl lg:text-2xl font-bold font-['Lora'] mb-3 text-white">
                                         {caseStudies[currentIndex].title}
                                     </h3>
-                                    <p className="text-yellow-600 text-base font-medium mb-4 font-['Lora']">
-                                        {caseStudies[currentIndex].subtitle}
-                                    </p>
+                                    
                                     <div className="w-12 h-px bg-gray-500 mx-auto mb-4"></div>
                                     <p className="text-gray-300 text-sm leading-relaxed mb-6">
                                         {caseStudies[currentIndex].description}
@@ -169,12 +143,10 @@ const Seventh = () => {
                                 {caseStudy.position === 0 && (
                                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-4/5 max-w-md z-30">
                                         <div className="bg-black/95 backdrop-blur-sm p-6 text-center shadow-2xl border border-gray-700 rounded-lg">
-                                            <h3 className="text-2xl lg:text-3xl font-bold font-['Lora'] mb-3 text-white">
+                                            <h3 className="text-xl lg:text-2xl font-bold font-['Lora'] mb-3 text-white">
                                                 {caseStudy.title}
                                             </h3>
-                                            <p className="text-yellow-600 text-base font-medium mb-4 font-['Lora']">
-                                                {caseStudy.subtitle}
-                                            </p>
+                                            
                                             <div className="w-12 h-px bg-gray-500 mx-auto mb-4"></div>
                                             <p className="text-gray-300 text-sm leading-relaxed mb-6">
                                                 {caseStudy.description}

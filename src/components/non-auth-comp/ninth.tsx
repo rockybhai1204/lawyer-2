@@ -2,12 +2,24 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { COMPANY_CONFIG } from "./company-config";
 import { InteractiveHoverButton } from "../ui/interactive-hover-button";
+import { landing } from "@/lib/text/landing";
 
 const Ninth = () => {
+  const data = landing;
   const [scrollProgress, setScrollProgress] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  const handleGoToContact = () => {
+    router.push("/contact");
+  };
+
+  const handleGoToLawyerRegistration = () => {
+    router.push("/lawyer-registration");
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -183,7 +195,7 @@ const Ninth = () => {
                                 transform: `translateY(${10 * (1 - getAnimationProgress(0.6, 0.7))}px)`,
                               }}
                             >
-                              CONTACT INFO
+                              {data.ninth.labels.contactInfo}
                             </h3>
                             <h4
                               className="text-2xl font-bold font-['Lora'] mb-4 text-white"
@@ -192,7 +204,7 @@ const Ninth = () => {
                                 transform: `translateY(${10 * (1 - getAnimationProgress(0.65, 0.75))}px)`,
                               }}
                             >
-                              REACH US
+                              {data.ninth.labels.reachUs}
                             </h4>
                             <div
                               className="h-px bg-white mb-4"
@@ -208,11 +220,11 @@ const Ninth = () => {
                               }}
                             >
                               <p>
-                                <span className="text-gray-300">Tel:</span> +91
+                                <span className="text-gray-300">{data.ninth.labels.tel}</span> +91
                                 8979096507
                               </p>
                               <p>
-                                <span className="text-gray-300">Email:</span>{" "}
+                                <span className="text-gray-300">{data.ninth.labels.email}</span>{" "}
                                 info@vakilfy.com
                               </p>
                             </div>
@@ -226,14 +238,25 @@ const Ninth = () => {
                                 transform: `translateY(${-20 * (1 - contactProgress)}px)`,
                               }}
                             >
-                              <InteractiveHoverButton
-                                onClick={() => { }}
-                                className="!bg-cyan-400 !text-black hover:!bg-black hover:!text-cyan-400 [&>div>div]:!bg-black [&>div:last-child]:!text-cyan-400"
-                              >
-                                <span className="flex items-center gap-2">
-                                  Contact Us
-                                </span>
-                              </InteractiveHoverButton>
+                              <div className="flex flex-col items-center gap-4 w-full max-w-xs">
+                                <InteractiveHoverButton
+                                  onClick={handleGoToLawyerRegistration}
+                                  aria-label="Register Lawyer"
+                                  className="!bg-transparent !text-white border border-white hover:!bg-white hover:!text-black [&>div>div]:!bg-white/0 [&>div:last-child]:!text-black"
+                                >
+                                  <span className="flex items-center justify-center gap-2">{data.ninth.buttons.register}</span>
+                                </InteractiveHoverButton>
+                                <InteractiveHoverButton
+                                  onClick={handleGoToContact}
+                                  aria-label="Book your online consultation now"
+                                  className="!bg-cyan-400 !text-black hover:!bg-black hover:!text-cyan-400 [&>div>div]:!bg-black [&>div:last-child]:!text-cyan-400"
+                                >
+                                  <span className="flex flex-col items-center leading-tight">
+                                    <span>{data.ninth.buttons.bookLine1}</span>
+                                    <span>{data.ninth.buttons.bookLine2}</span>
+                                  </span>
+                                </InteractiveHoverButton>
+                              </div>
                             </div>
                           ) : /* Address info for 2-4 cell */
                             rowIndex === 1 && colIndex === 3 ? (
@@ -251,7 +274,7 @@ const Ninth = () => {
                                     transform: `translateY(${10 * (1 - getAnimationProgress(0.6, 0.7))}px)`,
                                   }}
                                 >
-                                  CONTACT INFO
+                                  {data.ninth.labels.contactInfo}
                                 </h3>
                                 <h4
                                   className="text-2xl font-bold font-['Lora'] mb-4 text-white"
@@ -260,7 +283,7 @@ const Ninth = () => {
                                     transform: `translateY(${10 * (1 - getAnimationProgress(0.65, 0.75))}px)`,
                                   }}
                                 >
-                                  ADDRESS
+                                  {data.ninth.labels.address}
                                 </h4>
                                 <div
                                   className="h-px bg-white mb-4"
@@ -305,19 +328,11 @@ const Ninth = () => {
               })}
             </div>
 
-            {/* Mobile Grid - Single Column */}
+            {/* Mobile Grid - Single Column (4 rows) */}
             <div
               className="md:hidden w-full h-full grid grid-cols-1"
-              style={{ gridTemplateRows: "0.2fr 1fr 1fr 1fr 0.4fr" }}
+              style={{ gridTemplateRows: "1fr 1fr 1fr 1fr" }}
             >
-              {/* Top spacing */}
-              <div
-                className="relative"
-                style={{
-                  opacity: spacingProgress,
-                  transform: `translateY(${-20 * (1 - spacingProgress)}px)`,
-                }}
-              ></div>
 
               {/* Justice Image Row */}
               <div
@@ -330,7 +345,7 @@ const Ninth = () => {
               >
                 <div className="absolute inset-0 flex items-center justify-center z-10">
                   <div
-                    className="absolute inset-0 p-4 mr-10 overflow-hidden"
+                    className="absolute inset-0 p-4 mr-10 mt-6 overflow-hidden"
                     style={{
                       opacity: justiceProgress,
                       transform: `scale(${0.8 + 0.8 * justiceProgress})`,
@@ -428,7 +443,7 @@ const Ninth = () => {
                     }}
                   >
                     <h3
-                      className="text-lg font-bold font-['Lora'] mb-3 text-white"
+                      className="text-lg font-bold font-['Lora'] text-white"
                       style={{
                         opacity: getAnimationProgress(0.6, 0.7),
                         transform: `translateY(${10 * (1 - getAnimationProgress(0.6, 0.7))
@@ -438,7 +453,7 @@ const Ninth = () => {
                       CONTACT INFO
                     </h3>
                     <h4
-                      className="text-xl font-bold font-['Lora'] mb-3 text-white"
+                      className="text-xl font-bold font-['Lora'] text-white"
                       style={{
                         opacity: getAnimationProgress(0.65, 0.75),
                         transform: `translateY(${10 * (1 - getAnimationProgress(0.65, 0.75))
@@ -469,7 +484,7 @@ const Ninth = () => {
                 </div>
               </div>
 
-              {/* Contact Us Button Row */}
+              {/* Contact Buttons Row */}
               <div
                 className="relative border border-white/20 backdrop-blur-md"
                 style={{
@@ -486,24 +501,30 @@ const Ninth = () => {
                       transform: `translateY(${-20 * (1 - contactProgress)}px)`,
                     }}
                   >
-                    <InteractiveHoverButton
-                      className="!bg-cyan-400 !text-black hover:!bg-black hover:!text-cyan-400 [&>div>div]:!bg-black [&>div:last-child]:!text-cyan-400"
-                    >
-                      <span className="flex items-center gap-2">Contact Us</span>
-                    </InteractiveHoverButton>
+                    <div className="flex flex-col items-center gap-4 w-full max-w-xs">
+                      <InteractiveHoverButton
+                        onClick={handleGoToLawyerRegistration}
+                        aria-label="Register Lawyer"
+                        className="!bg-transparent !text-white border border-white hover:!bg-white hover:!text-black [&>div>div]:!bg-white/0 [&>div:last-child]:!text-black"
+                      >
+                                  <span className="flex items-center justify-center gap-2">{data.ninth.buttons.register}</span>
+                      </InteractiveHoverButton>
+                      <InteractiveHoverButton
+                        onClick={handleGoToContact}
+                        aria-label="Book your online consultation now"
+                        className="!bg-cyan-400 !text-black hover:!bg-black hover:!text-cyan-400 [&>div>div]:!bg-black [&>div:last-child]:!text-cyan-400"
+                      >
+                        <span className="flex flex-col items-center leading-tight">
+                          <span>{data.ninth.buttons.bookLine1}</span>
+                          <span>{data.ninth.buttons.bookLine2}</span>
+                        </span>
+                      </InteractiveHoverButton>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Bottom spacing */}
-              <div
-                className="relative"
-                style={{
-                  opacity: bottomSpacingProgress,
-                  transform: `translateY(${20 * (1 - bottomSpacingProgress)
-                    }px)`,
-                }}
-              ></div>
+              
             </div>
           </div>
         )}

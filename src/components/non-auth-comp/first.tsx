@@ -3,34 +3,11 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { landing } from "@/lib/text/landing";
 
 const First = () => {
   const [activeFeature, setActiveFeature] = useState(0);
   const [animationKey, setAnimationKey] = useState(0);
-
-  const features = [
-    {
-      title: "Experienced Legal Consultants",
-      heading: "Experienced Legal\nConsultants",
-      description:
-        "We have a team of lawyers and advocates with highly qualified advocates Legal Consultants",
-      image: "/img1.webp",
-    },
-    {
-      title: "Track Record of Success",
-      heading: "Proven Success\nTrack Record",
-      description:
-        "Our legal team has achieved remarkable success rates with over 95% case victories and satisfied clients worldwide.",
-      image: "/img2.webp",
-    },
-    {
-      title: "International Standard Service",
-      heading: "Global Legal\nExcellence",
-      description:
-        "Providing world-class legal services with international standards, cutting-edge technology, and multilingual support.",
-      image: "/img3.webp",
-    },
-  ];
 
   const handleFeatureClick = (index: number) => {
     if (index !== activeFeature) {
@@ -38,6 +15,8 @@ const First = () => {
       setAnimationKey((prev) => prev + 1);
     }
   };
+
+  const features = landing.first.features; 
 
   // Auto-rotate features every 5 seconds
   useEffect(() => {
@@ -110,18 +89,16 @@ const First = () => {
                 <div
                   key={index}
                   onClick={() => handleFeatureClick(index)}
-                  className={`flex items-center space-x-4 cursor-pointer transition-all duration-300 ${
-                    activeFeature === index
-                      ? "text-white"
-                      : "text-gray-400 hover:text-gray-300"
-                  }`}
+                  className={`flex items-center space-x-4 cursor-pointer transition-all duration-300 ${activeFeature === index
+                    ? "text-white"
+                    : "text-gray-400 hover:text-gray-300"
+                    }`}
                 >
                   <div className="relative w-8 h-8 flex items-center justify-center">
                     {/* White dot */}
                     <div
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        activeFeature === index ? "bg-white" : "bg-gray-400"
-                      }`}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${activeFeature === index ? "bg-white" : "bg-gray-400"
+                        }`}
                     />
 
                     {/* Animated loading ring */}
@@ -151,9 +128,8 @@ const First = () => {
                     )}
                   </div>
                   <span
-                    className={`text-lg font-medium transition-all duration-300 font-serif ${
-                      activeFeature === index ? "text-white" : "text-gray-400"
-                    }`}
+                    className={`text-lg font-medium transition-all duration-300 font-serif ${activeFeature === index ? "text-white" : "text-gray-400"
+                      }`}
                   >
                     {feature.title}
                   </span>
@@ -185,10 +161,10 @@ const First = () => {
 
               <div className="relative z-10 bg-violet-600 rounded-full pl-20 pr-8 py-5 shadow-xl">
                 <p className="text-white font-bold text-3xl leading-none font-serif">
-                  Call Us:
+                  {landing.first.call.label}
                 </p>
                 <p className="text-white/90 text-lg leading-tight font-serif">
-                  +91 8979096507
+                  {landing.first.call.phone}
                 </p>
               </div>
 
