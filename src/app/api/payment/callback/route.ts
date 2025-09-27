@@ -8,6 +8,7 @@ import {
   PaymentEvent,
   PaymentMethod,
 } from "@/types/api/payment";
+import { CallbackType } from "pg-sdk-node";
 
 export async function POST(
   request: NextRequest
@@ -55,6 +56,16 @@ export async function POST(
       );
     }
 
+    if (!callbackValidation.data) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid callback data",
+        },
+        { status: 400 }
+      );
+    }
+
     const { type, payload } = callbackValidation.data;
 
     // Handle different callback types
@@ -64,33 +75,33 @@ export async function POST(
     let description: string;
 
     switch (type) {
-      case "CHECKOUT_ORDER_COMPLETED":
-        merchantOrderId = payload.originalMerchantOrderId;
+      case CallbackType.CHECKOUT_ORDER_COMPLETED:
+        merchantOrderId = payload.originalMerchantOrderId || null;
         newStatus = PaymentStatus.COMPLETED;
         event = PaymentEvent.PAYMENT_SUCCESS;
         description = "Payment completed via webhook";
         break;
 
-      case "CHECKOUT_ORDER_FAILED":
-        merchantOrderId = payload.originalMerchantOrderId;
+      case CallbackType.CHECKOUT_ORDER_FAILED:
+        merchantOrderId = payload.originalMerchantOrderId || null;
         newStatus = PaymentStatus.FAILED;
         event = PaymentEvent.PAYMENT_FAILED;
         description = "Payment failed via webhook";
         break;
 
-      case "PG_REFUND_COMPLETED":
+      case CallbackType.PG_REFUND_COMPLETED:
         // Handle refund completion
         event = PaymentEvent.REFUND_COMPLETED;
         description = "Refund completed via webhook";
         // For refunds, we might need different handling
         break;
 
-      case "PG_REFUND_FAILED":
+      case CallbackType.PG_REFUND_FAILED:
         event = PaymentEvent.REFUND_FAILED;
         description = "Refund failed via webhook";
         break;
 
-      case "PG_REFUND_ACCEPTED":
+      case CallbackType.PG_REFUND_ACCEPTED:
         event = PaymentEvent.REFUND_INITIATED;
         description = "Refund accepted via webhook";
         break;
@@ -165,8 +176,11 @@ export async function POST(
             case "NET_BANKING":
               paymentMethod = PaymentMethod.NET_BANKING;
               break;
-            case "WALLET":
-              paymentMethod = PaymentMethod.WALLET;
+            case "TOKEN":
+              paymentMethod = PaymentMethod.TOKEN;
+              break;
+            default:
+              // Keep existing payment method if unknown
               break;
           }
         }
@@ -177,7 +191,7 @@ export async function POST(
             status: newStatus,
             phonepeTransactionId,
             paymentMethod,
-            phonepeResponse: payload,
+            phonepeResponse: payload as any,
           },
         });
 
@@ -221,7 +235,7 @@ export async function POST(
           description,
           metadata: {
             callbackType: type,
-            payload,
+            payload: payload as any,
             authorization: authorization.substring(0, 20) + "...", // Log partial auth for debugging
           },
         },
@@ -236,8 +250,8 @@ export async function POST(
     return NextResponse.json({
       success: true,
       data: {
-        type,
-        payload,
+        type: type.toString(),
+        payload: payload as any,
         orderId: paymentOrder?.id,
         status: newStatus || undefined,
       },

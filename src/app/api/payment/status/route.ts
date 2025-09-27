@@ -203,7 +203,7 @@ export async function POST(
         merchantOrderId: paymentOrder.merchantOrderId,
         status: updatedStatus as PaymentStatus,
         amount: paymentOrder.amount,
-        paymentMethod: paymentMethod || undefined,
+        paymentMethod: paymentMethod as PaymentMethod | undefined,
         phonepeTransactionId: phonepeTransactionId || undefined,
         customerInfo: {
           name: paymentOrder.customerName,
