@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import LenisProvider from "@/components/providers/lenis-provider";
+// import LenisProvider from "@/components/providers/lenis-provider";
 import AuthProvider from "@/components/providers/session-provider";
 
 const geistSans = Geist({
@@ -31,7 +31,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
-          <LenisProvider>{children}</LenisProvider>
+          {/* <LenisProvider>{children}</LenisProvider> */}
+          {children}
         </AuthProvider>
         <Toaster richColors position="bottom-right" />
       </body>

@@ -28,7 +28,7 @@ export const COMPANY_CONFIG = {
   },
 
   // Copyright
-  copyright: "© 2025 design by Vakilfy",
+  copyright: "© 2025 developed by 3RP-Technetium",
 
   // Newsletter
   newsletter: {

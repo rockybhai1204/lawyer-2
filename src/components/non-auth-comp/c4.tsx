@@ -158,7 +158,7 @@ const C4: React.FC = () => {
 
       {/* Copyright */}
       <div className="container mx-auto px-10 md:px-16 mt-12 pt-6 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center font-[Lora]">
-        <p className="text-gray-500 text-sm">© 2025 design by Vakilfy</p>
+        <p className="text-gray-500 text-sm">© 2025 developd by 3RP-</p>
         <div className="flex space-x-6 mt-4 md:mt-0">
           <a href="#" className="text-gray-500 hover:text-white text-sm">
             Privacy Policy

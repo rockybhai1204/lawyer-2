@@ -153,6 +153,6 @@ export const landing = {
     },
     "newsletterTitle": "Sign Up For Our Newsletter",
     "newsletterPlaceholder": "Enter Your Email",
-    "copyright": "©️ 2025 design by Vakilfy"
+    "copyright": "©️ 2025 developd by 3RP-Technetium"
   }
 }
