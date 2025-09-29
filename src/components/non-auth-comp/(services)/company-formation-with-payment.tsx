@@ -24,10 +24,6 @@ const CompanyFormationWithPayment = ({
   if (serviceData && serviceData.price && serviceData.price.length > 0) {
     return (
       <div className="bg-white rounded-lg shadow-lg p-6 sticky top-24">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          {serviceData.name}
-        </h2>
-
         <ServicePricingWithPayment
           prices={serviceData.price}
           serviceName={serviceData.name}

@@ -136,13 +136,11 @@ const ServicePricingWithPayment = ({
   };
 
   return (
-    <div className={`bg-white rounded-lg shadow-lg p-6 mb-6 ${className}`}>
-      <h3 className="text-2xl font-bold text-gray-800 mb-6">
-        Pricing for {serviceName}
-      </h3>
+    <div className={`bg-white rounded-lg shadow-lg p-4 mb-4 ${className}`}>
+      <h3 className="text-2xl font-bold text-gray-800 mb-4">Pricing</h3>
 
       {/* Pricing Options */}
-      <div className="space-y-4 mb-6">
+      <div className="space-y-3 mb-4">
         {prices.map((price) => {
           const discountedPrice = calculateDiscountedPrice(
             price.price,
@@ -154,7 +152,7 @@ const ServicePricingWithPayment = ({
           return (
             <div
               key={price.id}
-              className={`border rounded-lg p-4 transition-all duration-200 ${
+              className={`border rounded-lg p-3 transition-all duration-200 ${
                 isSelected
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
@@ -242,7 +240,7 @@ const ServicePricingWithPayment = ({
           <button
             onClick={handleProceedToPayment}
             disabled={selectionData.selectedPrices.length === 0}
-            className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 ${
+            className={`w-full py-2 px-5 rounded-lg font-semibold transition-all duration-200 ${
               selectionData.selectedPrices.length > 0
                 ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
