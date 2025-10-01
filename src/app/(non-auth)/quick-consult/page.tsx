@@ -6,12 +6,12 @@ import C3 from "@/components/non-auth-comp/c3";
 import Tenth from "@/components/non-auth-comp/tenth";
 import { COMPANY_CONFIG } from "@/components/non-auth-comp/company-config";
 
-export default function LawyerRegistrationPage() {
+export default function QuickConsultPage() {
   return (
     <main className="min-h-screen">
       <CursorEffect />
       <Navbar />
-      <C1 title="Lawyer Registration" breadcrumbLabel="Lawyer registration" />
+      <C1 title="Quick Consult" breadcrumbLabel="Quick consult" />
       <LawyerRegistrationForm />
       {/* <C3
         title="Join Our Network"

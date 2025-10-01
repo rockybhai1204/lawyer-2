@@ -6,7 +6,7 @@ export const COMPANY_CONFIG = {
 
   // Contact Information
   contact: {
-    email: "info@vakilfy.com",
+    email: "hello@vakilfy.com",
     phone: "+91 8979096507",
     address: [
       "Space No. 2/2, MD Tower",

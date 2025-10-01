@@ -59,7 +59,7 @@ const ServiceNavbar = ({
                 {/* Lawyer Register Button - Right side of white container */}
                 <div className="flex items-center w-[35%] justify-center">
                   <button className="bg-black text-white px-8 py-2 rounded-full hover:bg-gray-800 transition-all duration-300 font-bold font-['Lora'] flex items-center space-x-2">
-                    <span>Lawyer Register</span>
+                    <span>Quick Consult</span>
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   </button>
                 </div>
@@ -229,10 +229,10 @@ const ServiceNavbar = ({
             </a>
           </div>
 
-          {/* Lawyer Register Button for Mobile */}
+          {/* Quick Consult Button for Mobile */}
           <div className="mt-8">
             <button className="bg-white text-black px-6 py-3 rounded-full hover:bg-gray-200 transition-colors w-full">
-              Lawyer Register
+              Quick Consult
             </button>
           </div>
 

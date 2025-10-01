@@ -139,7 +139,7 @@ const First = () => {
           </div>
 
           {/* Right Side */}
-          <div className="flex justify-center lg:justify-end items-center lg:col-span-4">
+          {/* <div className="flex justify-center lg:justify-end items-center lg:col-span-4">
             <motion.a
               aria-label="Call us at +91 8979096507"
               className="relative inline-block group focus:outline-none w-1/2 max-w-xl min-w-[280px]"
@@ -188,7 +188,7 @@ const First = () => {
                 </svg>
               </motion.div>
             </motion.a>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

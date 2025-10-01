@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { landing } from "@/lib/text/landing";
 
-interface TenthProps {  
+interface TenthProps {
   companyName?: string;
   companyDescription?: string;
   contactInfo?: {
@@ -29,13 +29,13 @@ const Tenth: React.FC<TenthProps> = ({
       "Bulandshahr, Uttar Pradesh 203001",
     ],
     phone: "+91 8979096507",
-    email: "info@vakilfy.com",
+    email: "hello@vakilfy.com",
   },
   newsletterTitle = "Sign Up For Our Newsletter",
   newsletterDescription = "Stay updated with our latest legal insights and services.",
-  showNewsletter = true,
+  showNewsletter = false,
   copyrightText = "©️ 2025 developed by 3RP-Technetium",
-}) => { 
+}) => {
   const data = landing;
   const [email, setEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
@@ -79,7 +79,7 @@ const Tenth: React.FC<TenthProps> = ({
               {data.tenth.contactLabel}
             </h3>
             <div className="space-y-4">
-              <div className="flex items-start gap-3">
+              {/* <div className="flex items-start gap-3">
                 <div className="w-5 h-5 mt-0.5 flex-shrink-0">
                   <svg
                     className="w-full h-full text-cyan-400"
@@ -94,7 +94,7 @@ const Tenth: React.FC<TenthProps> = ({
                     <p key={index}>{line}</p>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex items-center gap-3">
                 <div className="w-5 h-5 flex-shrink-0">
@@ -127,8 +127,6 @@ const Tenth: React.FC<TenthProps> = ({
               </div>
             </div>
           </div>
-
-          
 
           {/* Newsletter Section */}
           {showNewsletter && (
@@ -208,7 +206,9 @@ const Tenth: React.FC<TenthProps> = ({
 
         {/* Bottom Section */}
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">{data.tenth.copyright}</p>
+          <p className="text-gray-400 text-sm mb-4 md:mb-0">
+            {data.tenth.copyright}
+          </p>
           {/* <div className="flex gap-6">
             <a
               href="/privacy"
