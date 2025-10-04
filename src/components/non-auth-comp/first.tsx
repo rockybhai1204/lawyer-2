@@ -139,9 +139,10 @@ const First = () => {
           </div>
 
           {/* Right Side */}
-          {/* <div className="flex justify-center lg:justify-end items-center lg:col-span-4">
+          <div className="flex justify-center lg:justify-end items-center lg:col-span-4">
             <motion.a
-              aria-label="Call us at +91 8979096507"
+              href="/services"
+              aria-label="Talk to Lawyer"
               className="relative inline-block group focus:outline-none w-1/2 max-w-xl min-w-[280px]"
               initial="rest"
               animate="rest"
@@ -160,11 +161,8 @@ const First = () => {
               />
 
               <div className="relative z-10 bg-violet-600 rounded-full pl-20 pr-8 py-5 shadow-xl">
-                <p className="text-white font-bold text-3xl leading-none font-serif">
+                <p className="text-white font-bold text-2xl leading-none font-serif whitespace-nowrap">
                   {landing.first.call.label}
-                </p>
-                <p className="text-white/90 text-lg leading-tight font-serif">
-                  {landing.first.call.phone}
                 </p>
               </div>
 
@@ -188,7 +186,7 @@ const First = () => {
                 </svg>
               </motion.div>
             </motion.a>
-          </div> */}
+          </div>
         </div>
       </div>
     </section>

@@ -153,7 +153,7 @@ const Navbar = () => {
               </Link>
             </div>
 
-            <div className="flex items-center justify-end flex-1">
+            <div className="hidden lg:flex items-center justify-end flex-1">
               <Link
                 className={`bg-black text-white px-8 rounded-full hover:bg-gray-800 transition-all duration-300 font-bold font-['Lora'] flex items-center space-x-2 ${
                   isScrolled ? "py-2" : "py-3"
@@ -341,7 +341,7 @@ const Navbar = () => {
                   </div>
 
                   {/* Quick Consult Button with green dot - Right side of white container (30% width) */}
-                  <div className="flex items-center w-[30%] justify-center">
+                  <div className="hidden lg:flex items-center w-[30%] justify-center">
                     <Link
                       className={`bg-black text-white px-8 rounded-full hover:bg-gray-800 transition-all duration-300 font-bold font-['Lora'] flex items-center space-x-2 ${
                         isScrolled ? "py-2" : "py-3"
@@ -396,7 +396,7 @@ const Navbar = () => {
               </div>
             )}
 
-            {false && (
+            {true && (
               <button
                 onClick={handleMobileMenuToggle}
                 className="lg:hidden p-2 text-gray-800"
@@ -433,7 +433,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {false && (
+      {true && (
         <div
           className={`fixed inset-0 z-60 lg:hidden transition-opacity duration-300 ${
             isMobileMenuOpen

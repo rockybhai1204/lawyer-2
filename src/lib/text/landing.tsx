@@ -21,7 +21,7 @@ export const landing = {
         image: "/img3.webp",
       },
     ],
-    call: { label: "Call Us:", phone: "+91 8979096507" },
+    call: { label: "Talk to Lawyer" },
   },
   second: {
     welcome: "Welcome To Vakilfy",
