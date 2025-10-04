@@ -25,9 +25,9 @@ export default function QuickConsultPage() {
           phone: COMPANY_CONFIG.contact.phone,
           email: COMPANY_CONFIG.lawyerContact.email,
         }}
-        newsletterTitle="Stay Connected"
-        newsletterDescription="Get updates about new opportunities and legal industry insights."
-        showNewsletter={true}
+        // newsletterTitle="Stay Connected"
+        // newsletterDescription="Get updates about new opportunities and legal industry insights."
+        // showNewsletter={false}
         copyrightText="© 2025 Vakilfy - Lawyer Network"
       />
     </main>

@@ -17,159 +17,214 @@ export default function TermsPage() {
           <div className="bg-white rounded-lg shadow-lg p-8 border border-amber-100">
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-gray-800 mb-4 font-['Lora']">
-                Terms & Conditions
+                Terms of Use
               </h2>
-              <p className="text-gray-600">
-                Last updated:{" "}
-                {new Date().toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+              <p className="text-gray-600 mb-4">
+                Effective Date: 02 OCTOBER 2025
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Welcome to <strong>Vakilfy.com</strong> (the "Site" or "Website"), operated by <strong>MD Legal Tech Solutions</strong>, having its registered office at 2nd Floor, MD Tower, Plot No. 2C2, Awas Vikas 1st, DM Road, Bulandshahr ("we", "us", "our"). These Terms of Use ("Terms") govern your access to and use of the Website and the services made available through it (collectively, the "Services"). By accessing or using the Services, registering an account, or otherwise interacting with Vakilfy, you agree to be bound by these Terms (and any amendments thereto).
+              </p>
+              <p className="text-gray-700 leading-relaxed mt-4">
+                If you do not agree with any of these Terms, you should immediately stop using or accessing the Site or Services.
+              </p>
+              <p className="text-gray-700 leading-relaxed mt-4">
+                These Terms are to be read together with our Privacy Policy (which is incorporated by reference) and any other policies, guidelines or disclaimers posted on the Website.
               </p>
             </div>
 
             <div className="space-y-8 text-gray-700 leading-relaxed">
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  1. Acceptance of Terms
+                  1. Definitions
                 </h3>
-                <p>
-                  By accessing and using {COMPANY_CONFIG.name}'s website and
-                  services, you accept and agree to be bound by the terms and
-                  provision of this agreement.
+                <p className="mb-3">In these Terms, unless the context otherwise requires:</p>
+                <ul className="list-disc pl-6 space-y-2 text-amber-700">
+                  <li>"User" or "you" means any person who accesses or uses the Site or Services.</li>
+                  <li>"Account" means a registered user account on the Site.</li>
+                  <li>"Lawyer / Legal Expert / Service Provider" means a legal professional who offers or provides legal services through our platform.</li>
+                  <li>"Content" means any text, images, audio, video, documents, files, data, or other materials you or others post, upload or transmit via the Site.</li>
+                  <li>"Permissible Use" means using the Site to find lawyers, obtain legal information, engage legal services, and use features expressly permitted under these Terms.</li>
+                  <li>"Impermissible Use" means any use of the Site or Services beyond Permissible Use (see Section 5).</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
+                  2. Eligibility & Account Registration
+                </h3>
+                <p className="mb-3">You represent and warrant that:</p>
+                <ul className="list-disc pl-6 space-y-2 text-amber-700">
+                  <li>You are at least 18 years of age (or the legal age in your jurisdiction) and have the capacity to enter into binding agreements;</li>
+                  <li>You will use the Site in compliance with applicable laws, rules, and these Terms;</li>
+                  <li>If acting on behalf of a legal entity or another person, you have authority to bind them to these Terms.</li>
+                </ul>
+                <p className="mt-3">
+                  To use certain features, you may need to create an Account. During registration you must provide true, accurate, current, and complete information. You agree to keep your account information updated.
+                </p>
+                <p className="mt-3">
+                  You are responsible for safeguarding your password and login credentials. You must not share your credentials with others. You agree to notify us immediately of any unauthorized use of your account or any other breach of security.
+                </p>
+                <p className="mt-3">
+                  We reserve the right to suspend, restrict or terminate accounts, or refuse registration, at our discretion, including for violations of these Terms or extended inactivity.
                 </p>
               </div>
 
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  2. Services Description
+                  3. Scope of Services & Our Role
                 </h3>
                 <p className="mb-3">
-                  {COMPANY_CONFIG.name} provides legal consultation services
-                  including:
+                  The Site is a platform that connects Users (clients) with Lawyers / Legal Experts to obtain legal advice, drafting, consultations, dispute resolution services, and related legal services ("Legal Services"). We facilitate the connection and certain operational features (messaging, document upload, scheduling, etc.).
                 </p>
+                <p className="mb-3">
+                  We are <strong>not</strong> the provider of legal services ourselves. Lawyers listed on the platform are independent professionals, not employees, agents, or partners of MD Legal Tech Solutions. We have no direct control over their conduct or performance.
+                </p>
+                <p className="mb-3">
+                  Any dispute, claim, professional negligence, or other issue arising from the legal services provided must be addressed directly between you and the Lawyer. We disclaim liability for any damages or costs arising out of or in connection with the legal services you obtain via the Site.
+                </p>
+                <p>
+                  All content on the Site (articles, FAQs, blogs, etc.) is for general informational or educational purposes only, and does not constitute legal advice. Use of such content does not create a lawyer-client relationship.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
+                  4. User Conduct & Restrictions
+                </h3>
+                <p className="mb-3">You agree not to engage in any of the following:</p>
                 <ul className="list-disc pl-6 space-y-2 text-amber-700">
-                  <li>Legal document drafting and review</li>
-                  <li>Online legal consultation</li>
-                  <li>Lawyer-client matching services</li>
-                  <li>Document upload and storage</li>
-                  <li>Payment processing for legal services</li>
+                  <li>Use the Site for any unlawful, fraudulent, or harmful purpose.</li>
+                  <li>Post, upload, or transmit content that is false, misleading, defamatory, harassing, or violates any third party rights (intellectual property, privacy, etc.).</li>
+                  <li>Impersonate others, misrepresent your affiliation, or use deceptive trade practices.</li>
+                  <li>Use the Site to harvest, collect or store personal data about other users except as part of permitted functionality.</li>
+                  <li>Use viruses, bots, scrapers, or other automated or malicious tools to access or harm the Site, or interfere with its functioning.</li>
+                  <li>Attempt to reverse engineer, decompile, disassemble, or access the underlying code or architecture of the Site.</li>
+                  <li>Use the site for non-permitted commercial purposes (selling, reselling, or exploiting the platform) without prior written consent.</li>
+                  <li>Interfere with other users' use or access to the Site.</li>
+                  <li>Violate any applicable laws, regulations or ethical rules of legal practice including solicitation rules.</li>
+                </ul>
+                <p className="mt-3">
+                  If you breach these rules, we may suspend or terminate your access and seek legal remedies.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
+                  5. Content, Intellectual Property & Licensing
+                </h3>
+                
+                <div className="mb-4">
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2">Your Content</h4>
+                  <p className="mb-2">By posting, uploading, or submitting Content via the Site, you grant us a nonexclusive, worldwide, royalty-free, sublicensable license to use, reproduce, adapt, publish, translate, distribute, display, and make derivative works of such content in connection with the Site and our business, subject to applicable rights.</p>
+                  <p className="mb-2">You represent and warrant that you own or have rights to the Content you upload, and that its use does not violate any third-party rights.</p>
+                  <p>We may remove or refuse any Content that violates these Terms or is objectionable, in our discretion, without liability.</p>
+                </div>
+
+                <div className="mb-4">
+                  <h4 className="text-lg font-semibold text-gray-800 mb-2">Site Content & Materials</h4>
+                  <p className="mb-2">All content, features, text, graphics, software, logos, trademarks, designs and other intellectual property on the Site ("Site Materials") are owned by us or our licensors, except where otherwise indicated.</p>
+                  <p>You may access and view the Site Materials for personal, noncommercial use only, subject to these Terms (i.e., you cannot copy, modify, distribute, or exploit them without our written permission).</p>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
+                  6. Payments, Fees & Refunds
+                </h3>
+                <p className="mb-3">Some services on the Site may be chargeable (consultations, document drafting, packages, etc.). You agree to pay all fees as per the pricing displayed at the time of purchase, plus any applicable taxes.</p>
+                <p className="mb-3">Payment processing will be handled by third-party payment service providers (e.g. Razorpay, Stripe, etc.) and is subject to their terms.</p>
+                <p className="mb-3">We reserve the right to change the pricing or fees from time to time. In case of any change, existing users will be notified or bound as per the then-current terms.</p>
+                <p>Refunds or cancellations will be governed by our separate Refund Policy (if you have one). Unless specified otherwise, fees are non-refundable after services have commenced.</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
+                  7. Disclaimers & Limitation of Liability
+                </h3>
+                <p className="mb-3">
+                  The Site and Services are provided <strong>"as is"</strong> and "as available," with no representations or warranties of any kind, whether express or implied. We disclaim warranties including but not limited to merchantability, fitness for a particular purpose, accuracy, completeness, and noninfringement.
+                </p>
+                <p className="mb-3">
+                  We do not guarantee that the Site will be uninterrupted, error-free, secure, or free from harmful components or data breaches.
+                </p>
+                <p className="mb-3">
+                  In no event shall MD Legal Tech Solutions, its affiliates, proprietors, employees, officers, or licensors be liable for any indirect, incidental, special, punitive or consequential damages, including loss of profits, data, goodwill, or business interruption, arising out of or related to your use (or inability to use) the Site or Services, even if we have been advised of the possibility of such damages.
+                </p>
+                <p className="mb-3">
+                  Our aggregate liability, in any circumstance, is limited to the amount you paid, if any, for the particular service that gave rise to the claim.
+                </p>
+                <p>
+                  Some jurisdictions do not allow exclusion or limitation of liability or certain damages; so some of the above exclusions may not apply to you to the extent prohibited by applicable law.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
+                  8. Indemnification
+                </h3>
+                <p className="mb-3">You agree to defend, indemnify and hold harmless MD Legal Tech Solutions (and its officers, directors, proprietors, employees, agents, affiliates) from any claims, liabilities, losses, damages, costs, or expenses (including reasonable legal fees) arising out of or relating to:</p>
+                <ul className="list-disc pl-6 space-y-2 text-amber-700">
+                  <li>Your use or misuse of the Site or Services;</li>
+                  <li>Your violation of these Terms;</li>
+                  <li>Your violation of any third-party rights (intellectual property, privacy, etc.);</li>
+                  <li>Any content you post or transmit via the Site.</li>
                 </ul>
               </div>
 
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  3. User Responsibilities
+                  9. Termination
                 </h3>
-                <p className="mb-3">As a user of our services, you agree to:</p>
+                <p className="mb-3">
+                  We may suspend or terminate your account or access to the Site (or any portion thereof) at our discretion, with or without notice, for conduct we believe violates these Terms or is harmful to others, our business, or third parties.
+                </p>
+                <p className="mb-3">
+                  Upon termination, all rights granted to you under these Terms immediately cease. You must cease all use of the Site. We may delete or disable access to your account and Content.
+                </p>
+                <p>
+                  Sections regarding liability, indemnification, intellectual property, disclaimers, and such will survive termination.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
+                  10. Modifications to Terms
+                </h3>
+                <p>
+                  We may revise or modify these Terms from time to time. The updated version will be posted on the Site with a revised effective date. For material changes, we may provide additional notice (e.g. via email). Continued use after changes constitutes your acceptance of the updated Terms.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
+                  11. Governing Law & Dispute Resolution
+                </h3>
+                <p className="mb-3">
+                  These Terms shall be governed by and construed in accordance with the laws of India, without regard to its conflict-of-law provisions.
+                </p>
+                <p className="mb-3">
+                  Any dispute, claim or controversy arising out of or relating to these Terms, the Site, or Services shall be subject to the exclusive jurisdiction of the courts located in Bulandshahr, Uttar Pradesh, India.
+                </p>
+                <p className="mb-3">
+                  You agree that any legal action must be initiated within one (1) year from the date the cause of action arises, else it is waived.
+                </p>
+                <p>
+                  If any provision of these Terms is found invalid or unenforceable, the remaining provisions shall remain in full force and effect.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
+                  12. Miscellaneous
+                </h3>
                 <ul className="list-disc pl-6 space-y-2 text-amber-700">
-                  <li>Provide accurate and truthful information</li>
-                  <li>Maintain the confidentiality of your account</li>
-                  <li>Use the services for lawful purposes only</li>
-                  <li>Respect the intellectual property rights of others</li>
-                  <li>Not misuse or attempt to gain unauthorized access</li>
+                  <li><strong>No Waiver:</strong> Failure to enforce any right under these Terms does not constitute a waiver of that right.</li>
+                  <li><strong>Severability:</strong> If a court finds any provision of these Terms invalid, the remainder will continue in effect.</li>
+                  <li><strong>Assignment:</strong> You may not assign your rights under these Terms. We may assign or transfer our rights or obligations.</li>
+                  <li><strong>Notices:</strong> Any notices or communications under these Terms must be in writing and may be delivered via email or posted on the Site.</li>
+                  <li><strong>Entire Agreement:</strong> These Terms, together with the Privacy Policy and any other referenced policies, constitute the entire agreement between you and us regarding the subject matter and supersede prior agreements.</li>
                 </ul>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  4. Payment Terms
-                </h3>
-                <p className="mb-3">Payment terms and conditions:</p>
-                <ul className="list-disc pl-6 space-y-2 text-amber-700">
-                  <li>All fees are payable in advance of service delivery</li>
-                  <li>Prices are subject to change with prior notice</li>
-                  <li>Refunds are processed according to our refund policy</li>
-                  <li>
-                    Payment methods accepted: Credit/Debit cards, UPI, Net
-                    Banking
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  5. Limitation of Liability
-                </h3>
-                <p>
-                  {COMPANY_CONFIG.name} shall not be liable for any indirect,
-                  incidental, special, consequential, or punitive damages,
-                  including but not limited to loss of profits, data, or use.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  6. Intellectual Property
-                </h3>
-                <p>
-                  All content on this website, including text, graphics, logos,
-                  and software, is the property of {COMPANY_CONFIG.name} and is
-                  protected by copyright and other intellectual property laws.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  7. Privacy and Data Protection
-                </h3>
-                <p>
-                  Your privacy is important to us. Please review our{" "}
-                  <a
-                    href="/privacy"
-                    className="text-amber-600 hover:text-amber-700 underline"
-                  >
-                    Privacy Policy
-                  </a>{" "}
-                  which also governs your use of our services.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  8. Termination
-                </h3>
-                <p>
-                  We may terminate or suspend your access to our services
-                  immediately, without prior notice, for any reason whatsoever,
-                  including without limitation if you breach the Terms.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  9. Governing Law
-                </h3>
-                <p>
-                  These Terms shall be interpreted and governed by the laws of
-                  the United Kingdom, without regard to its conflict of law
-                  provisions.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  10. Contact Information
-                </h3>
-                <p>
-                  If you have any questions about these Terms & Conditions,
-                  please contact us at{" "}
-                  <a
-                    href={`mailto:${COMPANY_CONFIG.contact.email}`}
-                    className="text-amber-600 hover:text-amber-700 underline"
-                  >
-                    {COMPANY_CONFIG.contact.email}
-                  </a>{" "}
-                  or call us at{" "}
-                  <a
-                    href={`tel:${COMPANY_CONFIG.contact.phone}`}
-                    className="text-amber-600 hover:text-amber-700 underline"
-                  >
-                    {COMPANY_CONFIG.contact.phone}
-                  </a>
-                  .
-                </p>
               </div>
             </div>
           </div>
@@ -184,9 +239,9 @@ export default function TermsPage() {
           phone: COMPANY_CONFIG.contact.phone,
           email: COMPANY_CONFIG.contact.email,
         }}
-        newsletterTitle={COMPANY_CONFIG.newsletter.title}
-        newsletterDescription={COMPANY_CONFIG.newsletter.description}
-        showNewsletter={true}
+        // newsletterTitle={COMPANY_CONFIG.newsletter.title}
+        // newsletterDescription={COMPANY_CONFIG.newsletter.description}
+        // showNewsletter={false}
         copyrightText={COMPANY_CONFIG.copyright}
       />
     </main>

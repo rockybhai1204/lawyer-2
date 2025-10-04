@@ -12,9 +12,9 @@ interface TenthProps {
     phone: string;
     email: string;
   };
-  newsletterTitle?: string;
-  newsletterDescription?: string;
-  showNewsletter?: boolean;
+  // newsletterTitle?: string;
+  // newsletterDescription?: string;
+  // showNewsletter?: boolean;
   copyrightText?: string;
 }
 
@@ -31,9 +31,9 @@ const Tenth: React.FC<TenthProps> = ({
     phone: "+91 8979096507",
     email: "hello@vakilfy.com",
   },
-  newsletterTitle = "Sign Up For Our Newsletter",
-  newsletterDescription = "Stay updated with our latest legal insights and services.",
-  showNewsletter = false,
+  // newsletterTitle = "Sign Up For Our Newsletter",
+  // newsletterDescription = "Stay updated with our latest legal insights and services.",
+  // showNewsletter = false,
   copyrightText = "©️ 2025 developed by 3RP-Technetium",
 }) => {
   const data = landing;
@@ -128,101 +128,45 @@ const Tenth: React.FC<TenthProps> = ({
             </div>
           </div>
 
-          {/* Newsletter Section */}
-          {showNewsletter && (
-            <div className="lg:col-span-1">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-orange-500 rounded flex items-center justify-center">
-                  <svg
-                    className="w-4 h-4 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-bold font-['Lora'] text-white">
-                  {data.tenth.newsletterTitle}
-                </h3>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="relative">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder={data.tenth.newsletterPlaceholder}
-                    className="w-full bg-gray-900 border border-gray-700 rounded px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-amber-400 transition-colors duration-300"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-amber-500 text-black p-2 rounded hover:bg-amber-400 transition-colors duration-300"
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                      />
-                    </svg>
-                  </button>
-                </div>
-
-                {/* <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    id="agree"
-                    checked={agreed}
-                    onChange={(e) => setAgreed(e.target.checked)}
-                    className="mt-1 w-4 h-4 text-amber-400 bg-gray-900 border-gray-600 rounded focus:ring-amber-400 focus:ring-2"
-                  />
-                  <label htmlFor="agree" className="text-gray-400 text-sm">
-                    I agree to the{" "}
-                    <a href="/terms" className="text-amber-400 hover:underline">
-                      Terms
-                    </a>
-                    ,{" "}
-                    <a
-                      href="/privacy"
-                      className="text-amber-400 hover:underline"
-                    >
-                      Privacy Policy
-                    </a>
-                    .
-                  </label>
-                </div> */}
-              </form>
+          {/* Navigation Links Section */}
+          <div className="lg:col-span-1">
+            <h3 className="text-lg font-bold font-['Lora'] mb-6 text-white">
+              Quick Links
+            </h3>
+            <div className="flex flex-col gap-4">
+              <a
+                href="/about"
+                className="text-gray-400 text-sm hover:text-amber-400 transition-colors duration-300"
+              >
+                About Us
+              </a>
+              <a
+                href="/contact"
+                className="text-gray-400 text-sm hover:text-amber-400 transition-colors duration-300"
+              >
+                Contact Us
+              </a>
+              <a
+                href="/privacy"
+                className="text-gray-400 text-sm hover:text-amber-400 transition-colors duration-300"
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="/terms"
+                className="text-gray-400 text-sm hover:text-amber-400 transition-colors duration-300"
+              >
+                Terms of Use
+              </a>
             </div>
-          )}
+          </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">
+        <div className="border-t border-gray-800 mt-12 pt-8 flex justify-center">
+          <p className="text-gray-400 text-sm">
             {data.tenth.copyright}
           </p>
-          {/* <div className="flex gap-6">
-            <a
-              href="/privacy"
-              className="text-gray-400 text-sm hover:text-amber-400 transition-colors duration-300"
-            >
-              Privacy Policy
-            </a>
-            <a
-              href="/terms"
-              className="text-gray-400 text-sm hover:text-amber-400 transition-colors duration-300"
-            >
-              Terms of Use
-            </a>
-          </div> */}
         </div>
       </div>
     </footer>

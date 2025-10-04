@@ -25,9 +25,9 @@ export default function ContactPage() {
           phone: COMPANY_CONFIG.contact.phone,
           email: COMPANY_CONFIG.contact.email,
         }}
-        newsletterTitle={COMPANY_CONFIG.newsletter.title}
-        newsletterDescription={COMPANY_CONFIG.newsletter.description}
-        showNewsletter={true}
+        // newsletterTitle={COMPANY_CONFIG.newsletter.title}
+        // newsletterDescription={COMPANY_CONFIG.newsletter.description}
+        // showNewsletter={false}
         copyrightText={COMPANY_CONFIG.copyright}
       />
     </main>
