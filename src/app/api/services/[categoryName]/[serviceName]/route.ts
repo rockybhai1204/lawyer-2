@@ -16,7 +16,19 @@ export async function GET(
   try {
     const { categoryName, serviceName } = await params;
 
-    if (!categoryName || !serviceName) {
+    const toSlug = (value: string): string =>
+      decodeURIComponent(value)
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9-]/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+
+    const categorySlug = toSlug(categoryName ?? "");
+    const serviceSlug = toSlug(serviceName ?? "");
+
+    if (!categorySlug || !serviceSlug) {
       return NextResponse.json(
         {
           success: false,
@@ -29,9 +41,11 @@ export async function GET(
 
     const service = await prisma.service.findFirst({
       where: {
-        slug: serviceName,
+        slug: serviceSlug,
         category: {
-          slug: categoryName,
+          is: {
+            slug: categorySlug,
+          },
         },
         isActive: true,
       },
