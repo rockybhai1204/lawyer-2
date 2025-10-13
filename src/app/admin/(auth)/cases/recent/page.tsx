@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ApiCase } from "@/types/api/cases";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+  flexRender,
+} from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { TableExportDropdown } from "@/components/ui/table-export-dropdown";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -63,6 +80,10 @@ export default function AdminCasesPage() {
       }
     | undefined
   >();
+
+  // TanStack table state
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   useEffect(() => {
     // Set default dates to last 7 days
@@ -225,7 +246,7 @@ export default function AdminCasesPage() {
     });
   };
 
-  const filteredCases = (() => {
+  const filteredCases = useMemo(() => {
     const list = cases.filter((caseItem) => {
       const matchesSearch =
         caseItem.customerName
@@ -273,18 +294,229 @@ export default function AdminCasesPage() {
     });
 
     return list;
-  })();
+  }, [
+    cases,
+    searchTerm,
+    statusFilter,
+    unassignedOnly,
+    notificationFilter,
+    selectedLawyerId,
+    selectedServiceId,
+    sortBy,
+  ]);
+
+  // TanStack columns
+  const columns = useMemo<ColumnDef<ApiCase>[]>(
+    () => [
+      {
+        id: "rowIndex",
+        header: "#",
+        enableSorting: false,
+        cell: ({ table, row }) => {
+          const pageSizeLocal = 10;
+          const rowNumber = (currentPage - 1) * pageSizeLocal + row.index + 1;
+          return <span className="font-medium text-blue-900">{rowNumber}</span>;
+        },
+      },
+      {
+        id: "customer",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            className="px-0 gap-2"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Customer
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp className="h-3.5 w-3.5" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown className="h-3.5 w-3.5" />
+            ) : (
+              <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+            )}
+          </Button>
+        ),
+        sortingFn: (a, b) =>
+          a.original.customerName.localeCompare(b.original.customerName),
+        cell: ({ row }) => (
+          <div>
+            <div className="font-medium text-blue-900">{row.original.customerName}</div>
+            <div className="text-sm text-blue-700/80">{row.original.customerEmail}</div>
+            <div className="text-sm text-blue-700/80">{row.original.customerPhone}</div>
+          </div>
+        ),
+      },
+      {
+        id: "service",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            className="px-0 gap-2"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Service
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp className="h-3.5 w-3.5" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown className="h-3.5 w-3.5" />
+            ) : (
+              <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+            )}
+          </Button>
+        ),
+        sortingFn: (a, b) =>
+          (a.original.service?.name || "").localeCompare(b.original.service?.name || ""),
+        cell: ({ row }) => (
+          <div>
+            <div className="font-medium text-blue-900">{row.original.service?.name}</div>
+            <div className="text-sm text-blue-700/80">{row.original.service?.category?.name}</div>
+          </div>
+        ),
+      },
+      {
+        id: "status",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            className="px-0 gap-2"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Status
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp className="h-3.5 w-3.5" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown className="h-3.5 w-3.5" />
+            ) : (
+              <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+            )}
+          </Button>
+        ),
+        sortingFn: (a, b) => a.original.status.localeCompare(b.original.status),
+        cell: ({ row }) => (
+          <Badge className={getStatusColor(row.original.status)}>
+            {row.original.status.replace("_", " ")}
+          </Badge>
+        ),
+      },
+      {
+        id: "lawyer",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            className="px-0 gap-2"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Lawyer
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp className="h-3.5 w-3.5" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown className="h-3.5 w-3.5" />
+            ) : (
+              <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+            )}
+          </Button>
+        ),
+        sortingFn: (a, b) =>
+          (a.original.lawyer?.name || "").localeCompare(b.original.lawyer?.name || ""),
+        cell: ({ row }) =>
+          row.original.lawyer ? (
+            <div>
+              <div className="font-medium">{row.original.lawyer.name}</div>
+              <div className="text-sm text-blue-700/80">{row.original.lawyer.email}</div>
+            </div>
+          ) : (
+            <span className="text-blue-400">Not assigned</span>
+          ),
+      },
+      {
+        id: "notifications",
+        header: "Notifications",
+        enableSorting: false,
+        cell: ({ row }) => (
+          <div className="flex items-center space-x-2">
+            <Switch
+              checked={row.original.isAutoNotificationOn}
+              onCheckedChange={() =>
+                handleIndividualNotificationToggle(
+                  row.original.id,
+                  row.original.isAutoNotificationOn
+                )
+              }
+              disabled={updatingIndividualNotification === row.original.id}
+              className="data-[state=checked]:bg-blue-600"
+            />
+            <span className="text-sm text-blue-700">
+              {updatingIndividualNotification === row.original.id
+                ? "Updating..."
+                : row.original.isAutoNotificationOn
+                ? "On"
+                : "Off"}
+            </span>
+          </div>
+        ),
+      },
+      {
+        id: "createdAt",
+        header: ({ column }) => (
+          <Button
+            variant="ghost"
+            className="px-0 gap-2"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Created
+            {column.getIsSorted() === "asc" ? (
+              <ArrowUp className="h-3.5 w-3.5" />
+            ) : column.getIsSorted() === "desc" ? (
+              <ArrowDown className="h-3.5 w-3.5" />
+            ) : (
+              <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+            )}
+          </Button>
+        ),
+        sortingFn: (a, b) =>
+          new Date(a.original.createdAt).getTime() -
+          new Date(b.original.createdAt).getTime(),
+        cell: ({ row }) => (
+          <span className="text-sm text-blue-700">{formatDate(row.original.createdAt)}</span>
+        ),
+      },
+      {
+        id: "actions",
+        enableSorting: false,
+        header: () => <div className="text-left">Actions</div>,
+        cell: ({ row }) => (
+          <Button
+            onClick={() => router.push(`/admin/cases/${row.original.id}`)}
+            size="sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            View Details
+          </Button>
+        ),
+      },
+    ],
+    [currentPage, router, updatingIndividualNotification]
+  );
+
+  const table = useReactTable({
+    data: filteredCases,
+    columns,
+    state: { sorting, columnVisibility },
+    onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    // Keep pagination client-side; we slice below
+  });
 
   const pageSize = 10;
   const totalPages = Math.max(1, Math.ceil(filteredCases.length / pageSize));
-  const paginatedCases = filteredCases.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  const sortedRows = table.getRowModel().rows;
+  const pageRows = sortedRows.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
+  // Reset to first page when client-side filters change
   useEffect(() => {
     setCurrentPage(1);
-    fetchCases();
   }, [
     searchTerm,
     statusFilter,
@@ -293,8 +525,12 @@ export default function AdminCasesPage() {
     selectedLawyerId,
     selectedServiceId,
     sortBy,
-    dateRange,
   ]);
+
+  // Refetch only when date range changes
+  useEffect(() => {
+    fetchCases();
+  }, [dateRange]);
 
   // Check if all cases have notifications enabled
   const allNotificationsEnabled =
@@ -484,6 +720,64 @@ export default function AdminCasesPage() {
         </CardContent>
       </Card>
 
+      {/* Cases Table Toolbar */}
+      <div className="mb-3 flex flex-wrap items-center justify-end gap-2">
+        <div className="text-sm text-blue-700">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm">Columns</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllLeafColumns()
+                .filter((c) => c.id !== "actions" && c.id !== "rowIndex")
+                .map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <TableExportDropdown
+          table={table}
+          fileBaseName="cases"
+          headerLabels={{
+            rowIndex: "#",
+            customer: "Customer",
+            service: "Service",
+            status: "Status",
+            lawyer: "Lawyer",
+            notifications: "Notifications",
+            createdAt: "Created",
+          }}
+          valueFormatter={(row, colId) => {
+            const c = row as ApiCase;
+            switch (colId) {
+              case "customer":
+                return `${c.customerName} | ${c.customerEmail} | ${c.customerPhone ?? ""}`;
+              case "service":
+                return `${c.service?.name ?? ""} | ${c.service?.category?.name ?? ""}`;
+              case "status":
+                return c.status;
+              case "lawyer":
+                return c.lawyer ? `${c.lawyer.name} | ${c.lawyer.email}` : "Not assigned";
+              case "notifications":
+                return c.isAutoNotificationOn ? "On" : "Off";
+              case "createdAt":
+                return formatDate(c.createdAt);
+              default:
+                return "";
+            }
+          }}
+        />
+      </div>
+
       {/* Cases Table */}
       <Card className="border border-blue-100 bg-white/90 backdrop-blur">
         <CardHeader>
@@ -493,124 +787,26 @@ export default function AdminCasesPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-semibold text-blue-800">
-                    #
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-blue-800">
-                    Customer
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-blue-800">
-                    Service
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-blue-800">
-                    Status
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-blue-800">
-                    Lawyer
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-blue-800">
-                    Notifications
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-blue-800">
-                    Created
-                  </th>
-                  <th className="text-left py-3 px-4 font-semibold text-blue-800">
-                    Actions
-                  </th>
-                </tr>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <tr key={headerGroup.id} className="border-b">
+                    {headerGroup.headers.map((header) => (
+                      <th key={header.id} className="text-left py-3 px-4 font-semibold text-blue-800">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
               </thead>
               <tbody>
-                {paginatedCases.map((caseItem, index) => (
-                  <tr
-                    key={caseItem.id}
-                    className="border-b hover:bg-blue-50/60 transition-colors"
-                  >
-                    <td className="py-3 px-4">
-                      <span className="font-medium text-blue-900">
-                        {(currentPage - 1) * pageSize + index + 1}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div>
-                        <div className="font-medium text-blue-900">
-                          {caseItem.customerName}
-                        </div>
-                        <div className="text-sm text-blue-700/80">
-                          {caseItem.customerEmail}
-                        </div>
-                        <div className="text-sm text-blue-700/80">
-                          {caseItem.customerPhone}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div>
-                        <div className="font-medium text-blue-900">
-                          {caseItem.service?.name}
-                        </div>
-                        <div className="text-sm text-blue-700/80">
-                          {caseItem.service?.category?.name}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <Badge className={getStatusColor(caseItem.status)}>
-                        {caseItem.status.replace("_", " ")}
-                      </Badge>
-                    </td>
-                    <td className="py-3 px-4">
-                      {caseItem.lawyer ? (
-                        <div>
-                          <div className="font-medium">
-                            {caseItem.lawyer.name}
-                          </div>
-                          <div className="text-sm text-blue-700/80">
-                            {caseItem.lawyer.email}
-                          </div>
-                        </div>
-                      ) : (
-                        <span className="text-blue-400">Not assigned</span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center space-x-2">
-                        <Switch
-                          checked={caseItem.isAutoNotificationOn}
-                          onCheckedChange={() =>
-                            handleIndividualNotificationToggle(
-                              caseItem.id,
-                              caseItem.isAutoNotificationOn
-                            )
-                          }
-                          disabled={
-                            updatingIndividualNotification === caseItem.id
-                          }
-                          className="data-[state=checked]:bg-blue-600"
-                        />
-                        <span className="text-sm text-blue-700">
-                          {updatingIndividualNotification === caseItem.id
-                            ? "Updating..."
-                            : caseItem.isAutoNotificationOn
-                            ? "On"
-                            : "Off"}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4 text-sm text-blue-700">
-                      {formatDate(caseItem.createdAt)}
-                    </td>
-                    <td className="py-3 px-4">
-                      <Button
-                        onClick={() =>
-                          router.push(`/admin/cases/${caseItem.id}`)
-                        }
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                      >
-                        View Details
-                      </Button>
-                    </td>
+                {pageRows.map((row) => (
+                  <tr key={row.id} className="border-b hover:bg-blue-50/60 transition-colors">
+                    {row.getVisibleCells().map((cell) => (
+                      <td key={cell.id} className="py-3 px-4">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
