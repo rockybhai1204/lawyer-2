@@ -13,12 +13,39 @@ import {
 } from "@/components/ui/table";
 import { Eye } from "lucide-react";
 import type { ApiFormResponse } from "@/types/api/forms";
+import {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { TableExportDropdown } from "@/components/ui/table-export-dropdown";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
 const Page = () => {
   const [responses, setResponses] = useState<ApiFormResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [formId, setFormId] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   useEffect(() => {
     const run = async () => {
@@ -37,12 +64,95 @@ const Page = () => {
     run();
   }, []);
 
-  const pageSize = 10;
-  const totalPages = Math.max(1, Math.ceil(responses.length / pageSize));
-  const paginatedResponses = responses.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  const columns: ColumnDef<ApiFormResponse>[] = [
+    {
+      id: "createdAt",
+      accessorKey: "createdAt",
+      sortingFn: (a, b) =>
+        new Date(a.original.createdAt).getTime() - new Date(b.original.createdAt).getTime(),
+      header: ({ column }) => (
+        <div className="flex items-center gap-2">
+          <button
+            className="text-blue-800"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Date & Time
+          </button>
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5 text-blue-700" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5 text-blue-700" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-blue-600" />
+          )}
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div>
+          <div className="font-medium">
+            {new Date(row.original.createdAt).toLocaleDateString()}
+          </div>
+          <div className="text-sm text-blue-600">
+            {new Date(row.original.createdAt).toLocaleTimeString()}
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "surveyInfo",
+      header: () => <span className="text-blue-800">Survey Info</span>,
+      enableSorting: false,
+      cell: () => (
+        <div className="text-sm text-blue-700">
+          <div className="font-medium">Contact Form</div>
+          <div className="text-xs text-blue-600">Contact inquiry</div>
+        </div>
+      ),
+    },
+    {
+      id: "actions",
+      enableSorting: false,
+      header: () => <div className="text-right text-blue-800">Actions</div>,
+      cell: ({ row }) => (
+        <div className="text-right">
+          {formId && (
+            <Link href={`/admin/forms/${formId}/responses/${row.original.id}`}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-blue-200 text-blue-700 hover:bg-blue-100"
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View Response
+              </Button>
+            </Link>
+          )}
+        </div>
+      ),
+    },
+  ];
+
+  const table = useReactTable({
+    data: responses,
+    columns,
+    state: { sorting, columnVisibility },
+    onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageIndex: 0, pageSize: 10 } },
+  });
+
+  const headerLabels = { createdAt: "Date & Time", surveyInfo: "Survey Info" } as const;
+  const valueFormatter = (row: ApiFormResponse, colId: string, ctx: "csv" | "pdf") => {
+    if (colId === "createdAt") {
+      const formatted = new Date(row.createdAt).toISOString().slice(0, 19).replace("T", " ");
+      return ctx === "csv" ? `'${formatted}` : formatted;
+    }
+    if (colId === "surveyInfo") return "Contact Form - Contact inquiry";
+    return (row as any)[colId] ?? "";
+  };
 
   return (
     <div className="min-h-screen bg-blue-50">
@@ -73,21 +183,54 @@ const Page = () => {
               </div>
             </div>
 
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-sm text-blue-700">
+                Showing {table.getRowModel().rows.length} of {responses.length}
+              </div>
+              <div className="flex items-center gap-2">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm" className="border-blue-200 text-blue-700 hover:bg-blue-100">Columns</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {table.getAllLeafColumns().filter((c) => c.id !== "actions").map((column) => (
+                      <DropdownMenuCheckboxItem
+                        key={column.id}
+                        className="capitalize"
+                        checked={column.getIsVisible()}
+                        onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                      >
+                        {column.id}
+                      </DropdownMenuCheckboxItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <TableExportDropdown
+                  table={table}
+                  fileBaseName="contact-form-responses"
+                  headerLabels={headerLabels}
+                  valueFormatter={valueFormatter}
+                />
+              </div>
+            </div>
+
             <Table>
               <TableHeader>
-                <TableRow className="border-blue-100">
-                  <TableHead className="text-blue-800">Date & Time</TableHead>
-                  <TableHead className="text-blue-800">Survey Info</TableHead>
-                  <TableHead className="text-right text-blue-800">
-                    Actions
-                  </TableHead>
-                </TableRow>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id} className="border-blue-100">
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id} className={header.column.id === "actions" ? "text-right text-blue-800" : "text-blue-800"}>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
               </TableHeader>
               <TableBody>
                 {loading ? (
                   <TableRow className="hover:bg-blue-50/60">
                     <TableCell
-                      colSpan={3}
+                      colSpan={table.getAllLeafColumns().length}
                       className="text-center py-8 text-blue-700"
                     >
                       <div className="flex items-center justify-center gap-2">
@@ -99,52 +242,20 @@ const Page = () => {
                 ) : responses.length === 0 ? (
                   <TableRow className="hover:bg-blue-50/60">
                     <TableCell
-                      colSpan={3}
+                      colSpan={table.getAllLeafColumns().length}
                       className="text-center py-8 text-blue-700"
                     >
                       No responses yet
                     </TableCell>
                   </TableRow>
                 ) : (
-                  paginatedResponses.map((r, index) => (
-                    <TableRow
-                      key={r.id}
-                      className="hover:bg-blue-50/60 transition-colors border-blue-100"
-                    >
-                      <TableCell className="font-medium text-blue-900">
-                        <div>
-                          <div className="font-medium">
-                            {new Date(r.createdAt).toLocaleDateString()}
-                          </div>
-                          <div className="text-sm text-blue-600">
-                            {new Date(r.createdAt).toLocaleTimeString()}
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-blue-700">
-                        <div className="text-sm">
-                          <div className="font-medium">Contact Form</div>
-                          <div className="text-xs text-blue-600">
-                            Contact inquiry
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {formId && (
-                          <Link
-                            href={`/admin/forms/${formId}/responses/${r.id}`}
-                          >
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="border-blue-200 text-blue-700 hover:bg-blue-100"
-                            >
-                              <Eye className="w-4 h-4 mr-2" />
-                              View Response
-                            </Button>
-                          </Link>
-                        )}
-                      </TableCell>
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id} className="hover:bg-blue-50/60 transition-colors border-blue-100">
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className={cell.column.id === "actions" ? "text-right" : undefined}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   ))
                 )}
@@ -153,60 +264,46 @@ const Page = () => {
 
             {/* Pagination */}
             {responses.length > 0 && (
-              <div className="flex items-center justify-between mt-4">
-                <div className="text-sm text-blue-700">
-                  Showing {(currentPage - 1) * pageSize + 1}–
-                  {Math.min(currentPage * pageSize, responses.length)} of{" "}
-                  {responses.length}
-                </div>
-                {totalPages > 1 && (
-                  <div
-                    className="flex items-center gap-2"
-                    role="navigation"
-                    aria-label="Pagination"
-                  >
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage(1)}
-                      disabled={currentPage === 1}
-                      aria-label="First page"
-                      className="border-blue-200 text-blue-700 hover:bg-blue-100"
-                    >
-                      First
-                    </Button>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (p) => (
-                        <Button
-                          key={p}
-                          variant={p === currentPage ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => setCurrentPage(p)}
-                          aria-current={p === currentPage ? "page" : undefined}
-                          aria-label={`Page ${p}`}
-                          className={
-                            p === currentPage
-                              ? "bg-blue-600 hover:bg-blue-700 text-white"
-                              : "border-blue-200 text-blue-700 hover:bg-blue-100"
-                          }
-                        >
-                          {p}
-                        </Button>
-                      )
-                    )}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage(totalPages)}
-                      disabled={currentPage === totalPages}
-                      aria-label="Last page"
-                      className="border-blue-200 text-blue-700 hover:bg-blue-100"
-                    >
-                      Last
-                    </Button>
-                  </div>
-                )}
-              </div>
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        table.previousPage();
+                      }}
+                      aria-disabled={!table.getCanPreviousPage()}
+                      className={!table.getCanPreviousPage() ? "pointer-events-none opacity-50" : undefined}
+                    />
+                  </PaginationItem>
+                  {Array.from({ length: table.getPageCount() }).map((_, idx) => (
+                    <PaginationItem key={idx}>
+                      <PaginationLink
+                        href="#"
+                        isActive={table.getState().pagination.pageIndex === idx}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          table.setPageIndex(idx);
+                        }}
+                      >
+                        {idx + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        table.nextPage();
+                      }}
+                      aria-disabled={!table.getCanNextPage()}
+                      className={!table.getCanNextPage() ? "pointer-events-none opacity-50" : undefined}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             )}
           </div>
         </div>

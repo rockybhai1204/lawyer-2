@@ -27,6 +27,32 @@ import {
 import { toast } from "sonner";
 import { GetLawyersResponse, LawyerResponse } from "@/types/api/lawyers";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { TableExportDropdown } from "@/components/ui/table-export-dropdown";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
 const LawyersPage = () => {
   const router = useRouter();
@@ -35,6 +61,8 @@ const LawyersPage = () => {
   const [search, setSearch] = useState("");
   const [isActiveFilter, setIsActiveFilter] = useState<string>("");
   const [excelLoading, setExcelLoading] = useState(false);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const fetchLawyers = async () => {
     try {
       setLoading(true);
@@ -95,6 +123,257 @@ const LawyersPage = () => {
     }
   };
 
+  // TanStack Table setup
+  const columns: ColumnDef<LawyerResponse>[] = [
+    {
+      id: "name",
+      accessorKey: "name",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+            <span className="text-sm font-semibold text-primary">
+              {row.original.name.charAt(0).toUpperCase()}
+            </span>
+          </div>
+          {row.original.name}
+        </div>
+      ),
+    },
+    {
+      id: "email",
+      accessorKey: "email",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <div className="flex items-center gap-1">
+          <Mail className="w-3 h-3 text-muted-foreground" />
+          {row.original.email}
+        </div>
+      ),
+    },
+    {
+      id: "phone",
+      accessorKey: "phone",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Phone
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => (
+        row.original.phone ? (
+          <div className="flex items-center gap-1">
+            <Phone className="w-3 h-3 text-muted-foreground" />
+            {row.original.phone}
+          </div>
+        ) : (
+          <span className="text-muted-foreground">-</span>
+        )
+      ),
+    },
+    {
+      id: "experience",
+      accessorKey: "experience",
+      sortingFn: (a, b) => (a.original.experience || 0) - (b.original.experience || 0),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Experience
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <span>{row.original.experience ? `${row.original.experience} years` : "-"}</span>
+      ),
+    },
+    {
+      id: "specialization",
+      accessorKey: "specialization",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Specializations
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      sortingFn: (a, b) => (a.original.specialization?.length || 0) - (b.original.specialization?.length || 0),
+      cell: ({ row }) => (
+        <div className="flex flex-wrap gap-1">
+          {row.original.specialization.slice(0, 2).map((spec, idx) => (
+            <Badge key={idx} variant="outline" className="text-xs">{spec}</Badge>
+          ))}
+          {row.original.specialization.length > 2 && (
+            <Badge variant="outline" className="text-xs">+{row.original.specialization.length - 2}</Badge>
+          )}
+        </div>
+      ),
+    },
+    {
+      id: "isActive",
+      accessorKey: "isActive",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      sortingFn: (a, b) => Number(a.original.isActive) - Number(b.original.isActive),
+      cell: ({ row }) => (
+        <Badge variant={row.original.isActive ? "default" : "secondary"}>
+          {row.original.isActive ? "Active" : "Inactive"}
+        </Badge>
+      ),
+    },
+    {
+      id: "cases",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Cases
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      accessorFn: (row) => row.cases.length,
+      cell: ({ row }) => <span className="text-sm font-medium">{row.original.cases.length}</span>,
+    },
+    {
+      id: "actions",
+      enableSorting: false,
+      header: () => <div className="text-right">Actions</div>,
+      cell: ({ row }) => (
+        <div className="flex items-center justify-end gap-1">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push(`/admin/lawyers/${row.original.id}`)}
+            className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-700"
+          >
+            <Eye className="w-4 h-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.push(`/admin/lawyers/${row.original.id}/edit`)}
+            className="h-8 w-8 p-0 hover:bg-green-50 hover:text-green-700"
+          >
+            <Edit className="w-4 h-4" />
+          </Button>
+        </div>
+      ),
+    },
+  ];
+
+  const table = useReactTable({
+    data: lawyers,
+    columns,
+    state: { sorting, columnVisibility },
+    onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageIndex: 0, pageSize: 10 } },
+  });
+
+  const headerLabels = {
+    name: "Name",
+    email: "Email",
+    phone: "Phone",
+    experience: "Experience",
+    specialization: "Specializations",
+    isActive: "Status",
+    cases: "Cases",
+  } as const;
+
+  const valueFormatter = (row: LawyerResponse, colId: string, ctx: "csv" | "pdf") => {
+    if (colId === "isActive") return row.isActive ? "Active" : "Inactive";
+    if (colId === "specialization") return row.specialization.join(", ");
+    if (colId === "experience") return row.experience ? `${row.experience}` : "";
+    if (colId === "cases") return String(row.cases.length);
+    if (colId === "phone") {
+      const phone = row.phone ?? "";
+      return ctx === "csv" ? `'${String(phone)}` : String(phone);
+    }
+    return (row as any)[colId] ?? "";
+  };
+
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
@@ -103,7 +382,7 @@ const LawyersPage = () => {
           <p className="text-gray-600 mt-1">Manage all lawyers in the system</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button
+          {/* <Button
             onClick={handleDownloadExcel}
             variant="outline"
             className="shadow-sm"
@@ -111,7 +390,7 @@ const LawyersPage = () => {
           >
             <Download className="w-4 h-4 mr-2" />
             Download Excel
-          </Button>
+          </Button> */}
           <Button
             onClick={() => router.push("/admin/lawyers/create")}
             className="shadow-sm"
@@ -220,112 +499,103 @@ const LawyersPage = () => {
               </p>
             </div>
           ) : (
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Phone</TableHead>
-                    <TableHead>Experience</TableHead>
-                    <TableHead>Specializations</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Cases</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {lawyers.map((lawyer) => (
-                    <TableRow key={lawyer.id} className="hover:bg-muted/50">
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                            <span className="text-sm font-semibold text-primary">
-                              {lawyer.name.charAt(0).toUpperCase()}
-                            </span>
-                          </div>
-                          {lawyer.name}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Mail className="w-3 h-3 text-muted-foreground" />
-                          {lawyer.email}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {lawyer.phone ? (
-                          <div className="flex items-center gap-1">
-                            <Phone className="w-3 h-3 text-muted-foreground" />
-                            {lawyer.phone}
-                          </div>
-                        ) : (
-                          <span className="text-muted-foreground">-</span>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {lawyer.experience ? `${lawyer.experience} years` : "-"}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap gap-1">
-                          {lawyer.specialization
-                            .slice(0, 2)
-                            .map((spec, index) => (
-                              <Badge
-                                key={index}
-                                variant="outline"
-                                className="text-xs"
-                              >
-                                {spec}
-                              </Badge>
-                            ))}
-                          {lawyer.specialization.length > 2 && (
-                            <Badge variant="outline" className="text-xs">
-                              +{lawyer.specialization.length - 2}
-                            </Badge>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={lawyer.isActive ? "default" : "secondary"}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-muted-foreground">Showing {table.getRowModel().rows.length} of {lawyers.length}</div>
+                <div className="flex items-center gap-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm">Columns</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {table.getAllLeafColumns().filter((c) => c.id !== "actions").map((column) => (
+                        <DropdownMenuCheckboxItem
+                          key={column.id}
+                          className="capitalize"
+                          checked={column.getIsVisible()}
+                          onCheckedChange={(value) => column.toggleVisibility(!!value)}
                         >
-                          {lawyer.isActive ? "Active" : "Inactive"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm font-medium">
-                          {lawyer.cases.length}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() =>
-                              router.push(`/admin/lawyers/${lawyer.id}`)
-                            }
-                            className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-700"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() =>
-                              router.push(`/admin/lawyers/${lawyer.id}/edit`)
-                            }
-                            className="h-8 w-8 p-0 hover:bg-green-50 hover:text-green-700"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
+                          {column.id}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <TableExportDropdown
+                    table={table}
+                    fileBaseName="lawyers"
+                    headerLabels={headerLabels}
+                    valueFormatter={valueFormatter}
+                  />
+                </div>
+              </div>
+
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                      <TableRow key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
+                          <TableHead key={header.id} className={header.column.id === "actions" ? "text-right" : undefined}>
+                            {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                          </TableHead>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableHeader>
+                  <TableBody>
+                    {table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id} className="hover:bg-muted/50">
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id} className={cell.column.id === "actions" ? "text-right" : undefined}>
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        table.previousPage();
+                      }}
+                      aria-disabled={!table.getCanPreviousPage()}
+                      className={!table.getCanPreviousPage() ? "pointer-events-none opacity-50" : undefined}
+                    />
+                  </PaginationItem>
+                  {Array.from({ length: table.getPageCount() }).map((_, idx) => (
+                    <PaginationItem key={idx}>
+                      <PaginationLink
+                        href="#"
+                        isActive={table.getState().pagination.pageIndex === idx}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          table.setPageIndex(idx);
+                        }}
+                      >
+                        {idx + 1}
+                      </PaginationLink>
+                    </PaginationItem>
                   ))}
-                </TableBody>
-              </Table>
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        table.nextPage();
+                      }}
+                      aria-disabled={!table.getCanNextPage()}
+                      className={!table.getCanNextPage() ? "pointer-events-none opacity-50" : undefined}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
           )}
         </CardContent>

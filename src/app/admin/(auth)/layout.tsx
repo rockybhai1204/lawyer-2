@@ -108,6 +108,7 @@ const AdminShell = ({ children }: { children: React.ReactNode }) => {
       label: "Services",
       items: [
         { title: "All Services", href: "/admin/services", icon: Package },
+        { title: "Categories", href: "/admin/categories", icon: Package },
       ],
     },
     {
@@ -227,7 +228,7 @@ const AdminShell = ({ children }: { children: React.ReactNode }) => {
           </div>
           <QuickActions actions={quickActions} />
         </header>
-        <main className="min-h-screen p-0 bg-blue-50">{children}</main>
+        <main className="min-h-screen p-0 bg-blue-50 overflow-x-hidden">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

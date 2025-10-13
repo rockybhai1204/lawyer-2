@@ -28,9 +28,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, Edit, Search, Eye, X } from "lucide-react";
+import { Plus, Edit, Search, Eye, X, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ServiceTableData, ApiServiceCategory } from "@/types/api/services";
+import {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { TableExportDropdown } from "@/components/ui/table-export-dropdown";
 
 export default function ServicesPage() {
   const router = useRouter();
@@ -46,6 +62,8 @@ export default function ServicesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isCreatingCategory, setIsCreatingCategory] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const fetchCategories = async () => {
     try {
@@ -170,10 +188,143 @@ export default function ServicesPage() {
 
   const pageSize = 10;
   const totalPages = Math.max(1, Math.ceil(filteredServices.length / pageSize));
-  const paginatedServices = filteredServices.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+
+  // TanStack Table setup over filteredServices (sorting/visibility)
+  const columns: ColumnDef<ServiceTableData>[] = [
+    {
+      id: "name",
+      accessorKey: "name",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Service Name
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
+    },
+    {
+      id: "isActive",
+      accessorKey: "isActive",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      sortingFn: (a, b) => Number(a.original.isActive) - Number(b.original.isActive),
+      cell: ({ row }) => (
+        <Badge variant={row.original.isActive ? "default" : "secondary"}>
+          {row.original.isActive ? "Active" : "Inactive"}
+        </Badge>
+      ),
+    },
+    {
+      id: "categoryName",
+      accessorKey: "categoryName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Category
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => <span>{row.original.categoryName}</span>,
+    },
+    {
+      id: "formName",
+      accessorKey: "formName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Form
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => <span>{row.original.formName}</span>,
+    },
+    {
+      id: "actions",
+      enableSorting: false,
+      header: () => <div className="text-right">Actions</div>,
+      cell: ({ row }) => (
+        <div className="flex items-center justify-end gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              window.open(
+                `/services/${row.original.categorySlug}/${row.original.slug}`,
+                "_blank",
+                "noopener,noreferrer"
+              )
+            }
+          >
+            <Eye className="w-4 h-4" />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              router.push(`/admin/services/builder?edit=${row.original.id}`)
+            }
+          >
+            <Edit className="w-4 h-4" />
+          </Button>
+        </div>
+      ),
+    },
+  ];
+
+  const table = useReactTable({
+    data: filteredServices,
+    columns,
+    state: { sorting, columnVisibility },
+    onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
+  const sortedRows = table.getRowModel().rows;
+  const pageRows = sortedRows.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -357,53 +508,60 @@ export default function ServicesPage() {
             </div>
           ) : (
             <>
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-sm text-gray-600">
+                  Showing {pageRows.length} of {filteredServices.length}
+                </div>
+                <div className="flex items-center gap-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm">Columns</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {table.getAllLeafColumns().filter((c) => c.id !== "actions").map((column) => (
+                        <DropdownMenuCheckboxItem
+                          key={column.id}
+                          className="capitalize"
+                          checked={column.getIsVisible()}
+                          onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                        >
+                          {column.id}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <TableExportDropdown
+                    table={table}
+                    fileBaseName="services"
+                    headerLabels={{ name: "Service Name", isActive: "Status", categoryName: "Category", formName: "Form" }}
+                    valueFormatter={(row, colId, ctx) => {
+                      if (colId === "isActive") return row.isActive ? "Active" : "Inactive";
+                      return (row as any)[colId] ?? "";
+                    }}
+                  />
+                </div>
+              </div>
+
               <Table>
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Service Name</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Form</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <TableHead key={header.id} className={header.column.id === "actions" ? "text-right" : undefined}>
+                          {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  ))}
                 </TableHeader>
                 <TableBody>
-                  {paginatedServices.map((service) => (
-                    <TableRow key={service.id}>
-                      <TableCell className="font-medium">
-                        {service.name}
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={service.isActive ? "default" : "secondary"}
-                        >
-                          {service.isActive ? "Active" : "Inactive"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{service.categoryName}</TableCell>
-                      <TableCell>{service.formName}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleViewService(service)}
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() =>
-                              router.push(
-                                `/admin/services/builder?edit=${service.id}`
-                              )
-                            }
-                          >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
+                  {pageRows.map((row) => (
+                    <TableRow key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className={cell.column.id === "actions" ? "text-right" : undefined}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
                     </TableRow>
                   ))}
                 </TableBody>

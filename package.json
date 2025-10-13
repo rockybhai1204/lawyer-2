@@ -42,6 +42,7 @@
     "@radix-ui/react-tooltip": "^1.2.7",
     "@react-email/components": "^0.5.1",
     "@react-email/render": "^1.2.1",
+    "@tanstack/react-table": "^8.21.3",
     "@types/exceljs": "^0.5.3",
     "@types/nodemailer": "^7.0.1",
     "@types/uuid": "^10.0.0",

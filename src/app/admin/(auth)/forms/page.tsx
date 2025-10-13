@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +50,31 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
 const Page = () => {
   const router = useRouter();
@@ -76,8 +101,9 @@ const Page = () => {
   // Filter and search state
   const [searchTerm, setSearchTerm] = useState("");
   const [typeFilter, setTypeFilter] = useState<string>("all");
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize = 10;
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   useEffect(() => {
     const run = async () => {
@@ -97,28 +123,228 @@ const Page = () => {
     run();
   }, []);
 
-  // Filter and paginate forms
-  const filteredForms = forms.filter((form) => {
-    const matchesSearch =
-      form.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      form.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      form.type.toLowerCase().includes(searchTerm.toLowerCase());
+  // Filter forms (memoized)
+  const filteredForms = useMemo(() => {
+    const lower = searchTerm.toLowerCase();
+    return forms.filter((form) => {
+      const matchesSearch =
+        form.name.toLowerCase().includes(lower) ||
+        form.description?.toLowerCase().includes(lower) ||
+        form.type.toLowerCase().includes(lower);
+      const matchesType = typeFilter === "all" || form.type === typeFilter;
+      return matchesSearch && matchesType;
+    });
+  }, [forms, searchTerm, typeFilter]);
 
-    const matchesType = typeFilter === "all" || form.type === typeFilter;
-
-    return matchesSearch && matchesType;
-  });
-
-  const totalPages = Math.max(1, Math.ceil(filteredForms.length / pageSize));
-  const paginatedForms = filteredForms.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
+  // TanStack columns (memoized)
+  const columns = useMemo<ColumnDef<ApiForm>[]>(
+    () => [
+    {
+      id: "name",
+      accessorKey: "name",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <div className="space-y-1">
+          <div className="font-medium text-blue-900">{row.original.name}</div>
+          <div className="flex items-center gap-2 text-xs text-blue-600">
+            <Badge variant="outline" className="text-xs px-1 py-0 border-blue-200">
+              {row.original.type.replace("_", " ")}
+            </Badge>
+            <span className="text-blue-500">•</span>
+            <span>{row.original.associatedServices.length} services</span>
+            <span className="text-blue-500">•</span>
+            <span>{row.original.responsesCount} responses</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: "description",
+      accessorKey: "description",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Description
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <span className="max-w-[420px] truncate text-blue-700/80 inline-block">
+          {row.original.description}
+        </span>
+      ),
+    },
+    {
+      id: "type",
+      accessorKey: "type",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Type
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <TypeDropdown
+          value={row.original.type}
+          disabled={deletingId === row.original.id || updatingId === row.original.id}
+          onChange={(t) => handleTypeChange(row.original.id, t)}
+        />
+      ),
+    },
+    {
+      id: "responsesCount",
+      accessorKey: "responsesCount",
+      sortingFn: (a, b) => (a.original.responsesCount || 0) - (b.original.responsesCount || 0),
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Responses
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      cell: ({ row }) => <span>{row.original.responsesCount}</span>,
+    },
+    {
+      id: "servicesCount",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="px-0 gap-2"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Services
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="h-3.5 w-3.5" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="h-3.5 w-3.5" />
+          ) : (
+            <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
+          )}
+        </Button>
+      ),
+      accessorFn: (row) => row.associatedServices.length,
+      cell: ({ row }) => <span>{row.original.associatedServices.length}</span>,
+    },
+    {
+      id: "actions",
+      enableSorting: false,
+      header: () => <div className="text-right">Actions</div>,
+      cell: ({ row }) => (
+        <div className="flex items-center justify-end gap-2">
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            aria-label={`Edit ${row.original.name}`}
+            disabled={deletingId === row.original.id}
+            className="border-blue-200 text-blue-700 hover:bg-blue-100"
+          >
+            <Link href={`/admin/forms/${row.original.id}/edit`}>
+              <Pencil className="w-4 h-4" />
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            aria-label={`Preview ${row.original.name}`}
+            disabled={deletingId === row.original.id}
+            className="border-blue-200 text-blue-700 hover:bg-blue-100"
+          >
+            <Link href={`/admin/forms/${row.original.id}/preview`}>
+              <Eye className="w-4 h-4" />
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            aria-label={`Responses for ${row.original.name}`}
+            disabled={deletingId === row.original.id}
+            className="border-blue-200 text-blue-700 hover:bg-blue-100"
+          >
+            <Link href={`/admin/forms/${row.original.id}/responses`}>
+              <MessageSquare className="w-4 h-4" />
+            </Link>
+          </Button>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => handleDelete(row.original.id)}
+            aria-label={`Delete ${row.original.name}`}
+            disabled={deletingId === row.original.id}
+          >
+            {deletingId === row.original.id ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" /> Deleting...
+              </>
+            ) : (
+              <>
+                <Trash2 className="w-4 h-4" />
+              </>
+            )}
+          </Button>
+        </div>
+      ),
+    },
+  ],
+    [deletingId, updatingId]
   );
 
-  // Reset to first page when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, typeFilter]);
+  const table = useReactTable({
+    data: filteredForms,
+    columns,
+    state: { sorting, columnVisibility },
+    onSortingChange: setSorting,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageIndex: 0, pageSize } },
+  });
 
   const handleDelete = async (id: string) => {
     const form = forms.find((f) => f.id === id);
@@ -352,7 +578,7 @@ const Page = () => {
             <div className="border-t border-blue-100"></div>
 
             {/* Forms Table */}
-            {paginatedForms.length === 0 ? (
+            {table.getRowModel().rows.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12">
                 <div className="text-center space-y-2">
                   <h3 className="text-lg font-semibold text-blue-900">
@@ -372,180 +598,96 @@ const Page = () => {
               </div>
             ) : (
               <>
-                <Table>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-sm text-blue-700">
+                    Showing {table.getRowModel().rows.length} of {filteredForms.length}
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm" className="border-blue-200 text-blue-700 hover:bg-blue-100">Columns</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {table.getAllLeafColumns().filter((c) => c.id !== "actions").map((column) => (
+                        <DropdownMenuCheckboxItem
+                          key={column.id}
+                          className="capitalize"
+                          checked={column.getIsVisible()}
+                          onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                        >
+                          {column.id}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+
+                <div className="w-full max-w-full overflow-x-auto">
+                <Table className="min-w-[1000px] whitespace-nowrap">
                   <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-blue-800">#</TableHead>
-                      <TableHead className="text-blue-800">Name</TableHead>
-                      <TableHead className="text-blue-800">
-                        Description
-                      </TableHead>
-                      <TableHead className="text-blue-800">Type</TableHead>
-                      <TableHead className="text-right text-blue-800">
-                        Actions
-                      </TableHead>
-                    </TableRow>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                      <TableRow key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
+                          <TableHead key={header.id} className={header.column.id === "actions" ? "text-right text-blue-800" : "text-blue-800"}>
+                            {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                          </TableHead>
+                        ))}
+                      </TableRow>
+                    ))}
                   </TableHeader>
                   <TableBody>
-                    {paginatedForms.map((f, index) => (
-                      <TableRow
-                        key={f.id}
-                        className="hover:bg-blue-50/60 transition-colors"
-                      >
-                        <TableCell className="font-medium text-blue-900">
-                          {(currentPage - 1) * pageSize + index + 1}
-                        </TableCell>
-                        <TableCell className="font-medium text-blue-900">
-                          <div className="space-y-1">
-                            <div>{f.name}</div>
-                            <div className="flex items-center gap-2 text-xs text-blue-600">
-                              <Badge
-                                variant="outline"
-                                className="text-xs px-1 py-0 border-blue-200"
-                              >
-                                {f.type.replace("_", " ")}
-                              </Badge>
-                              <span className="text-blue-500">•</span>
-                              <span>
-                                {f.associatedServices.length} services
-                              </span>
-                              <span className="text-blue-500">•</span>
-                              <span>{f.responsesCount} responses</span>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="max-w-[420px] truncate text-blue-700/80">
-                          {f.description}
-                        </TableCell>
-                        <TableCell>
-                          <TypeDropdown
-                            value={f.type}
-                            disabled={
-                              deletingId === f.id || updatingId === f.id
-                            }
-                            onChange={(t) => handleTypeChange(f.id, t)}
-                          />
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <Button
-                              asChild
-                              variant="outline"
-                              size="sm"
-                              aria-label={`Edit ${f.name}`}
-                              disabled={deletingId === f.id}
-                              className="border-blue-200 text-blue-700 hover:bg-blue-100"
-                            >
-                              <Link href={`/admin/forms/${f.id}/edit`}>
-                                Edit <Pencil className="w-4 h-4" />
-                              </Link>
-                            </Button>
-                            <Button
-                              asChild
-                              variant="outline"
-                              size="sm"
-                              aria-label={`Preview ${f.name}`}
-                              disabled={deletingId === f.id}
-                              className="border-blue-200 text-blue-700 hover:bg-blue-100"
-                            >
-                              <Link href={`/admin/forms/${f.id}/preview`}>
-                                Preview <Eye className="w-4 h-4" />
-                              </Link>
-                            </Button>
-                            <Button
-                              asChild
-                              variant="outline"
-                              size="sm"
-                              aria-label={`Responses for ${f.name}`}
-                              disabled={deletingId === f.id}
-                              className="border-blue-200 text-blue-700 hover:bg-blue-100"
-                            >
-                              <Link href={`/admin/forms/${f.id}/responses`}>
-                                Responses <MessageSquare className="w-4 h-4" />
-                              </Link>
-                            </Button>
-                            <Button
-                              variant="destructive"
-                              size="sm"
-                              onClick={() => handleDelete(f.id)}
-                              aria-label={`Delete ${f.name}`}
-                              disabled={deletingId === f.id}
-                            >
-                              {deletingId === f.id ? (
-                                <>
-                                  <Loader2 className="w-4 h-4 animate-spin" />{" "}
-                                  Deleting...
-                                </>
-                              ) : (
-                                <>
-                                  <Trash2 className="w-4 h-4" />
-                                </>
-                              )}
-                            </Button>
-                          </div>
-                        </TableCell>
+                    {table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id} className="hover:bg-blue-50/60 transition-colors">
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id} className={cell.column.id === "actions" ? "text-right" : undefined}>
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </TableCell>
+                        ))}
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
+                </div>
 
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="flex items-center justify-between mt-4">
-                    <div className="text-sm text-blue-700">
-                      Showing {(currentPage - 1) * pageSize + 1}–
-                      {Math.min(currentPage * pageSize, filteredForms.length)}{" "}
-                      of {filteredForms.length}
-                    </div>
-                    <div
-                      className="flex items-center gap-2"
-                      role="navigation"
-                      aria-label="Pagination"
-                    >
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCurrentPage(1)}
-                        disabled={currentPage === 1}
-                        aria-label="First page"
-                        className="border-blue-200 text-blue-700 hover:bg-blue-100"
-                      >
-                        First
-                      </Button>
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                        (p) => (
-                          <Button
-                            key={p}
-                            variant={p === currentPage ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => setCurrentPage(p)}
-                            aria-current={
-                              p === currentPage ? "page" : undefined
-                            }
-                            aria-label={`Page ${p}`}
-                            className={
-                              p === currentPage
-                                ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                : "border-blue-200 text-blue-700 hover:bg-blue-100"
-                            }
-                          >
-                            {p}
-                          </Button>
-                        )
-                      )}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCurrentPage(totalPages)}
-                        disabled={currentPage === totalPages}
-                        aria-label="Last page"
-                        className="border-blue-200 text-blue-700 hover:bg-blue-100"
-                      >
-                        Last
-                      </Button>
-                    </div>
-                  </div>
-                )}
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          table.previousPage();
+                        }}
+                        aria-disabled={!table.getCanPreviousPage()}
+                        className={!table.getCanPreviousPage() ? "pointer-events-none opacity-50" : undefined}
+                      />
+                    </PaginationItem>
+                    {Array.from({ length: table.getPageCount() }).map((_, idx) => (
+                      <PaginationItem key={idx}>
+                        <PaginationLink
+                          href="#"
+                          isActive={table.getState().pagination.pageIndex === idx}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            table.setPageIndex(idx);
+                          }}
+                        >
+                          {idx + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    <PaginationItem>
+                      <PaginationNext
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          table.nextPage();
+                        }}
+                        aria-disabled={!table.getCanNextPage()}
+                        className={!table.getCanNextPage() ? "pointer-events-none opacity-50" : undefined}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </>
             )}
           </CardContent>
