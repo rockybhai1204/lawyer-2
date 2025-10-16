@@ -27,7 +27,7 @@ export default function SurveyFormRenderer({
 
     // Configure survey settings
     survey.showCompletedPage = false;
-    survey.showProgressBar = "bottom";
+    survey.showProgressBar = survey.pages.length > 1 ? "bottom" : "off";
     survey.showQuestionNumbers = "off";
     survey.showNavigationButtons = true;
     survey.allowCompleteSurveyAutomatic = false;

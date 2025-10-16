@@ -11,6 +11,66 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import LawyerRegistrationForm from "@/components/non-auth-comp/lawyer-registration-form";
+
+// Centralized navigation data used for both desktop and mobile menus
+const NAV_DATA = [
+  {
+    label: "Consultation",
+    items: [
+      {
+        label: "On Call Lawyer Consultation",
+        href: "/services/consultation/on-call-lawyer-consultation",
+      },
+    ],
+  },
+  {
+    label: "Property Services",
+    items: [
+      { label: "Property Paper Review", href: "/services/property-services/property-paper-review" },
+      { label: "Title Search Report", href: "/services/property-services/title-search-report" },
+      { label: "Property Agreements", href: "/services/property-services/property-agreements" },
+    ],
+  },
+  {
+    label: "Document Review",
+    items: [
+      { label: "Contract Review", href: "/services/document-review/contract-review" },
+      { label: "Legal Document Check", href: "/services/document-review/legal-document-check" },
+    ],
+  },
+  {
+    label: "Drafting",
+    groups: [
+      {
+        label: "Rent Agreements",
+        items: [
+          { label: "Residential Rent Agreement", href: "/services/drafting/residential-rent-agreement" },
+          { label: "Commercial Rent Agreement", href: "/services/drafting/commercial-rent-agreement" },
+          { label: "Leave & License Agreement", href: "/services/drafting/leave-license-agreement" },
+          { label: "Sub-lease Agreement", href: "/services/drafting/sub-lease-agreement" },
+        ],
+      },
+      {
+        label: "Property Agreements",
+        items: [
+          { label: "Sale Deed", href: "/services/drafting/sale-deed" },
+          { label: "Agreement to Sell", href: "/services/drafting/agreement-to-sell" },
+          { label: "Gift Deed", href: "/services/drafting/gift-deed" },
+          { label: "Last Will", href: "/services/drafting/last-will" },
+          { label: "Power of Attorney", href: "/services/drafting/power-of-attorney" },
+        ],
+      },
+    ],
+  },
+  {
+    label: "Legal Notices",
+    items: [
+      { label: "Draft Legal Notice", href: "/services/legal-notices/draft-legal-notice" },
+      { label: "Reply to Legal Notice", href: "/services/legal-notices/reply-to-legal-notice" },
+    ],
+  },
+];
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,13 +84,6 @@ const Navbar = () => {
     string[]
   >([]);
   const [isQuickConsultModalOpen, setIsQuickConsultModalOpen] = useState(false);
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    timeSlot: '',
-    query: ''
-  });
 
 
   const handleMobileMenuToggle = () => {
@@ -61,33 +114,10 @@ const Navbar = () => {
 
   const handleQuickConsultClick = () => {
     setIsQuickConsultModalOpen(true);
-    setIsFormSubmitted(false);
-    setFormData({
-      name: '',
-      phone: '',
-      timeSlot: '',
-      query: ''
-    });
   };
 
   const handleModalClose = () => {
     setIsQuickConsultModalOpen(false);
-    setIsFormSubmitted(false);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Form submitted:', formData);
-    setIsFormSubmitted(true);
   };
 
 
@@ -192,317 +222,70 @@ const Navbar = () => {
                       </div>
                     </div>
 
-                    {/* Consultation */}
-                    <div className="relative group">
-                      <div className="flex items-center">
-                        <div className="max-w-7 lg:w-8 h-0.5 bg-gray-300 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                          <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                        </div>
-                        <div className="relative">
-                          <span className="text-gray-800 group-hover:text-cyan-500 transition-all duration-300 font-bold font-['Lora'] whitespace-nowrap cursor-pointer flex items-center text-xs lg:text-sm">
-                            Consultation
-                            <svg
-                              className="w-3 h-3 ml-1 transition-transform duration-300 group-hover:rotate-180"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </span>
-                          {/* Consultation Dropdown */}
-                          <div className="absolute top-full left-0 w-64 bg-white border border-cyan-500 rounded-lg shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                            <div className="py-2">
-                              <Link
-                                href="/services/consultation/on-call-lawyer-consultation"
-                                className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                              >
-                                <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                <span className="font-['Lora'] font-bold">On Call Lawyer Consultation</span>
-                              </Link>
-                            </div>
+                    {NAV_DATA.map((category) => (
+                      <div className="relative group" key={category.label}>
+                        <div className="flex items-center">
+                          <div className="max-w-7 lg:w-8 h-0.5 bg-gray-300 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
+                            <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Property Services */}
-                    <div className="relative group">
-                      <div className="flex items-center">
-                        <div className="max-w-7 lg:w-8 h-0.5 bg-gray-300 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                          <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                        </div>
-                        <div className="relative">
-                          <span className="text-gray-800 group-hover:text-cyan-500 transition-all duration-300 font-bold font-['Lora'] whitespace-nowrap cursor-pointer flex items-center text-xs lg:text-sm">
-                            Property Services
-                            <svg
-                              className="w-3 h-3 ml-1 transition-transform duration-300 group-hover:rotate-180"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </span>
-                          {/* Property Services Dropdown */}
-                          <div className="absolute top-full left-0 w-64 bg-white border border-cyan-500 rounded-lg shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                            <div className="py-2">
-                              <Link
-                                href="/services/property-services/property-paper-review"
-                                className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
+                          <div className="relative">
+                            <span className="text-gray-800 group-hover:text-cyan-500 transition-all duration-300 font-bold font-['Lora'] whitespace-nowrap cursor-pointer flex items-center text-xs lg:text-sm">
+                              {category.label}
+                              <svg
+                                className="w-3 h-3 ml-1 transition-transform duration-300 group-hover:rotate-180"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
                               >
-                                <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                <span className="font-['Lora'] font-bold">Property Paper Review</span>
-                              </Link>
-                              <Link
-                                href="/services/property-services/title-search-report"
-                                className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                              >
-                                <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                <span className="font-['Lora'] font-bold">Title Search Report</span>
-                              </Link>
-                              <Link
-                                href="/services/property-services/property-agreements"
-                                className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                              >
-                                <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                <span className="font-['Lora'] font-bold">Property Agreements</span>
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Document Review */}
-                    <div className="relative group">
-                      <div className="flex items-center">
-                        <div className="max-w-7 lg:w-8 h-0.5 bg-gray-300 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                          <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                        </div>
-                        <div className="relative">
-                          <span className="text-gray-800 group-hover:text-cyan-500 transition-all duration-300 font-bold font-['Lora'] whitespace-nowrap cursor-pointer flex items-center text-xs lg:text-sm">
-                            Document Review
-                            <svg
-                              className="w-3 h-3 ml-1 transition-transform duration-300 group-hover:rotate-180"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </span>
-                          {/* Document Review Dropdown */}
-                          <div className="absolute top-full left-0 w-64 bg-white border border-cyan-500 rounded-lg shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                            <div className="py-2">
-                              <Link
-                                href="/services/document-review/contract-review"
-                                className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                              >
-                                <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                <span className="font-['Lora'] font-bold">Contract Review</span>
-                              </Link>
-                              <Link
-                                href="/services/document-review/legal-document-check"
-                                className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                              >
-                                <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                <span className="font-['Lora'] font-bold">Legal Document Check</span>
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Drafting */}
-                    <div className="relative group">
-                      <div className="flex items-center">
-                        <div className="max-w-7 lg:w-8 h-0.5 bg-gray-300 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                          <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                        </div>
-                        <div className="relative">
-                          <span className="text-gray-800 group-hover:text-cyan-500 transition-all duration-300 font-bold font-['Lora'] whitespace-nowrap cursor-pointer flex items-center text-xs lg:text-sm">
-                            Drafting
-                            <svg
-                              className="w-3 h-3 ml-1 transition-transform duration-300 group-hover:rotate-180"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </span>
-                          {/* Drafting Dropdown */}
-                          <div className="absolute top-full left-0 w-80 bg-white border border-cyan-500 rounded-lg shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                            <div className="py-2">
-                              {/* Rent Agreements Section */}
-                              <div className="relative group/rent">
-                                <div className="px-4 py-2 bg-gray-50 border-b hover:bg-gray-100 transition-colors cursor-pointer">
-                                  <div className="flex items-center justify-between">
-                                    <span className="text-sm font-bold text-gray-600">Rent Agreements</span>
-                                    <svg
-                                      className="w-3 h-3 transition-transform duration-300 group-hover/rent:rotate-180"
-                                      fill="currentColor"
-                                      viewBox="0 0 20 20"
-                                    >
-                                      <path
-                                        fillRule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                      />
-                                    </svg>
+                                <path
+                                  fillRule="evenodd"
+                                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </span>
+                            <div className={`absolute top-full left-0 ${category.groups ? "w-80" : "w-64"} bg-white border border-cyan-500 rounded-lg shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300`}>
+                              <div className="py-2">
+                                {category.items && category.items.map((item) => (
+                                  <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
+                                  >
+                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
+                                    <span className="font-['Lora'] font-bold">{item.label}</span>
+                                  </Link>
+                                ))}
+                                {category.groups && category.groups.map((group) => (
+                                  <div className="relative" key={group.label}>
+                                    <div className="px-4 py-2 bg-gray-50 border-b hover:bg-gray-100 transition-colors cursor-pointer">
+                                      <div className="flex items-center justify-between">
+                                        <span className="text-sm font-bold text-gray-600">{group.label}</span>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      {group.items.map((item) => (
+                                        <Link
+                                          key={item.href}
+                                          href={item.href}
+                                          className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
+                                        >
+                                          <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
+                                          <span className="font-['Lora'] font-bold text-xs lg:text-sm">{item.label}</span>
+                                        </Link>
+                                      ))}
+                                    </div>
                                   </div>
-                                </div>
-                                <div className="overflow-hidden transition-all duration-300 group-hover/rent:max-h-96 max-h-0">
-                                  <Link
-                                    href="/services/drafting/residential-rent-agreement"
-                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                                  >
-                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                    <span className="font-['Lora'] font-bold text-xs lg:text-sm">Residential Rent Agreement</span>
-                                  </Link>
-                                  <Link
-                                    href="/services/drafting/commercial-rent-agreement"
-                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                                  >
-                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                    <span className="font-['Lora'] font-bold text-xs lg:text-sm">Commercial Rent Agreement</span>
-                                  </Link>
-                                  <Link
-                                    href="/services/drafting/leave-license-agreement"
-                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                                  >
-                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                    <span className="font-['Lora'] font-bold text-xs lg:text-sm">Leave & License Agreement</span>
-                                  </Link>
-                                  <Link
-                                    href="/services/drafting/sub-lease-agreement"
-                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                                  >
-                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                    <span className="font-['Lora'] font-bold text-xs lg:text-sm">Sub-lease Agreement</span>
-                                  </Link>
-                                </div>
-                              </div>
-                              
-                              {/* Property Agreements Section */}
-                              <div className="relative group/property">
-                                <div className="px-4 py-2 bg-gray-50 border-b border-t hover:bg-gray-100 transition-colors cursor-pointer">
-                                  <div className="flex items-center justify-between">
-                                    <span className="text-sm font-bold text-gray-600">Property Agreements</span>
-                                    <svg
-                                      className="w-3 h-3 transition-transform duration-300 group-hover/property:rotate-180"
-                                      fill="currentColor"
-                                      viewBox="0 0 20 20"
-                                    >
-                                      <path
-                                        fillRule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                      />
-                                    </svg>
-                                  </div>
-                                </div>
-                                <div className="overflow-hidden transition-all duration-300 group-hover/property:max-h-96 max-h-0">
-                                  <Link
-                                    href="/services/drafting/sale-deed"
-                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                                  >
-                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                    <span className="font-['Lora'] font-bold text-xs lg:text-sm">Sale Deed</span>
-                                  </Link>
-                                  <Link
-                                    href="/services/drafting/agreement-to-sell"
-                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                                  >
-                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                    <span className="font-['Lora'] font-bold text-xs lg:text-sm">Agreement to Sell</span>
-                                  </Link>
-                                  <Link
-                                    href="/services/drafting/gift-deed"
-                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                                  >
-                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                    <span className="font-['Lora'] font-bold text-xs lg:text-sm">Gift Deed</span>
-                                  </Link>
-                                  <Link
-                                    href="/services/drafting/last-will"
-                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                                  >
-                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                    <span className="font-['Lora'] font-bold text-xs lg:text-sm">Last Will</span>
-                                  </Link>
-                                  <Link
-                                    href="/services/drafting/power-of-attorney"
-                                    className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                                  >
-                                    <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                    <span className="font-['Lora'] font-bold text-xs lg:text-sm">Power of Attorney</span>
-                                  </Link>
-                                </div>
+                                ))}
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
 
-                    {/* Legal Notices */}
-                    <div className="relative group">
-                      <div className="flex items-center">
-                        <div className="max-w-7 lg:w-8 h-0.5 bg-gray-300 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                          <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                        </div>
-                        <div className="relative">
-                          <span className="text-gray-800 group-hover:text-cyan-500 transition-all duration-300 font-bold font-['Lora'] whitespace-nowrap cursor-pointer flex items-center text-xs lg:text-sm">
-                            Legal Notices
-                            <svg
-                              className="w-3 h-3 ml-1 transition-transform duration-300 group-hover:rotate-180"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </span>
-                          {/* Legal Notices Dropdown */}
-                          <div className="absolute top-full left-0 w-64 bg-white border border-cyan-500 rounded-lg shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                            <div className="py-2">
-                              <Link
-                                href="/services/legal-notices/draft-legal-notice"
-                                className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                              >
-                                <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                <span className="font-['Lora'] font-bold">Draft Legal Notice</span>
-                              </Link>
-                              <Link
-                                href="/services/legal-notices/reply-to-legal-notice"
-                                className="flex items-center px-4 py-2 text-gray-800 transition-colors hover:text-cyan-500 hover:bg-gray-50"
-                              >
-                                <div className="w-3 h-0.5 bg-gray-300 mr-3"></div>
-                                <span className="font-['Lora'] font-bold">Reply to Legal Notice</span>
-                              </Link>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
+
+
 
                     {/* Contact Us */}
                     {/* <div className="relative group">
@@ -671,363 +454,94 @@ const Navbar = () => {
                 </div>
                 <span>Home</span>
               </Link>
-
-              {/* Consultation */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between w-full text-gray-300 font-medium group">
-                  <div className="flex items-center">
-                    <div className="max-w-7 lg:w-8 h-0.5 bg-gray-600 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                      <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                    </div>
-                    <span>Consultation</span>
-                  </div>
-                  <button
-                    onClick={() => handleMobileCategoryToggle("Consultation")}
-                    aria-label="Toggle Consultation services"
-                    className="p-1 text-gray-400 hover:text-cyan-300 transition-colors"
-                  >
-                    <svg
-                      className={`w-4 h-4 transition-transform duration-300 ${
-                        expandedMobileCategories.includes("Consultation") ? "rotate-90" : "rotate-0"
-                      }`}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                {expandedMobileCategories.includes("Consultation") && (
-                  <div className="space-y-2 ml-4 border-l border-gray-600 pl-4">
-                    <Link
-                      href="/services/consultation/on-call-lawyer-consultation"
-                      className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                      onClick={handleMobileMenuClose}
-                    >
-                      On Call Lawyer Consultation
-                    </Link>
-                  </div>
-                )}
-              </div>
-
-              {/* Property Services */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between w-full text-gray-300 font-medium group">
-                  <div className="flex items-center">
-                    <div className="max-w-7 lg:w-8 h-0.5 bg-gray-600 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                      <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                    </div>
-                    <span>Property Services</span>
-                  </div>
-                  <button
-                    onClick={() => handleMobileCategoryToggle("Property Services")}
-                    aria-label="Toggle Property Services"
-                    className="p-1 text-gray-400 hover:text-cyan-300 transition-colors"
-                  >
-                    <svg
-                      className={`w-4 h-4 transition-transform duration-300 ${
-                        expandedMobileCategories.includes("Property Services") ? "rotate-90" : "rotate-0"
-                      }`}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                {expandedMobileCategories.includes("Property Services") && (
-                  <div className="space-y-2 ml-4 border-l border-gray-600 pl-4">
-                    <Link
-                      href="/services/property-services/property-paper-review"
-                      className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                      onClick={handleMobileMenuClose}
-                    >
-                      Property Paper Review
-                    </Link>
-                    <Link
-                      href="/services/property-services/title-search-report"
-                      className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                      onClick={handleMobileMenuClose}
-                    >
-                      Title Search Report
-                    </Link>
-                    <Link
-                      href="/services/property-services/property-agreements"
-                      className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                      onClick={handleMobileMenuClose}
-                    >
-                      Property Agreements
-                    </Link>
-                  </div>
-                )}
-              </div>
-
-              {/* Document Review */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between w-full text-gray-300 font-medium group">
-                  <div className="flex items-center">
-                    <div className="max-w-7 lg:w-8 h-0.5 bg-gray-600 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                      <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                    </div>
-                    <span>Document Review</span>
-                  </div>
-                  <button
-                    onClick={() => handleMobileCategoryToggle("Document Review")}
-                    aria-label="Toggle Document Review"
-                    className="p-1 text-gray-400 hover:text-cyan-300 transition-colors"
-                  >
-                    <svg
-                      className={`w-4 h-4 transition-transform duration-300 ${
-                        expandedMobileCategories.includes("Document Review") ? "rotate-90" : "rotate-0"
-                      }`}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                {expandedMobileCategories.includes("Document Review") && (
-                  <div className="space-y-2 ml-4 border-l border-gray-600 pl-4">
-                    <Link
-                      href="/services/document-review/contract-review"
-                      className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                      onClick={handleMobileMenuClose}
-                    >
-                      Contract Review
-                    </Link>
-                    <Link
-                      href="/services/document-review/legal-document-check"
-                      className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                      onClick={handleMobileMenuClose}
-                    >
-                      Legal Document Check
-                    </Link>
-                  </div>
-                )}
-              </div>
-
-              {/* Drafting */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between w-full text-gray-300 font-medium group">
-                  <div className="flex items-center">
-                    <div className="max-w-7 lg:w-8 h-0.5 bg-gray-600 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                      <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                    </div>
-                    <span>Drafting</span>
-                  </div>
-                  <button
-                    onClick={() => handleMobileCategoryToggle("Drafting")}
-                    aria-label="Toggle Drafting"
-                    className="p-1 text-gray-400 hover:text-cyan-300 transition-colors"
-                  >
-                    <svg
-                      className={`w-4 h-4 transition-transform duration-300 ${
-                        expandedMobileCategories.includes("Drafting") ? "rotate-90" : "rotate-0"
-                      }`}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                {expandedMobileCategories.includes("Drafting") && (
-                  <div className="space-y-2 ml-4 border-l border-gray-600 pl-4">
-                    {/* Rent Agreements Section */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between w-full text-gray-300 font-medium group">
-                        <div className="flex items-center">
-                          <span className="text-xs text-gray-500 font-semibold">Rent Agreements</span>
-                        </div>
-                        <button
-                          onClick={() => handleSubcategoryToggle("Rent Agreements")}
-                          aria-label="Toggle Rent Agreements"
-                          className="p-1 text-gray-400 hover:text-cyan-300 transition-colors"
-                        >
-                          <svg
-                            className={`w-4 h-4 transition-transform duration-300 ${
-                              expandedSubcategories.includes("Rent Agreements") ? "rotate-90" : "rotate-0"
-                            }`}
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </button>
+              {NAV_DATA.map((category) => (
+                <div className="space-y-2" key={category.label}>
+                  <div className="flex items-center justify-between w-full text-gray-300 font-medium group">
+                    <div className="flex items-center">
+                      <div className="max-w-7 lg:w-8 h-0.5 bg-gray-600 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
+                        <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
                       </div>
-                      {expandedSubcategories.includes("Rent Agreements") && (
-                        <div className="space-y-2 ml-4 border-l border-gray-600 pl-4">
-                          <Link
-                            href="/services/drafting/residential-rent-agreement"
-                            className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                            onClick={handleMobileMenuClose}
-                          >
-                            Residential Rent Agreement
-                          </Link>
-                          <Link
-                            href="/services/drafting/commercial-rent-agreement"
-                            className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                            onClick={handleMobileMenuClose}
-                          >
-                            Commercial Rent Agreement
-                          </Link>
-                          <Link
-                            href="/services/drafting/leave-license-agreement"
-                            className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                            onClick={handleMobileMenuClose}
-                          >
-                            Leave & License Agreement
-                          </Link>
-                          <Link
-                            href="/services/drafting/sub-lease-agreement"
-                            className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                            onClick={handleMobileMenuClose}
-                          >
-                            Sub-lease Agreement
-                          </Link>
-                        </div>
-                      )}
+                      <span>{category.label}</span>
                     </div>
-
-                    {/* Property Agreements Section */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between w-full text-gray-300 font-medium group">
-                        <div className="flex items-center">
-                          <span className="text-xs text-gray-500 font-semibold">Property Agreements</span>
-                        </div>
-                        <button
-                          onClick={() => handleSubcategoryToggle("Property Agreements")}
-                          aria-label="Toggle Property Agreements"
-                          className="p-1 text-gray-400 hover:text-cyan-300 transition-colors"
+                    <button
+                      onClick={() => handleMobileCategoryToggle(category.label)}
+                      aria-label={`Toggle ${category.label}`}
+                      className="p-1 text-gray-400 hover:text-cyan-300 transition-colors"
+                    >
+                      <svg
+                        className={`w-4 h-4 transition-transform duration-300 ${
+                          expandedMobileCategories.includes(category.label) ? "rotate-90" : "rotate-0"
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  {expandedMobileCategories.includes(category.label) && (
+                    <div className="space-y-2 ml-4 border-l border-gray-600 pl-4">
+                      {category.items && category.items.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
+                          onClick={handleMobileMenuClose}
                         >
-                          <svg
-                            className={`w-4 h-4 transition-transform duration-300 ${
-                              expandedSubcategories.includes("Property Agreements") ? "rotate-90" : "rotate-0"
-                            }`}
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                      {expandedSubcategories.includes("Property Agreements") && (
-                        <div className="space-y-2 ml-4 border-l border-gray-600 pl-4">
-                          <Link
-                            href="/services/drafting/sale-deed"
-                            className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                            onClick={handleMobileMenuClose}
-                          >
-                            Sale Deed
-                          </Link>
-                          <Link
-                            href="/services/drafting/agreement-to-sell"
-                            className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                            onClick={handleMobileMenuClose}
-                          >
-                            Agreement to Sell
-                          </Link>
-                          <Link
-                            href="/services/drafting/gift-deed"
-                            className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                            onClick={handleMobileMenuClose}
-                          >
-                            Gift Deed
-                          </Link>
-                          <Link
-                            href="/services/drafting/last-will"
-                            className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                            onClick={handleMobileMenuClose}
-                          >
-                            Last Will
-                          </Link>
-                          <Link
-                            href="/services/drafting/power-of-attorney"
-                            className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                            onClick={handleMobileMenuClose}
-                          >
-                            Power of Attorney
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
+                          {item.label}
+                        </Link>
+                      ))}
 
-              {/* Legal Notices */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between w-full text-gray-300 font-medium group">
-                  <div className="flex items-center">
-                    <div className="max-w-7 lg:w-8 h-0.5 bg-gray-600 group-hover:bg-cyan-500 transition-all duration-300 mr-2 overflow-hidden flex-shrink-0">
-                      <div className="w-full h-full bg-cyan-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                      {category.groups && category.groups.map((group) => (
+                        <div className="space-y-2" key={group.label}>
+                          <div className="flex items-center justify-between w-full text-gray-300 font-medium group">
+                            <div className="flex items-center">
+                              <span className="text-xs text-gray-500 font-semibold">{group.label}</span>
+                            </div>
+                            <button
+                              onClick={() => handleSubcategoryToggle(group.label)}
+                              aria-label={`Toggle ${group.label}`}
+                              className="p-1 text-gray-400 hover:text-cyan-300 transition-colors"
+                            >
+                              <svg
+                                className={`w-4 h-4 transition-transform duration-300 ${
+                                  expandedSubcategories.includes(group.label) ? "rotate-90" : "rotate-0"
+                                }`}
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                          {expandedSubcategories.includes(group.label) && (
+                            <div className="space-y-2 ml-4 border-l border-gray-600 pl-4">
+                              {group.items.map((item) => (
+                                <Link
+                                  key={item.href}
+                                  href={item.href}
+                                  className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
+                                  onClick={handleMobileMenuClose}
+                                >
+                                  {item.label}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                    <span>Legal Notices</span>
-                  </div>
-                  <button
-                    onClick={() => handleMobileCategoryToggle("Legal Notices")}
-                    aria-label="Toggle Legal Notices"
-                    className="p-1 text-gray-400 hover:text-cyan-300 transition-colors"
-                  >
-                    <svg
-                      className={`w-4 h-4 transition-transform duration-300 ${
-                        expandedMobileCategories.includes("Legal Notices") ? "rotate-90" : "rotate-0"
-                      }`}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
+                  )}
                 </div>
-                {expandedMobileCategories.includes("Legal Notices") && (
-                  <div className="space-y-2 ml-4 border-l border-gray-600 pl-4">
-                    <Link
-                      href="/services/legal-notices/draft-legal-notice"
-                      className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                      onClick={handleMobileMenuClose}
-                    >
-                      Draft Legal Notice
-                    </Link>
-                    <Link
-                      href="/services/legal-notices/reply-to-legal-notice"
-                      className="block text-gray-400 hover:text-cyan-300 transition-colors text-sm py-1"
-                      onClick={handleMobileMenuClose}
-                    >
-                      Reply to Legal Notice
-                    </Link>
-                  </div>
-                )}
-              </div>
+              ))}
             </div>
 
             <div className="mt-8">
@@ -1090,117 +604,21 @@ const Navbar = () => {
       )}
 
       <Dialog open={isQuickConsultModalOpen} onOpenChange={setIsQuickConsultModalOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-['Lora']">Quick Consult</DialogTitle>
           </DialogHeader>
-
-          {!isFormSubmitted ? (
-            <form onSubmit={handleFormSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Name *
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                  placeholder="Enter your phone number"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="timeSlot" className="block text-sm font-medium text-gray-700 mb-1">
-                  Preferred Time Slot *
-                </label>
-                <select
-                  id="timeSlot"
-                  name="timeSlot"
-                  value={formData.timeSlot}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                >
-                  <option value="">Select preferred time</option>
-                  <option value="9:00 AM - 12:00 PM">9:00 AM - 12:00 PM</option>
-                  <option value="12:00 PM - 3:00 PM">12:00 PM - 3:00 PM</option>
-                  <option value="3:00 PM - 6:00 PM">3:00 PM - 6:00 PM</option>
-                  <option value="6:00 PM - 9:00 PM">6:00 PM - 9:00 PM</option>
-                  <option value="Any time">Any time</option>
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="query" className="block text-sm font-medium text-gray-700 mb-1">
-                  Describe Your Query in Brief *
-                </label>
-                <textarea
-                  id="query"
-                  name="query"
-                  value={formData.query}
-                  onChange={handleInputChange}
-                  required
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
-                  placeholder="Please describe your legal query briefly..."
-                />
-              </div>
-
-              <DialogFooter className="pt-2">
-                <button
-                  type="button"
-                  onClick={handleModalClose}
-                  className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors font-medium"
-                >
-                  Submit
-                </button>
-              </DialogFooter>
-            </form>
-          ) : (
-            <div className="text-center py-6">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2 font-['Lora']">Thank You!</h3>
-              <p className="text-gray-600 mb-6">We've noted your query. Our team will get in touch with you shortly.</p>
-              <DialogClose asChild>
-                <button
-                  onClick={handleModalClose}
-                  className="px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors"
-                >
-                  Close
-                </button>
-              </DialogClose>
-            </div>
-          )}
+          <LawyerRegistrationForm mode="modal" onCompleted={() => setIsQuickConsultModalOpen(false)} />
+          <DialogFooter className="pt-2">
+            <DialogClose asChild>
+              <button
+                onClick={handleModalClose}
+                className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                Close
+              </button>
+            </DialogClose>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

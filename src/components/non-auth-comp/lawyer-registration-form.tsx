@@ -45,7 +45,13 @@ const prefetchLawyerRegistrationForm = () => {
   });
 };
 
-const LawyerRegistrationForm = () => {
+const LawyerRegistrationForm = ({
+  mode = "page",
+  onCompleted,
+}: {
+  mode?: "page" | "modal";
+  onCompleted?: () => void;
+}) => {
   const [lawyerRegistrationForm, setLawyerRegistrationForm] =
     useState<LawyerRegistrationForm | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -125,8 +131,11 @@ const LawyerRegistrationForm = () => {
 
         if (response.ok) {
           toast.success(
-            "Lawyer registration submitted successfully! We'll review your application and get back to you soon."
+            "We've noted your query. Our team will get in touch with you shortly."
           );
+          if (onCompleted) {
+            onCompleted();
+          }
         } else {
           const errorData = await response.json();
           throw new Error(errorData.error || "Failed to submit registration");
@@ -155,6 +164,29 @@ const LawyerRegistrationForm = () => {
       </div>
     );
   }, [memoizedSchema, handleFormComplete, isSubmitting]);
+
+  // Compact modal rendering
+  if (mode === "modal") {
+    return (
+      <div className="w-full">
+        <div className="mb-4">
+          <h3 className="text-xl font-bold text-gray-900 font-['Lora']">Lawyer Registration</h3>
+          <p className="text-sm text-gray-600">Fill the form to submit your application.</p>
+        </div>
+
+        {isLoading ? (
+          <FormLoadingSkeleton />
+        ) : lawyerRegistrationForm && memoizedSchema ? (
+          FormRenderer
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-500 mb-2">No registration form available at the moment.</p>
+            <p className="text-xs text-gray-400">Please contact us directly for registration information.</p>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <section className="py-16 lg:py-24 bg-gray-50">

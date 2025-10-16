@@ -266,7 +266,7 @@ const Page = () => {
 
             {/* Pagination */}
             {responses.length > 0 && (
-              <Pagination>
+              <Pagination className="justify-end mt-4">
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious
