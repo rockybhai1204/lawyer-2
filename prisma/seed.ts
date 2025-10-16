@@ -370,45 +370,53 @@ async function main() {
   ];
 
   for (const service of services) {
-    await prisma.service.upsert({
+    // Prisma does not generate a unique input for composites including nullable fields.
+    // Our model has @@unique([name, categoryName, subcategoryName]) where subcategoryName is nullable.
+    // So we emulate upsert using findFirst + create.
+    const existingService = await prisma.service.findFirst({
       where: {
-        name_categoryName: {
-          name: service.name,
-          categoryName: service.categoryName,
-        },
-      },
-      update: {},
-      create: {
         name: service.name,
-        slug: service.slug,
-        description: service.description,
         categoryName: service.categoryName,
-        formId: service.formId,
-        isActive: true,
-        contentJson: {
-          sections: [
-            {
-              title: "Service Overview",
-              content: `Professional ${service.name.toLowerCase()} service with expert legal guidance.`,
-            },
-            {
-              title: "What's Included",
-              content: "Comprehensive legal assistance with experienced lawyers.",
-            },
-            {
-              title: "Process",
-              content: "Simple 3-step process: Submit details, Get consultation, Receive documents.",
-            },
-          ],
-        },
+        subcategoryName: null,
       },
     });
 
-    // Create pricing for each service
+    if (!existingService) {
+      await prisma.service.create({
+        data: {
+          name: service.name,
+          slug: service.slug,
+          description: service.description,
+          categoryName: service.categoryName,
+          subcategoryName: null,
+          formId: service.formId,
+          isActive: true,
+          contentJson: {
+            sections: [
+              {
+                title: "Service Overview",
+                content: `Professional ${service.name.toLowerCase()} service with expert legal guidance.`,
+              },
+              {
+                title: "What's Included",
+                content: "Comprehensive legal assistance with experienced lawyers.",
+              },
+              {
+                title: "Process",
+                content: "Simple 3-step process: Submit details, Get consultation, Receive documents.",
+              },
+            ],
+          },
+        },
+      });
+    }
+
+    // Fetch (newly) created service for pricing creation
     const createdService = await prisma.service.findFirst({
       where: {
         name: service.name,
         categoryName: service.categoryName,
+        subcategoryName: null,
       },
     });
 

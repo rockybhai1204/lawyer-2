@@ -10,6 +10,7 @@ interface ServicePricingWithPaymentProps {
   serviceName: string;
   serviceId: string;
   categoryName: string;
+  serviceSlug?: string;
   onSelectionChange?: (selectionData: ServiceSelectionData) => void;
   showProceedButton?: boolean;
   className?: string;
@@ -20,6 +21,7 @@ const ServicePricingWithPayment = ({
   serviceName,
   serviceId,
   categoryName,
+  serviceSlug,
   onSelectionChange,
   showProceedButton = true,
   className = "",
@@ -130,9 +132,9 @@ const ServicePricingWithPayment = ({
     sessionStorage.setItem("serviceSelection", JSON.stringify(selectionData));
 
     // Navigate to the payment form page
-    router.push(
-      `/services/${categoryName}/${serviceName.toLowerCase().replace(/\s+/g, "-")}/payment`
-    );
+    const toSlug = (value: string) => value.toLowerCase().replace(/\s+/g, "-");
+    const finalSlug = serviceSlug && serviceSlug.length > 0 ? serviceSlug : toSlug(serviceName);
+    router.push(`/services/${categoryName}/${finalSlug}/payment`);
   };
 
   return (

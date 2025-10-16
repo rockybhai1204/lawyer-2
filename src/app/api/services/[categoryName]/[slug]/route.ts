@@ -5,7 +5,7 @@ import { ServiceResponse, ServiceContent } from "@/types/api/services";
 type Params = {
   params: Promise<{
     categoryName: string;
-    serviceName: string;
+    slug: string;
   }>;
 };
 
@@ -14,7 +14,7 @@ export async function GET(
   { params }: Params
 ): Promise<NextResponse<ServiceResponse>> {
   try {
-    const { categoryName, serviceName } = await params;
+    const { categoryName, slug } = await params;
 
     const toSlug = (value: string): string =>
       decodeURIComponent(value)
@@ -26,14 +26,14 @@ export async function GET(
         .replace(/^-|-$/g, "");
 
     const categorySlug = toSlug(categoryName ?? "");
-    const serviceSlug = toSlug(serviceName ?? "");
+    const serviceSlug = toSlug(slug ?? "");
 
     if (!categorySlug || !serviceSlug) {
       return NextResponse.json(
         {
           success: false,
           data: {} as any,
-          message: "Category name and service name are required",
+          message: "Category and service slug are required",
         },
         { status: 400 }
       );
@@ -42,11 +42,7 @@ export async function GET(
     const service = await prisma.service.findFirst({
       where: {
         slug: serviceSlug,
-        category: {
-          is: {
-            slug: categorySlug,
-          },
-        },
+        category: { is: { slug: categorySlug } },
         isActive: true,
       },
       select: {
@@ -73,7 +69,7 @@ export async function GET(
           select: {
             id: true,
             name: true,
-            description: true,
+        description: true,
             schemaJson: true,
           },
         },
@@ -113,11 +109,7 @@ export async function GET(
 
     if (!service) {
       return NextResponse.json(
-        {
-          success: false,
-          data: {} as any,
-          message: "Service not found",
-        },
+        { success: false, data: {} as any, message: "Service not found" },
         { status: 404 }
       );
     }
@@ -178,12 +170,10 @@ export async function GET(
   } catch (error) {
     console.error("Error fetching service:", error);
     return NextResponse.json(
-      {
-        success: false,
-        data: {} as any,
-        message: "Failed to fetch service",
-      },
+      { success: false, data: {} as any, message: "Failed to fetch service" },
       { status: 500 }
     );
   }
 }
+
+

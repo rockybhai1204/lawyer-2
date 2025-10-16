@@ -42,6 +42,7 @@ export type ApiService = {
   isActive: boolean;
   contentJson?: ServiceContent | null;
   categoryName: string;
+  subcategoryName?: string;
   formId: string;
   createdAt: string;
   updatedAt: string;
@@ -84,6 +85,7 @@ export type CreateServiceRequest = {
   description?: string;
   isActive?: boolean;
   categoryName: string;
+  subcategoryName?: string;
   formId: string;
   faqs?: CreateServiceFAQRequest[];
   prices?: CreateServicePriceRequest[];
@@ -96,6 +98,7 @@ export type UpdateServiceRequest = {
   description?: string;
   isActive?: boolean;
   categoryName?: string;
+  subcategoryName?: string | null;
   formId?: string;
   faqs?: CreateServiceFAQRequest[];
   prices?: CreateServicePriceRequest[];

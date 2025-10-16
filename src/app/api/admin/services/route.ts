@@ -195,11 +195,12 @@ export async function POST(
       );
     }
 
-    // Check if service name already exists in the same category
+    // Check if service name already exists in the same category+subcategory
     const existingService = await prisma.service.findFirst({
       where: {
         name: body.name.trim(),
         categoryName: body.categoryName,
+        subcategoryName: body.subcategoryName ?? null,
       },
     });
 
@@ -215,6 +216,19 @@ export async function POST(
       );
     }
 
+    // If subcategoryName provided, ensure it exists under the category
+    if (body.subcategoryName) {
+      const sub = await prisma.serviceSubcategory.findFirst({
+        where: { name: body.subcategoryName, categoryName: body.categoryName },
+      });
+      if (!sub) {
+        return NextResponse.json(
+          { success: false, data: {} as any, message: "Subcategory not found in selected category" },
+          { status: 404 }
+        );
+      }
+    }
+
     const service = await prisma.service.create({
       data: {
         name: body.name.trim(),
@@ -222,6 +236,7 @@ export async function POST(
         description: body.description?.trim() || null,
         isActive: body.isActive ?? true,
         categoryName: body.categoryName,
+        subcategoryName: body.subcategoryName ?? null,
         formId: body.formId,
         contentJson: body.content
           ? JSON.parse(JSON.stringify(body.content))
@@ -253,6 +268,7 @@ export async function POST(
         isActive: true,
         contentJson: true,
         categoryName: true,
+        subcategoryName: true,
         formId: true,
         createdAt: true,
         updatedAt: true,
@@ -280,6 +296,7 @@ export async function POST(
         isActive: service.isActive,
         contentJson: service.contentJson as ServiceContent | null,
         categoryName: service.categoryName,
+        subcategoryName: service.subcategoryName ?? undefined,
         formId: service.formId,
         createdAt: service.createdAt.toISOString(),
         updatedAt: service.updatedAt.toISOString(),

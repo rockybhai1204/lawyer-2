@@ -72,6 +72,11 @@ export default function CategoriesPage() {
   const [editingCategory, setEditingCategory] = useState<ApiServiceCategory | null>(null);
   const [editName, setEditName] = useState("");
   const [savingEdit, setSavingEdit] = useState(false);
+  const [manageSubOpen, setManageSubOpen] = useState(false);
+  const [subForCategory, setSubForCategory] = useState<ApiServiceCategory | null>(null);
+  const [subcategories, setSubcategories] = useState<{ id: string; name: string; slug: string; categoryName: string }[]>([]);
+  const [newSubName, setNewSubName] = useState("");
+  const [creatingSub, setCreatingSub] = useState(false);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
@@ -170,6 +175,14 @@ export default function CategoriesPage() {
               title="View public category"
             >
               <Eye className="w-4 h-4" />
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => openManageSub(row.original)}
+              title="Manage subcategories"
+            >
+              Subcategories
             </Button>
             <Button
               variant="outline"
@@ -318,6 +331,55 @@ export default function CategoriesPage() {
       alert("Failed to update category");
     } finally {
       setSavingEdit(false);
+    }
+  };
+
+  const openManageSub = async (category: ApiServiceCategory) => {
+    setSubForCategory(category);
+    setManageSubOpen(true);
+    setNewSubName("");
+    try {
+      const res = await fetch(`/api/admin/services/subcategories?categoryName=${encodeURIComponent(category.name)}`);
+      const data = await res.json();
+      if (data.success) setSubcategories(data.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const createSub = async () => {
+    if (!subForCategory || !newSubName.trim()) return;
+    setCreatingSub(true);
+    try {
+      const res = await fetch(`/api/admin/services/subcategories`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newSubName.trim(), categoryName: subForCategory.name }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubcategories((prev) => [data.data, ...prev]);
+        setNewSubName("");
+      } else {
+        alert(data.message || "Failed to create subcategory");
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Failed to create subcategory");
+    } finally {
+      setCreatingSub(false);
+    }
+  };
+
+  const deleteSub = async (id: string) => {
+    try {
+      const res = await fetch(`/api/admin/services/subcategories/${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) setSubcategories((prev) => prev.filter((s) => s.id !== id));
+      else alert(data.message || "Failed to delete subcategory");
+    } catch (e) {
+      console.error(e);
+      alert("Failed to delete subcategory");
     }
   };
 
@@ -552,6 +614,50 @@ export default function CategoriesPage() {
             <Button onClick={saveEdit} disabled={savingEdit || !editName.trim()}>
               {savingEdit ? "Saving..." : "Save"}
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Manage subcategories dialog */}
+      <Dialog open={manageSubOpen} onOpenChange={setManageSubOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Manage Subcategories</DialogTitle>
+            <DialogDescription>
+              {subForCategory ? `Category: ${subForCategory.name}` : "Select a category"}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="newSub">New Subcategory</Label>
+              <div className="flex gap-2 mt-1">
+                <Input id="newSub" value={newSubName} onChange={(e) => setNewSubName(e.target.value)} placeholder="e.g., Rent Agreements" />
+                <Button onClick={createSub} disabled={creatingSub || !newSubName.trim()}>
+                  {creatingSub ? "Adding..." : "Add"}
+                </Button>
+              </div>
+            </div>
+
+            <div className="border rounded-md divide-y">
+              {subcategories.length === 0 ? (
+                <div className="p-3 text-sm text-muted-foreground">No subcategories</div>
+              ) : (
+                subcategories.map((s) => (
+                  <div key={s.id} className="p-3 flex items-center justify-between">
+                    <div>
+                      <div className="font-medium">{s.name}</div>
+                      <div className="text-xs text-muted-foreground">{s.slug}</div>
+                    </div>
+                    <Button variant="outline" size="sm" className="text-red-600" onClick={() => deleteSub(s.id)}>
+                      Delete
+                    </Button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setManageSubOpen(false)}>Close</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

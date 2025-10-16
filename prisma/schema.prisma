@@ -58,8 +58,27 @@ model ServiceCategory {
   name        String   @unique
   slug        String   @unique
   services    Service[]
+  subcategories ServiceSubcategory[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model ServiceSubcategory {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String
+
+  // Parent category
+  categoryName String
+  category     ServiceCategory @relation(fields: [categoryName], references: [name], onDelete: Cascade)
+
+  services    Service[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([name, categoryName])
+  @@unique([slug, categoryName])
 }
 
 model Service {
@@ -80,12 +99,16 @@ model Service {
 
   categoryName  String
   category      ServiceCategory @relation(fields: [categoryName], references: [name], onDelete: Cascade)
+
+  // Optional subcategory within the category
+  subcategoryName String?
+  subcategory     ServiceSubcategory? @relation(fields: [subcategoryName, categoryName], references: [name, categoryName], onDelete: Restrict)
   
   formId      String
   form        Form     @relation(fields: [formId], references: [id] , onDelete: Cascade)
 
-  @@unique([name, categoryName])
-  @@unique([slug, categoryName])
+  @@unique([name, categoryName, subcategoryName])
+  @@unique([slug, categoryName, subcategoryName])
 }
 
 model ServicePrice {

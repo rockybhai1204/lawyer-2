@@ -28,6 +28,7 @@ export async function GET(
         isActive: true,
         contentJson: true,
         categoryName: true,
+        subcategoryName: true,
         formId: true,
         createdAt: true,
         updatedAt: true,
@@ -102,6 +103,7 @@ export async function GET(
         isActive: service.isActive,
         contentJson: service.contentJson as ServiceContent | null,
         categoryName: service.categoryName,
+        subcategoryName: service.subcategoryName ?? undefined,
         formId: service.formId,
         createdAt: service.createdAt.toISOString(),
         updatedAt: service.updatedAt.toISOString(),
@@ -184,6 +186,7 @@ export async function PUT(
         where: {
           name: body.name.trim(),
           categoryName: categoryName,
+          subcategoryName: body.subcategoryName ?? existingService.subcategoryName ?? null,
           NOT: { id },
         },
       });
@@ -249,6 +252,7 @@ export async function PUT(
           }),
           ...(body.isActive !== undefined && { isActive: body.isActive }),
           ...(body.categoryName && { categoryName: body.categoryName }),
+          ...(body.subcategoryName !== undefined && { subcategoryName: body.subcategoryName || null }),
           ...(body.formId && { formId: body.formId }),
           ...(body.content !== undefined && {
             contentJson: body.content
@@ -312,6 +316,7 @@ export async function PUT(
         isActive: true,
         contentJson: true,
         categoryName: true,
+        subcategoryName: true,
         formId: true,
         createdAt: true,
         updatedAt: true,
@@ -380,6 +385,7 @@ export async function PUT(
         contentJson:
           updatedServiceWithRelations.contentJson as ServiceContent | null,
         categoryName: updatedServiceWithRelations.categoryName,
+        subcategoryName: updatedServiceWithRelations.subcategoryName ?? undefined,
         formId: updatedServiceWithRelations.formId,
         createdAt: updatedServiceWithRelations.createdAt.toISOString(),
         updatedAt: updatedServiceWithRelations.updatedAt.toISOString(),

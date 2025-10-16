@@ -21,7 +21,7 @@ interface PaymentFormProps {
   service: ApiService;
   form: ApiForm | null;
   selectedPrices: ApiServicePrice[];
-  setSelectedPrices: (prices: ApiServicePrice[]) => void;
+  setSelectedPrices?: (prices: ApiServicePrice[]) => void;
 }
 
 interface CustomerDetails {
@@ -80,7 +80,7 @@ export default function PaymentForm({
     const fetchPrices = async () => {
       try {
         const response = await fetch(
-          `/api/services/${params.categoryName}/${params.serviceName}`
+          `/api/services/${params.categoryName}/${params.slug}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -101,7 +101,7 @@ export default function PaymentForm({
               (price: ApiServicePrice) => price.isCompulsory
             ) || [];
 
-          setSelectedPrices(selectedPricesFromData);
+          if (setSelectedPrices) setSelectedPrices(selectedPricesFromData);
         }
       } catch (error) {
         console.error("Error fetching prices:", error);
@@ -144,7 +144,7 @@ export default function PaymentForm({
     const newSelectedPrices = servicePrices.filter(
       (price) => price.isCompulsory || newSelectedIds.has(price.id)
     );
-    setSelectedPrices(newSelectedPrices);
+    if (setSelectedPrices) setSelectedPrices(newSelectedPrices);
   };
 
   const calculateTotal = () => {

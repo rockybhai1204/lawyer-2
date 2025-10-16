@@ -54,6 +54,7 @@ const ServicesBuilderContent = () => {
 
   const [categories, setCategories] = useState<BuilderCategoryOption[]>([]);
   const [forms, setForms] = useState<BuilderFormOption[]>([]);
+  const [subcategories, setSubcategories] = useState<{ id: string; name: string; slug: string; categoryName: string }[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoadingService, setIsLoadingService] = useState(false);
@@ -63,6 +64,7 @@ const ServicesBuilderContent = () => {
   const [serviceDescription, setServiceDescription] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
+  const [selectedSubcategoryName, setSelectedSubcategoryName] = useState("");
   const [selectedFormId, setSelectedFormId] = useState("");
   const [prices, setPrices] = useState<PriceStructure[]>([
     { name: "", price: 0, isCompulsory: false },
@@ -125,6 +127,22 @@ const ServicesBuilderContent = () => {
     }
   };
 
+  const fetchSubcategories = async (categoryName: string) => {
+    setSubcategories([]);
+    if (!categoryName) return [] as { id: string; name: string; slug: string; categoryName: string }[];
+    try {
+      const res = await fetch(`/api/admin/services/subcategories?categoryName=${encodeURIComponent(categoryName)}`);
+      const data = await res.json();
+      if (data.success) {
+        setSubcategories(data.data);
+        return data.data as { id: string; name: string; slug: string; categoryName: string }[];
+      }
+    } catch (e) {
+      console.error("Error fetching subcategories", e);
+    }
+    return [] as { id: string; name: string; slug: string; categoryName: string }[];
+  };
+
   const fetchServiceForEdit = async (serviceId: string) => {
     setIsLoadingService(true);
     try {
@@ -137,6 +155,10 @@ const ServicesBuilderContent = () => {
         setServiceDescription(service.description || "");
         setIsActive(service.isActive);
         setSelectedCategoryName(service.categoryName);
+        if ((service as any).subcategoryName) {
+          await fetchSubcategories(service.categoryName);
+          setSelectedSubcategoryName((service as any).subcategoryName);
+        }
         setSelectedFormId(service.formId);
 
         // Set prices
@@ -377,6 +399,7 @@ const ServicesBuilderContent = () => {
           description: serviceDescription.trim() || undefined,
           isActive,
           categoryName: selectedCategoryName,
+          subcategoryName: selectedSubcategoryName || undefined,
           formId: selectedFormId,
           faqs: validFaqs,
           prices: validPrices,
@@ -414,6 +437,10 @@ const ServicesBuilderContent = () => {
       fetchServiceForEdit(editServiceId);
     }
   }, [isEditMode, editServiceId]);
+
+  useEffect(() => {
+    fetchSubcategories(selectedCategoryName);
+  }, [selectedCategoryName]);
 
   // Remove full page loading - let components handle their own loading states
 
@@ -493,7 +520,10 @@ const ServicesBuilderContent = () => {
                   label: category.name,
                 }))}
                 value={selectedCategoryName}
-                onValueChange={setSelectedCategoryName}
+                onValueChange={(val) => {
+                  setSelectedCategoryName(val);
+                  setSelectedSubcategoryName("");
+                }}
                 placeholder="Select a category"
                 searchPlaceholder="Search categories..."
                 emptyText="No categories found."
@@ -519,6 +549,20 @@ const ServicesBuilderContent = () => {
                 disabled={isLoadingService}
               />
             </div>
+          </div>
+          <div>
+            <Label htmlFor="subcategory">Subcategory</Label>
+            <SearchableSelect
+              options={subcategories.map((s) => ({ value: s.name, label: s.name }))}
+              value={selectedSubcategoryName}
+              onValueChange={setSelectedSubcategoryName}
+              placeholder={selectedCategoryName ? "Select a subcategory (optional)" : "Select a category first"}
+              searchPlaceholder="Search subcategories..."
+              emptyText={selectedCategoryName ? "No subcategories found." : "Select a category first."}
+              className="mt-1 w-full"
+              loading={isLoading || isLoadingService}
+              disabled={!selectedCategoryName || isLoadingService}
+            />
           </div>
         </CardContent>
       </Card>

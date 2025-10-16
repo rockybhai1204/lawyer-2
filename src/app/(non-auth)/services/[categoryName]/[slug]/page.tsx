@@ -6,29 +6,26 @@ import Partner from "@/components/non-auth-comp/(services)/partner";
 import CompanyFormationWithPayment from "@/components/non-auth-comp/(services)/company-formation-with-payment";
 import Faq from "@/components/non-auth-comp/faq";
 import S2 from "@/components/non-auth-comp/(services)/s2";
-import S3 from "@/components/non-auth-comp/(services)/s3";
-import S4 from "@/components/non-auth-comp/(services)/s4";
 import Navbar from "@/components/non-auth-comp/navbar";
-import C4 from "@/components/non-auth-comp/c4";
 import Tenth from "@/components/non-auth-comp/tenth";
 
 type Params = {
   params: Promise<{
     categoryName: string;
-    serviceName: string;
+    slug: string; // this is serviceName for 2-level path
   }>;
 };
 
 export default async function ServiceDetailPage({ params }: Params) {
-  const { categoryName, serviceName } = await params;
+  const { categoryName, slug } = await params;
 
-  if (!categoryName || !serviceName) {
+  if (!categoryName || !slug) {
     notFound();
   }
 
   const service = await prisma.service.findFirst({
     where: {
-      slug: serviceName,
+      slug,
       category: {
         slug: categoryName,
       },
@@ -101,7 +98,6 @@ export default async function ServiceDetailPage({ params }: Params) {
     },
   });
 
-  // Get average rating
   const averageRating = await prisma.serviceRating.aggregate({
     where: {
       serviceId: service?.id,
@@ -115,7 +111,6 @@ export default async function ServiceDetailPage({ params }: Params) {
     notFound();
   }
 
-  // Transform the data to match the expected format for the components
   const typedContentJson =
     service.contentJson as unknown as ServiceContent | null;
   const { _count, ...serviceWithoutCount } = service;
@@ -125,7 +120,6 @@ export default async function ServiceDetailPage({ params }: Params) {
     reviewCount: _count.rating,
     customerCount: _count.cases,
     contentJson: typedContentJson ?? undefined,
-    // Transform price array to pricingComponents
     pricingComponents:
       service.price?.map((price) => ({
         name: price.name,
@@ -133,17 +127,14 @@ export default async function ServiceDetailPage({ params }: Params) {
         discountAmount: price.discountAmount || 0,
         isCompulsory: price.isCompulsory || false,
       })) || [],
-    // Transform contentJson.blocks to contentSections
     contentSections:
       typedContentJson?.blocks?.filter(
         (block) => block.type !== "deliverables"
       ) || [],
-    // Extract deliverables from contentJson.blocks
     deliverables:
       typedContentJson?.blocks?.find(
         (block) => block.type === "deliverables"
       ) || null,
-    // Keep original faqs
     faqs: service.faqs.map((faq) => ({
       id: faq.id,
       serviceId: faq.serviceId,
@@ -152,7 +143,6 @@ export default async function ServiceDetailPage({ params }: Params) {
       createdAt: faq.createdAt.toISOString(),
       updatedAt: faq.updatedAt.toISOString(),
     })),
-    // Transform dates to strings
     createdAt: service.createdAt.toISOString(),
     updatedAt: service.updatedAt.toISOString(),
     category: {
@@ -186,13 +176,10 @@ export default async function ServiceDetailPage({ params }: Params) {
       <Navbar />
       <div className="pt-20 sm:pt-24 lg:pt-28 flex-1">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* S1 Component - Business Partnership Section */}
           <S1 />
 
-          {/* Partner and Company Formation Section */}
           <div className="py-6 sm:py-8 lg:py-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-              {/* Left Side - Partner Component + FAQ + Carousel (Scrollable) */}
               <div className="lg:col-span-2 space-y-6 lg:space-y-8">
                 <Partner serviceData={transformedServiceData} />
                 <div className="bg-white rounded-lg shadow-xl p-6">
@@ -201,12 +188,8 @@ export default async function ServiceDetailPage({ params }: Params) {
                 <div className="bg-white rounded-lg shadow-xl p-6">
                   <S2 />
                 </div>
-                {/* <div className="bg-white rounded-lg shadow-xl p-6">
-                  <S4 />
-                </div> */}
               </div>
 
-              {/* Right Side - Company Formation Component (Sticky on desktop) */}
               <div className="lg:col-span-1">
                 <div className="lg:sticky lg:top-28">
                   <CompanyFormationWithPayment
@@ -216,18 +199,12 @@ export default async function ServiceDetailPage({ params }: Params) {
               </div>
             </div>
           </div>
-
-          {/* S3 Component - Recommended Products Section */}
-          {/* <div className="pb-6 sm:pb-8 lg:pb-12">
-            <div className="bg-white rounded-lg shadow-xl p-6">
-              <S3 />
-            </div>
-          </div> */}
         </div>
       </div>
 
-      {/* Responsive Footer */}
       <Tenth />
     </div>
   );
 }
+
+
