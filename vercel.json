@@ -1,0 +1,17 @@
+{
+  "buildCommand": "npm run vercel-build",
+  "installCommand": "npm ci --legacy-peer-deps --fetch-retries=5 --fetch-retry-mintimeout=60000 --fetch-retry-maxtimeout=180000",
+  "framework": "nextjs",
+  "functions": {
+    "src/app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "regions": ["iad1"],
+  "env": {
+    "SKIP_ENV_VALIDATION": "1",
+    "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
+    "NPM_CONFIG_FETCH_RETRIES": "5",
+    "NPM_CONFIG_FETCH_RETRY_MINTIMEOUT": "60000"
+  }
+}
