@@ -104,7 +104,7 @@ const Second = () => {
                       Trusted Online Consultation
                     </div>
                     <p className="text-gray-600 text-sm leading-relaxed group-hover:text-white/90">
-                      {"Speak to our expert and verified Vakilfy lawyers over a phone or video call before getting your documents drafted."}
+                      {"Speak to our expert and verified lawyer lawyers over a phone or video call before getting your documents drafted."}
                     </p>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ const Second = () => {
                       End-to-End Services
                     </div>
                     <p className="text-gray-600 text-sm leading-relaxed group-hover:text-white/90">
-                      {"From drafting and reviewing to notarization and registration- Vakilfy takes care of everything."}
+                      {"From drafting and reviewing to notarization and registration- lawyer takes care of everything."}
                     </p>
                   </div>
                 </div>
@@ -154,7 +154,7 @@ const Second = () => {
                       Transparency
                     </div>
                     <p className="text-gray-600 text-sm leading-relaxed group-hover:text-white/90">
-                      {"At Vakilfy, we ensure there is a clear pricing, multiple packages and no hidden costs."}
+                      {"At lawyer, we ensure there is a clear pricing, multiple packages and no hidden costs."}
                     </p>
                   </div>
                 </div>
@@ -177,7 +177,7 @@ const Second = () => {
                       Nationwide Access
                     </div>
                     <p className="text-gray-600 text-sm leading-relaxed group-hover:text-white/90">
-                      {"Whether you are in Mumbai, Delhi, Bangalore or a small town, Vakilfy brings legal expertise to your fingertips."}
+                      {"Whether you are in Mumbai, Delhi, Bangalore or a small town, lawyer brings legal expertise to your fingertips."}
                     </p>
                   </div>
                 </div>

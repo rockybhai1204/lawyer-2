@@ -230,7 +230,7 @@ const Ninth = () => {
                               <span className="text-gray-300">
                                 {data.ninth.labels.email}
                               </span>{" "}
-                              hello@vakilfy.com
+                              hello@lawyer.com
                             </p>
                           </div>
                         </div>
@@ -429,7 +429,7 @@ const Ninth = () => {
                       </p>
                       <p>
                         <span className="text-gray-300">Email:</span>{" "}
-                        hello@vakilfy.com
+                        hello@lawyer.com
                       </p>
                     </div>
                   </div>

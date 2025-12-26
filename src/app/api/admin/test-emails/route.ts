@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       amount: 5000,
       transactionId: "TXN123456789",
       caseId: "CASE001",
-      companyName: "Vakilfy.com",
+      companyName: "lawyer.com",
       errorMessage: "Insufficient funds",
       lawyerName: "Advocate Smith",
       customerEmail: "customer@example.com",

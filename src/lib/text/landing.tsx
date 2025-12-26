@@ -11,7 +11,7 @@ export const landing = {
         title: "Book Consultation Now",
         heading: "Book Consultation\nNow",
         description:
-          "From property papers to rent agreements, wills to legal notices and drafts- at Vakilfy’s expert lawyers are just a click away. Book your online consultation and get professional legal documents drafted, reviewed, and delivered without stepping out of your home or office.",
+          "From property papers to rent agreements, wills to legal notices and drafts- at lawyer’s expert lawyers are just a click away. Book your online consultation and get professional legal documents drafted, reviewed, and delivered without stepping out of your home or office.",
         image: "/img2.webp",
       },
       {
@@ -24,25 +24,25 @@ export const landing = {
     call: { label: "Talk to Lawyer" },
   },
   second: {
-    welcome: "Welcome To Vakilfy",
-    whyTitle: "Why Vakilfy\nExists?",
+    welcome: "Welcome To lawyer",
+    whyTitle: "Why lawyer\nExists?",
     whyText:
       "Most people hesitate to approach a lawyer, because of two main reasons: 1. Lack of trust, and 2. Lack of convenience. Traditional legal services often involve long queues, multiple visits to offices, and uncertainty about fees or outcomes. At the same time, the risk of using unverified templates or unqualified agents can lead to disputes, invalid documents, or even financial losses.",
-    quote: "We built Vakilfy to solve these challenges.",
+    quote: "We built lawyer to solve these challenges.",
     connect: "LET'S CONNECT",
     phone: "+91 8979096507",
-    email: "hello@vakilfy.com",
+    email: "hello@lawyer.com",
     cta: {
       book: "Book Consultation Now",
       explore: "Explore Services",
       paragraph:
-        "Getting legal assistance often seems confusing, expensive, and time-consuming, but not anymore. Vakilfy is here to change that perception for you. We connect individuals, families, and businesses with our verified legal professionals who provide quick, reliable, and affordable legal services online. Whether you need a property title checked, a rent agreement drafted, or a will written, Vakilfy ensures that your legal needs are handled smoothly with online consultations at the heart of every service.",
+        "Getting legal assistance often seems confusing, expensive, and time-consuming, but not anymore. lawyer is here to change that perception for you. We connect individuals, families, and businesses with our verified legal professionals who provide quick, reliable, and affordable legal services online. Whether you need a property title checked, a rent agreement drafted, or a will written, lawyer ensures that your legal needs are handled smoothly with online consultations at the heart of every service.",
     },
   },
   third: {
     packagesTitle: "Packages for Every Need",
     packagesSubtitle:
-      "Vakilfy offers flexible packages to suit different needs:",
+      "lawyer offers flexible packages to suit different needs:",
     packages: {
       rent: [
         {
@@ -65,13 +65,13 @@ export const landing = {
         },
         {
           title: "Draft with Aadhar eSign & eStamp",
-          desc: "Vakilfy will help digital execution to be easier than ever before",
+          desc: "lawyer will help digital execution to be easier than ever before",
         },
       ],
       note: "Every package includes a 10-minute (TBC) pre-consultation with a lawyer to ensure accuracy and customization.",
     },
     statsTagline:
-      "We are not just another legal website. Vakilfy is your partner in simplifying law through online consultations.",
+      "We are not just another legal website. lawyer is your partner in simplifying law through online consultations.",
     services: [
       "On-Call Lawyer Consultation",
       "Property Related Services",
@@ -88,21 +88,21 @@ export const landing = {
       cta: "Testimonial",
     },
     why: {
-      title: "Why choose Vakilfy?",
+      title: "Why choose lawyer?",
       intro:
-        "Vakilfy combines the trust of traditional law firms with the convenience of online consultation, making legal help accessible to everyone.",
+        "lawyer combines the trust of traditional law firms with the convenience of online consultation, making legal help accessible to everyone.",
       points: [
         "Verified Expert Lawyers: No agents, no middlemen: only real, qualified, expert lawyers",
         "Convenient Online Consultation: Get legal help from the comfort of your home/office",
         "Transparent Pricing: Packages that fit your requirement-no surprises later",
-        "Nationwide Services: From metros to tier-2 cities, Vakilfy is available anytime, everywhere",
+        "Nationwide Services: From metros to tier-2 cities, lawyer is available anytime, everywhere",
         "Fast Turnaround: Reports and drafts delivered within promised timelines",
         "Confidential & Secure: Your discussions remain private as we are very strict about attorney-client privilege",
       ],
     },
     whoServe: {
       title: "Who We Serve?",
-      intro: "Vakilfy is for anyone who needs reliable legal assistance:",
+      intro: "lawyer is for anyone who needs reliable legal assistance:",
       points: [
         "Individuals & Families: Rent agreements, wills, gift deeds, power of attorney.",
         "Businesses & Startups: Agreements, notices, compliance paperwork.",
@@ -130,35 +130,35 @@ export const landing = {
       {
         title: "What is online legal consultation?",
         description:
-          "Online legal consultation, also known as online lawyer consultation, is the process of connecting users to lawyers in a virtual manner. It could be by way of phone calls, video calls, or chat. It is a one-step solution for quick, easy and hassle free legal advice using our Vakilfy website (TBC if app is also being developed).",
+          "Online legal consultation, also known as online lawyer consultation, is the process of connecting users to lawyers in a virtual manner. It could be by way of phone calls, video calls, or chat. It is a one-step solution for quick, easy and hassle free legal advice using our lawyer website (TBC if app is also being developed).",
       },
       {
-        title: "How does Vakilfy’s online consultation work?",
+        title: "How does lawyer’s online consultation work?",
         description:
-          "We, at Vakilfy, have a 5 step simple process:\nStep 1. Choose Your Service\nStep 2. Book Online Consultation\nStep 3. Discuss Your Needs\nStep 4. Get Drafted / Reviewed\nStep 5. Delivery & Support",
-      },
-      {
-        title:
-          "How are fees determined for online legal consultation at Vakilfy?",
-        description:
-          "The initial consultation charge is ₹ 500 (TBC with client) for a 10 minute /20 (TBC with client) consultation slot. At Vakilfy, all charges are transparent and disclosed upfront.",
-      },
-      {
-        title: "How does availing Vakilfy services benefit you?",
-        description:
-          "At Vakilfy, we have 50+ legal experts (TBC) from different cities of India. You can seek advice online, in your preferred language, and receive timely, accurate legal documents.",
+          "We, at lawyer, have a 5 step simple process:\nStep 1. Choose Your Service\nStep 2. Book Online Consultation\nStep 3. Discuss Your Needs\nStep 4. Get Drafted / Reviewed\nStep 5. Delivery & Support",
       },
       {
         title:
-          "Is seeking legal assistance on Vakilfy a safe and secure method?",
+          "How are fees determined for online legal consultation at lawyer?",
         description:
-          "Yes. Vakilfy follows strict confidentiality and attorney-client privilege standards. Your data and documents remain private and secure.",
+          "The initial consultation charge is ₹ 500 (TBC with client) for a 10 minute /20 (TBC with client) consultation slot. At lawyer, all charges are transparent and disclosed upfront.",
+      },
+      {
+        title: "How does availing lawyer services benefit you?",
+        description:
+          "At lawyer, we have 50+ legal experts (TBC) from different cities of India. You can seek advice online, in your preferred language, and receive timely, accurate legal documents.",
+      },
+      {
+        title:
+          "Is seeking legal assistance on lawyer a safe and secure method?",
+        description:
+          "Yes. lawyer follows strict confidentiality and attorney-client privilege standards. Your data and documents remain private and secure.",
       },
     ],
   },
   eighth: {
     tag: "Easy Steps",
-    title: "The Vakilfy Process",
+    title: "The lawyer Process",
     steps: [
       {
         title: "Choose Your Service",
@@ -197,10 +197,10 @@ export const landing = {
     },
   },
   tenth: {
-    companyName: "Vakilfy",
+    companyName: "Lawyer",
     headline: "Your Trusted Lawyer. Just one Click Away.",
     companyDescription:
-      "Vakilfy offers online consultation and legal drafting services that are fast, reliable, and affordable. Let experts handle your paperwork while you focus on what matters most.",
+      "Lawyer offers online consultation and legal drafting services that are fast, reliable, and affordable. Let experts handle your paperwork while you focus on what matters most.",
     contactLabel: "Contact:",
     contact: {
       address: [
@@ -209,8 +209,8 @@ export const landing = {
         "Ward 2(3)(2)",
         "Bulandshahr, Uttar Pradesh 203001",
       ],
-      phone: "+91 8979096507",
-      email: "hello@vakilfy.com",
+      phone: "+91 9876543210",
+      email: "hello@lawyer.com",
     },
     newsletterTitle: "Sign Up For Our Newsletter",
     newsletterPlaceholder: "Enter Your Email",

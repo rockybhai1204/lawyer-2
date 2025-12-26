@@ -22,7 +22,7 @@ const C4: React.FC = () => {
         {/* Logo and Description */}
         <div className="flex flex-col items-start font-[Lora] lg:col-span-1">
           <div className="mb-4">
-            <img src="/logo.svg" alt="Vakilfy" className="h-16 w-auto" />
+            <img src="/logo.svg" alt="lawyer" className="h-16 w-auto" />
           </div>
           <p className="text-gray-400 mb-6">
             Create high-quality, style-consistent, proprietary assets for your

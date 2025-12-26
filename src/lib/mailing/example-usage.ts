@@ -16,7 +16,7 @@ export const examplePaymentSuccess = async () => {
     amount: 5000,
     transactionId: "TXN123456789",
     caseId: "CASE001",
-    companyName: "Vakilfy.com",
+    companyName: "lawyer.com",
   });
 
   console.log("Payment success email result:", result);
@@ -30,7 +30,7 @@ export const examplePaymentFailure = async () => {
     amount: 5000,
     errorMessage: "Insufficient funds",
     caseId: "CASE001",
-    companyName: "Vakilfy.com",
+    companyName: "lawyer.com",
   });
 
   console.log("Payment failure email result:", result);
@@ -45,7 +45,7 @@ export const exampleCaseAssigned = async () => {
     caseId: "CASE001",
     customerEmail: "customer@example.com",
     customerPhone: "+91-9876543210",
-    companyName: "Vakilfy.com",
+    companyName: "lawyer.com",
   });
 
   console.log("Case assigned email result:", result);
@@ -59,7 +59,7 @@ export const exampleCaseStatusUpdate = async () => {
     caseId: "CASE001",
     oldStatus: "PENDING",
     newStatus: "IN_PROGRESS",
-    companyName: "Vakilfy.com",
+    companyName: "lawyer.com",
   });
 
   console.log("Case status update email result:", result);
@@ -76,7 +76,7 @@ export const exampleMeetingNotification = async () => {
     linkOrNumber: "https://meet.google.com/abc-defg-hij",
     caseId: "CASE001",
     serviceName: "Legal Consultation",
-    companyName: "Vakilfy.com",
+    companyName: "lawyer.com",
   });
 
   console.log("Meeting notification email result:", result);
@@ -91,7 +91,7 @@ export const exampleWithCustomConfig = async () => {
     amount: 5000,
     transactionId: "TXN123456789",
     caseId: "CASE001",
-    companyName: "Vakilfy.com",
+    companyName: "lawyer.com",
     config: {
       host: "smtp.gmail.com",
       port: 587,

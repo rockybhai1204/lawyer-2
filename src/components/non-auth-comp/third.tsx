@@ -125,7 +125,7 @@ const Third = () => {
     "On-Call Lawyer Consultation": (
       <div className="space-y-4 text-gray-700">
         <p>
-          Need quick advice on a legal issue? Vakilfy offers on-call lawyer consultation where you can discuss your problem with a professional lawyer and receive immediate guidance. No need to wait for appointments—just book online and get clarity right away.
+          Need quick advice on a legal issue? lawyer offers on-call lawyer consultation where you can discuss your problem with a professional lawyer and receive immediate guidance. No need to wait for appointments—just book online and get clarity right away.
         </p>
         <ul className="list-disc pl-5 space-y-1">
           <li>Are you confused about a property deal?</li>
@@ -133,14 +133,14 @@ const Third = () => {
           <li>Do you want to understand your rights before signing an agreement?</li>
         </ul>
         <p>
-          Our expert lawyers at Vakilfy provide oral consultations that are practical, clear and easy to comprehend.
+          Our expert lawyers at lawyer provide oral consultations that are practical, clear and easy to comprehend.
         </p>
       </div>
     ),
     "Property Related Services": (
       <div className="space-y-4 text-gray-700">
         <p>
-          Property is one of the biggest investments you make, and mistakes can be costly. Vakilfy offers specialized property services:
+          Property is one of the biggest investments you make, and mistakes can be costly. lawyer offers specialized property services:
         </p>
         <div>
           <p className="font-semibold">a. Property Paper Review (PDF Report):</p>
@@ -157,7 +157,7 @@ const Third = () => {
         <div>
           <p className="font-semibold">c. Property Agreements:</p>
           <p>
-            From sale deeds to agreements to sell, Vakilfy ensures your property agreements are legally sound and protect your interests.
+            From sale deeds to agreements to sell, lawyer ensures your property agreements are legally sound and protect your interests.
           </p>
         </div>
       </div>
@@ -165,14 +165,14 @@ const Third = () => {
     "Documents Review Services": (
       <div className="space-y-4 text-gray-700">
         <p>
-          Contracts and agreements can often hide clauses that work against you. Vakilfy provides document review services where a lawyer goes through your contracts and sends you a PDF report with clear observations and recommendations. This service is ideal for business contracts, employment agreements, vendor contracts, and property-related papers.
+          Contracts and agreements can often hide clauses that work against you. lawyer provides document review services where a lawyer goes through your contracts and sends you a PDF report with clear observations and recommendations. This service is ideal for business contracts, employment agreements, vendor contracts, and property-related papers.
         </p>
       </div>
     ),
     "Drafting Services": (
       <div className="space-y-4 text-gray-700">
         <p>
-          Legal documents should never be copied from templates found online. Vakilfy ensures every draft is custom-made by expert lawyers only.
+          Legal documents should never be copied from templates found online. lawyer ensures every draft is custom-made by expert lawyers only.
         </p>
         <div>
           <p className="font-semibold">4.1 Rent Agreements</p>
@@ -201,7 +201,7 @@ const Third = () => {
     "Legal Notices and Replies": (
       <div className="space-y-4 text-gray-700">
         <p>
-          When a dispute arises, the first step is often sending or responding to a legal notice. Vakilfy’s trusted and verified lawyers draft clear, professional, and enforceable notices after an online consultation where you explain your issue. Whether it is a tenant not paying rent, a property dispute, or a commercial disagreement, our lawyers ensure your notices carry legal weight.
+          When a dispute arises, the first step is often sending or responding to a legal notice. lawyer’s trusted and verified lawyers draft clear, professional, and enforceable notices after an online consultation where you explain your issue. Whether it is a tenant not paying rent, a property dispute, or a commercial disagreement, our lawyers ensure your notices carry legal weight.
         </p>
       </div>
     ),
@@ -437,7 +437,7 @@ const Third = () => {
                 <span className="text-3xl font-['Lora']">Our Core services</span>
               </div>
               <p className="text-gray-700 font-['Lora'] text-sm sm:text-base lg:text-lg leading-relaxed max-w-3xl">
-                Vakilfy provides a comprehensive range of legal services designed for both individuals and businesses. Every service begins with a 10-minute online consultation with one of our expert lawyers so you get clarity and confidence before proceeding.
+                lawyer provides a comprehensive range of legal services designed for both individuals and businesses. Every service begins with a 10-minute online consultation with one of our expert lawyers so you get clarity and confidence before proceeding.
               </p>
             </div>
             <div className="hidden lg:flex items-center gap-4">

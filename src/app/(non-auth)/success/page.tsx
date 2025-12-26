@@ -381,7 +381,7 @@ function SuccessContent() {
               {/* Contact Info */}
               <div className="mt-8 text-sm text-gray-500">
                 <p>
-                  Have questions? Contact us at hello@vakilfy.com or call +91
+                  Have questions? Contact us at hello@lawyer.com or call +91
                   8979096507
                 </p>
               </div>

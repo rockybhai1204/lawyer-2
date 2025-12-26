@@ -23,7 +23,7 @@ export default function TermsPage() {
                 Effective Date: 02 OCTOBER 2025
               </p>
               <p className="text-gray-700 leading-relaxed">
-                Welcome to <strong>Vakilfy.com</strong> (the "Site" or "Website"), operated by <strong>MD Legal Tech Solutions</strong>, having its registered office at 2nd Floor, MD Tower, Plot No. 2C2, Awas Vikas 1st, DM Road, Bulandshahr ("we", "us", "our"). These Terms of Use ("Terms") govern your access to and use of the Website and the services made available through it (collectively, the "Services"). By accessing or using the Services, registering an account, or otherwise interacting with Vakilfy, you agree to be bound by these Terms (and any amendments thereto).
+                Welcome to <strong>lawyer.com</strong> (the "Site" or "Website"), operated by <strong>MD Legal Tech Solutions</strong>, having its registered office at 2nd Floor, MD Tower, Plot No. 2C2, Awas Vikas 1st, DM Road, Bulandshahr ("we", "us", "our"). These Terms of Use ("Terms") govern your access to and use of the Website and the services made available through it (collectively, the "Services"). By accessing or using the Services, registering an account, or otherwise interacting with lawyer, you agree to be bound by these Terms (and any amendments thereto).
               </p>
               <p className="text-gray-700 leading-relaxed mt-4">
                 If you do not agree with any of these Terms, you should immediately stop using or accessing the Site or Services.

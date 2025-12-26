@@ -47,7 +47,7 @@ const Fifth = () => {
                         {/* Background image */}
                         <div className="absolute inset-0 z-10">
                             <Image
-                                src="/why_vakilfy.jpg"
+                                src="/why_lawyer.jpg"
                                 alt=""
                                 fill
                                 className="object-cover opacity-15"

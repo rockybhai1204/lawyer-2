@@ -24,7 +24,7 @@ const ServiceNavbar = ({
               <a href="/" aria-label="Go to home">
                 <img
                   src="/logo.svg"
-                  alt="Vakilfy Logo"
+                  alt="lawyer Logo"
                   className="w-[60px] h-[60px] sm:w-[60px] sm:h-[60px] lg:w-[60px] lg:h-[60px]"
                 />
               </a>
@@ -163,11 +163,11 @@ const ServiceNavbar = ({
             <div className="flex items-center space-x-2">
               <Image
                 src="/logo.svg"
-                alt="Vakilfy Logo"
+                alt="lawyer Logo"
                 width={32}
                 height={32}
               />
-              <span className="text-white text-lg font-semibold">Vakilfy</span>
+              <span className="text-white text-lg font-semibold">lawyer</span>
             </div>
             <button
               onClick={onMobileMenuClose}

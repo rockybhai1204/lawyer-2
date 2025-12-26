@@ -23,10 +23,10 @@ export default function PrivacyPage() {
                 Effective Date: 02 OCTOBER 2025
               </p>
               <p className="text-gray-700 leading-relaxed">
-                MD Legal Tech Solutions, a company having its registered office at 2nd Floor, MD Tower, Plot No. 2C2, Awas Vikas 1st, DM Road, Bulandshahr (hereinafter "we", "us", "our") operates the website <strong>Vakilfy.com</strong> (the "Website"). This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you use our Website and avail our services (collectively, the "Services").
+                MD Legal Tech Solutions, a company having its registered office at 2nd Floor, MD Tower, Plot No. 2C2, Awas Vikas 1st, DM Road, Bulandshahr (hereinafter "we", "us", "our") operates the website <strong>lawyer.com</strong> (the "Website"). This Privacy Policy describes how we collect, use, disclose, and safeguard your information when you use our Website and avail our services (collectively, the "Services").
               </p>
               <p className="text-gray-700 leading-relaxed mt-4">
-                By accessing or using Vakilfy.com, you agree to the terms of this Privacy Policy and to the collection, use, disclosure, and storage of your information as described herein. If you do not agree, please do not use our Services.
+                By accessing or using lawyer.com, you agree to the terms of this Privacy Policy and to the collection, use, disclosure, and storage of your information as described herein. If you do not agree, please do not use our Services.
               </p>
               <p className="text-gray-700 leading-relaxed mt-4">
                 We may modify this Privacy Policy from time to time. When we do, we will post the updated version on the Website, and in cases of "material changes," we may notify you via email or by a notice on the Website prior to the change becoming effective.
@@ -206,10 +206,10 @@ export default function PrivacyPage() {
                 <p className="mb-3">
                   If you have any questions, concerns, or requests relating to this Privacy Policy or your personal data, you may contact us at{" "}
                   <a
-                    href="mailto:hello@vakilfy.com"
+                    href="mailto:hello@lawyer.com"
                     className="text-amber-600 hover:text-amber-700 underline"
                   >
-                    hello@vakilfy.com
+                    hello@lawyer.com
                   </a>
                 </p>
                 <p>

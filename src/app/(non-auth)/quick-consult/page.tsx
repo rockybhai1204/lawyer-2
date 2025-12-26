@@ -19,7 +19,7 @@ export default function QuickConsultPage() {
       /> */}
       <Tenth
         companyName={COMPANY_CONFIG.name}
-        companyDescription="Join Vakilfy's network of qualified lawyers and expand your legal practice with our comprehensive platform."
+        companyDescription="Join lawyer's network of qualified lawyers and expand your legal practice with our comprehensive platform."
         contactInfo={{
           address: COMPANY_CONFIG.contact.address,
           phone: COMPANY_CONFIG.contact.phone,
@@ -28,7 +28,7 @@ export default function QuickConsultPage() {
         // newsletterTitle="Stay Connected"
         // newsletterDescription="Get updates about new opportunities and legal industry insights."
         // showNewsletter={false}
-        copyrightText="© 2025 Vakilfy - Lawyer Network"
+        copyrightText="© 2025 lawyer - Lawyer Network"
       />
     </main>
   );

@@ -11,11 +11,11 @@ const Seventh = () => {
     const [isAnimating, setIsAnimating] = useState(false);
 
     const caseStudies = ((data?.seventh?.cards as Array<{ title: string; description: string }>) ?? [
-        { title: "What is online legal consultation?", description: "Online legal consultation, also known as online lawyer consultation, is the process of connecting users to lawyers in a virtual manner. It could be by way of phone calls, video calls, or chat. It is a one-step solution for quick, easy and hassle free legal advice using our Vakilfy website (TBC if app is also being developed)." },
-        { title: "How does Vakilfy’s online consultation work?", description: "We, at Vakilfy, have a 5 step simple process:\nStep 1. Choose Your Service\nStep 2. Book Online Consultation\nStep 3. Discuss Your Needs\nStep 4. Get Drafted / Reviewed\nStep 5. Delivery & Support" },
-        { title: "How are fees determined for online legal consultation at Vakilfy?", description: "The initial consultation charge is ₹ 500 (TBC with client) for a 10 minute /20 (TBC with client) consultation slot. At Vakilfy, all charges are transparent and disclosed upfront." },
-        { title: "How does availing Vakilfy services benefit you?", description: "At Vakilfy, we have 50+ legal experts (TBC) from different cities of India. You can seek advice online, in your preferred language, and receive timely, accurate legal documents." },
-        { title: "Is seeking legal assistance on Vakilfy a safe and secure method?", description: "Yes. Vakilfy follows strict confidentiality and attorney-client privilege standards. Your data and documents remain private and secure." },
+        { title: "What is online legal consultation?", description: "Online legal consultation, also known as online lawyer consultation, is the process of connecting users to lawyers in a virtual manner. It could be by way of phone calls, video calls, or chat. It is a one-step solution for quick, easy and hassle free legal advice using our lawyer website (TBC if app is also being developed)." },
+        { title: "How does lawyer’s online consultation work?", description: "We, at lawyer, have a 5 step simple process:\nStep 1. Choose Your Service\nStep 2. Book Online Consultation\nStep 3. Discuss Your Needs\nStep 4. Get Drafted / Reviewed\nStep 5. Delivery & Support" },
+        { title: "How are fees determined for online legal consultation at lawyer?", description: "The initial consultation charge is ₹ 500 (TBC with client) for a 10 minute /20 (TBC with client) consultation slot. At lawyer, all charges are transparent and disclosed upfront." },
+        { title: "How does availing lawyer services benefit you?", description: "At lawyer, we have 50+ legal experts (TBC) from different cities of India. You can seek advice online, in your preferred language, and receive timely, accurate legal documents." },
+        { title: "Is seeking legal assistance on lawyer a safe and secure method?", description: "Yes. lawyer follows strict confidentiality and attorney-client privilege standards. Your data and documents remain private and secure." },
     ]).map((c, idx) => ({ id: idx + 1, image: idx % 2 === 0 ? "/img1.webp" : "/img2.webp", ...c }));
 
     useEffect(() => {

@@ -237,10 +237,10 @@ const C2 = () => {
                     <div className="flex-1">
                       <h4 className="text-lg font-semibold text-gray-800 mb-1">Email ID</h4>
                       <a 
-                        href="mailto:hello@vakilfy.com"
+                        href="mailto:hello@lawyer.com"
                         className="text-blue-600 hover:text-blue-800 transition-colors duration-200 text-lg"
                       >
-                        hello@vakilfy.com
+                        hello@lawyer.com
                       </a>
                     </div>
                   </div>

@@ -19,8 +19,8 @@ interface TenthProps {
 }
 
 const Tenth: React.FC<TenthProps> = ({
-  companyName = "Vakilfy",
-  companyDescription = "Vakilfy is a leading law firm in the India, providing legal services & corporates in commercial & family matters.",
+  companyName = "Lawyer",
+  companyDescription = "Lawyer is a leading law firm in the India, providing legal services & corporates in commercial & family matters.",
   contactInfo = {
     address: [
       "Space No. 2/2, MD Tower",
@@ -28,8 +28,8 @@ const Tenth: React.FC<TenthProps> = ({
       "Ward 2(3)(2)",
       "Bulandshahr, Uttar Pradesh 203001",
     ],
-    phone: "+91 8979096507",
-    email: "hello@vakilfy.com",
+    phone: "+91 9876543210",
+    email: "hello@lawyer.com",
   },
   // newsletterTitle = "Sign Up For Our Newsletter",
   // newsletterDescription = "Stay updated with our latest legal insights and services.",

@@ -1,12 +1,12 @@
 export const COMPANY_CONFIG = {
   // Company Information
-  name: "Vakilfy",
+  name: "lawyer",
   description:
-    "Vakilfy is a leading law firm in the India, providing legal services & corporates in commercial & family matters.",
+    "lawyer is a leading law firm in the India, providing legal services & corporates in commercial & family matters.",
 
   // Contact Information
   contact: {
-    email: "hello@vakilfy.com",
+    email: "hello@lawyer.com",
     phone: "+91 8979096507",
     address: [
       "Space No. 2/2, MD Tower",
@@ -18,13 +18,13 @@ export const COMPANY_CONFIG = {
 
   // Lawyer-specific contact
   lawyerContact: {
-    email: "lawyers@vakilfy.com",
+    email: "lawyers@lawyer.com",
   },
 
   // CEO Information
   ceo: {
     name: "Albert Homer",
-    title: "CEO, Vakilfy Law firm",
+    title: "CEO, lawyer Law firm",
   },
 
   // Copyright

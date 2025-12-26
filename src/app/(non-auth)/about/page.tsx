@@ -20,13 +20,13 @@ export default function AboutPage() {
                 About Us
               </h2>
               <p className="text-gray-600 mb-4">
-                Welcome to Vakilfy – Your Trusted Legal Partner
+                Welcome to lawyer – Your Trusted Legal Partner
               </p>
               <p className="text-gray-700 leading-relaxed">
-                Vakilfy.com is an innovative legal tech platform operated by <strong>MD Legal Tech Solutions</strong>, designed to make quality legal assistance simple, accessible, and reliable for everyone.
+                lawyer.com is an innovative legal tech platform operated by <strong>MD Legal Tech Solutions</strong>, designed to make quality legal assistance simple, accessible, and reliable for everyone.
               </p>
               <p className="text-gray-700 leading-relaxed mt-4">
-                We act as a <strong>neutral intermediary platform</strong> that connects customers with experienced and verified legal professionals. Through Vakilfy, you can access:
+                We act as a <strong>neutral intermediary platform</strong> that connects customers with experienced and verified legal professionals. Through lawyer, you can access:
               </p>
             </div>
 
@@ -44,12 +44,12 @@ export default function AboutPage() {
 
               <div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
-                  Why Vakilfy?
+                  Why lawyer?
                 </h3>
                 <p className="mb-4">
-                  At Vakilfy, we understand that legal issues require <strong>trust, precision, and timely assistance</strong>. That's why we follow strict checks and compliance measures before onboarding any legal professional on our platform. Each lawyer undergoes a careful verification process to ensure authenticity, expertise, and professional ethics.
+                  At lawyer, we understand that legal issues require <strong>trust, precision, and timely assistance</strong>. That's why we follow strict checks and compliance measures before onboarding any legal professional on our platform. Each lawyer undergoes a careful verification process to ensure authenticity, expertise, and professional ethics.
                 </p>
-                <p className="mb-3">This ensures that every service you avail through Vakilfy is:</p>
+                <p className="mb-3">This ensures that every service you avail through lawyer is:</p>
                 <ul className="list-disc pl-6 space-y-2 text-amber-700">
                   <li>✅ Reliable</li>
                   <li>✅ Transparent</li>
@@ -61,7 +61,7 @@ export default function AboutPage() {
                 <h3 className="text-xl font-semibold text-gray-800 mb-3 font-['Lora']">
                   Direct Interaction, Personalised Solutions
                 </h3>
-                <p className="mb-3">Unlike generic legal websites, Vakilfy empowers customers to <strong>directly connect and interact with registered professionals</strong>. This means:</p>
+                <p className="mb-3">Unlike generic legal websites, lawyer empowers customers to <strong>directly connect and interact with registered professionals</strong>. This means:</p>
                 <ul className="list-disc pl-6 space-y-2 text-amber-700">
                   <li>You explain your requirements directly to the expert.</li>
                   <li>You get customised legal solutions, not one-size-fits-all answers.</li>

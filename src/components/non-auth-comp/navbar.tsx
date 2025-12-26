@@ -172,14 +172,14 @@ const Navbar = () => {
             }`}
           >
             {/* Logo - Left side */}
-            <div className="flex items-center space-x-2 flex-shrink-0">
+            <div className="flex items-center space-x-3 flex-shrink-0">
               <Link href="/" aria-label="Go to home">
                 <Image
                   src="/bgg2.png"
-                  alt="Vakilfy Logo"
-                  width={180}
-                  height={80}
-                  className="w-43 h-14 lg:h-16 object-cover xl:h-18"
+                  alt="lawyer Logo"
+                  width={70}
+                  height={70}
+                  className="w-auto h-8 lg:h-10 xl:h-12"
                 />
               </Link>
             </div>
@@ -413,12 +413,12 @@ const Navbar = () => {
               <div className="flex items-center space-x-2">
                 <Image
                   src="/tick.png"
-                  alt="Vakilfy Logo"
+                  alt="lawyer Logo"
                   width={32}
                   height={32}
                 />
                 <span className="text-white text-lg font-semibold">
-                  Vakilfy
+                  lawyer
                 </span>
               </div>
               <button
