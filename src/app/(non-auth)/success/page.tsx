@@ -382,7 +382,7 @@ function SuccessContent() {
               <div className="mt-8 text-sm text-gray-500">
                 <p>
                   Have questions? Contact us at hello@lawyer.com or call +91
-                  8979096507
+                  9876543210
                 </p>
               </div>
             </div>

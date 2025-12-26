@@ -23,11 +23,11 @@ const Tenth: React.FC<TenthProps> = ({
   companyDescription = "Lawyer is a leading law firm in the India, providing legal services & corporates in commercial & family matters.",
   contactInfo = {
     address: [
-      "Space No. 2/2, MD Tower",
-      "Awas Vikas Colony 1st",
-      "Ward 2(3)(2)",
-      "Bulandshahr, Uttar Pradesh 203001",
-    ],
+      "Plot No. 18, BlueStone ",
+      "Lake View Road, Phase II",
+      "Block C, Sector 12",
+      "Indore, MP 123456",
+    ],    
     phone: "+91 9876543210",
     email: "hello@lawyer.com",
   },

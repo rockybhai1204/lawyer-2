@@ -258,7 +258,7 @@ const C2 = () => {
                         href="tel:+9876543210"
                         className="text-green-600 hover:text-green-800 transition-colors duration-200 text-lg"
                       >
-                        +91 8979096507
+                        +91 9876543210
                       </a>
                     </div>
                   </div>

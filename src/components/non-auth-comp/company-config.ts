@@ -7,13 +7,13 @@ export const COMPANY_CONFIG = {
   // Contact Information
   contact: {
     email: "hello@lawyer.com",
-    phone: "+91 8979096507",
+    phone: "+91 9876543210",
     address: [
-      "Space No. 2/2, MD Tower",
-      "Awas Vikas Colony 1st",
-      "Ward 2(3)(2)",
-      "Bulandshahr, Uttar Pradesh 203001",
-    ],
+      "Plot No. 18, BlueStone ",
+      "Lake View Road, Phase II",
+      "Block C, Sector 12",
+      "Indore, MP 123456",
+    ], 
   },
 
   // Lawyer-specific contact

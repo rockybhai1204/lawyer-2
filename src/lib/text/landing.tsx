@@ -30,7 +30,7 @@ export const landing = {
       "Most people hesitate to approach a lawyer, because of two main reasons: 1. Lack of trust, and 2. Lack of convenience. Traditional legal services often involve long queues, multiple visits to offices, and uncertainty about fees or outcomes. At the same time, the risk of using unverified templates or unqualified agents can lead to disputes, invalid documents, or even financial losses.",
     quote: "We built lawyer to solve these challenges.",
     connect: "LET'S CONNECT",
-    phone: "+91 8979096507",
+    phone: "+91 9876543210",
     email: "hello@lawyer.com",
     cta: {
       book: "Book Consultation Now",
@@ -204,11 +204,11 @@ export const landing = {
     contactLabel: "Contact:",
     contact: {
       address: [
-        "Space No. 2/2, MD Tower",
-        "Awas Vikas Colony 1st",
-        "Ward 2(3)(2)",
-        "Bulandshahr, Uttar Pradesh 203001",
-      ],
+        "Plot No. 18, BlueStone",
+        "Lake View Road, Phase II",
+        "Block C, Sector 12",
+        "Indore, MP 123456",
+      ], 
       phone: "+91 9876543210",
       email: "hello@lawyer.com",
     },

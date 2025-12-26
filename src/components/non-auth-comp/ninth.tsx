@@ -224,7 +224,7 @@ const Ninth = () => {
                               <span className="text-gray-300">
                                 {data.ninth.labels.tel}
                               </span>{" "}
-                              +91 8979096507
+                              +91 9876543210
                             </p>
                             <p>
                               <span className="text-gray-300">
@@ -425,7 +425,7 @@ const Ninth = () => {
                     >
                       <p>
                         <span className="text-gray-300">Tel:</span> +91
-                        8979096507
+                        9876543210
                       </p>
                       <p>
                         <span className="text-gray-300">Email:</span>{" "}
