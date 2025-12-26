@@ -255,7 +255,7 @@ const C2 = () => {
                     <div className="flex-1">
                       <h4 className="text-lg font-semibold text-gray-800 mb-1">Phone Number</h4>
                       <a 
-                        href="tel:+918979096507"
+                        href="tel:+9876543210"
                         className="text-green-600 hover:text-green-800 transition-colors duration-200 text-lg"
                       >
                         +91 8979096507

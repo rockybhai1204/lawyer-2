@@ -174,7 +174,7 @@ const Ninth = () => {
                           }}
                         >
                           <Image
-                            src="/new-bg.png"
+                            src="/bgg2.png"
                             alt="Justice"
                             fill
                             className="object-contain"
@@ -359,7 +359,7 @@ const Ninth = () => {
                     }}
                   >
                     <Image
-                      src="/new-bg.png"
+                      src="/bgg2.png"
                       alt="Justice"
                       fill
                       className="object-contain"
