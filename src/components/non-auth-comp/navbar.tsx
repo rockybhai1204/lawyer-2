@@ -172,14 +172,14 @@ const Navbar = () => {
             }`}
           >
             {/* Logo - Left side */}
-            <div className="flex items-center space-x-3 flex-shrink-0">
+            <div className="flex items-center space-x-2 flex-shrink-0">
               <Link href="/" aria-label="Go to home">
                 <Image
-                  src="/bgg.png"
+                  src="/bgg2.png"
                   alt="Vakilfy Logo"
                   width={180}
-                  height={180}
-                  className="w-auto h-8 lg:h-10 xl:h-12"
+                  height={80}
+                  className="w-43 h-14 lg:h-16 object-cover xl:h-18"
                 />
               </Link>
             </div>

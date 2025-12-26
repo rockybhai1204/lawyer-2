@@ -286,7 +286,7 @@ const BrandLogo = () => {
 
   return (
     <Image
-      src="/bgg.png"
+      src="/bgg2.png"
       alt="Vakilfy Logo"
       width={140}
       height={40}
